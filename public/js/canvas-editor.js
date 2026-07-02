@@ -94,6 +94,7 @@ const CanvasEditor = {
   // distorting text — once the user clicks away, each piece becomes a
   // normal independently-editable object.
   addGeneratedObjects(objects) {
+    if (!objects || !objects.length) return;
     this.suppressHistory = true;
     objects.forEach((o) => this.canvas.add(o));
     this.suppressHistory = false;
@@ -357,59 +358,18 @@ const CanvasEditor = {
     return `<div class="prop-row"><label>${label}</label>${inputHtml}</div>`;
   },
 
-  // Searchable combobox over the preloaded Google Fonts catalog (see
-  // FontLoader), with the 6 built-in system fonts pinned at the top of the
-  // unfiltered list as instant, zero-load defaults.
+  // Searchable combobox over the preloaded Google Fonts catalog — see
+  // FontLoader.attachPicker (shared with every generator box's font picker).
   bindFontPicker(obj) {
-    const input = document.getElementById('propFont');
-    const results = document.getElementById('propFontResults');
-    if (!input || !results) return;
-
-    const catalogFamilies = (typeof FontLoader !== 'undefined' ? FontLoader.catalog : [])
-      .map((f) => f.family)
-      .filter((f) => !FONT_CHOICES.includes(f));
-    const MAX_RESULTS = 50;
-
-    const renderResults = (query) => {
-      const q = query.trim().toLowerCase();
-      const matches = q
-        ? [...FONT_CHOICES, ...catalogFamilies].filter((f) => f.toLowerCase().includes(q)).slice(0, MAX_RESULTS)
-        : [...FONT_CHOICES, ...catalogFamilies.slice(0, MAX_RESULTS - FONT_CHOICES.length)];
-
-      results.textContent = '';
-      if (!matches.length) {
-        const empty = document.createElement('div');
-        empty.className = 'font-picker-empty';
-        empty.textContent = 'No fonts match';
-        results.appendChild(empty);
-      } else {
-        matches.forEach((family) => {
-          const row = document.createElement('div');
-          row.className = 'font-picker-row';
-          row.textContent = family;
-          row.style.fontFamily = `'${family}'`;
-          row.addEventListener('mousedown', (e) => {
-            e.preventDefault(); // avoid input blur firing before the click registers
-            input.value = family;
-            results.hidden = true;
-            obj.set('fontFamily', family);
-            const done = () => this.canvas.requestRenderAll();
-            if (typeof FontLoader !== 'undefined') FontLoader.ensure(family).then(done);
-            else done();
-          });
-          results.appendChild(row);
-        });
-      }
-      results.hidden = false;
-
-      // Lazily load only the webfonts actually visible in this result set.
-      matches.forEach((family) => { if (typeof FontLoader !== 'undefined') FontLoader.ensure(family); });
-    };
-
-    input.addEventListener('focus', () => renderResults(''));
-    input.addEventListener('input', () => renderResults(input.value));
-    input.addEventListener('blur', () => {
-      setTimeout(() => { results.hidden = true; }, 150);
+    if (typeof FontLoader === 'undefined') return;
+    FontLoader.attachPicker({
+      inputEl: document.getElementById('propFont'),
+      resultsEl: document.getElementById('propFontResults'),
+      initialValue: obj.fontFamily || '',
+      onSelect: (family) => {
+        obj.set('fontFamily', family);
+        FontLoader.ensure(family).then(() => this.canvas.requestRenderAll());
+      },
     });
   },
 

@@ -12,6 +12,19 @@
     });
   }
 
+  // Reads a number input, falling back to `fallback` if empty/NaN, then
+  // clamps to the input's own min/max HTML attributes — guards generator
+  // params (row counts, hour ranges) against extreme values typed past
+  // what the input's min/max would enforce via arrow-key/scroll UI alone.
+  function clampInput(el, fallback) {
+    const min = Number(el.min);
+    const max = Number(el.max);
+    let v = Number(el.value) || fallback;
+    if (!Number.isNaN(min) && el.min !== '' && v < min) v = min;
+    if (!Number.isNaN(max) && el.max !== '' && v > max) v = max;
+    return v;
+  }
+
   function captureActivePageIntoModel() {
     const serialized = CanvasEditor.serializePage();
     PagesManager.updateActivePage(serialized.json, serialized.thumbnail, serialized.background);
@@ -122,26 +135,82 @@
   }
 
   function initGenerators() {
+    // Default Month/Year to today so a fresh insert with untouched fields
+    // matches "this month," same as the old free-text field's fallback.
+    const today = new Date();
+    document.getElementById('calMonthSelect').value = String(today.getMonth() + 1);
+    document.getElementById('calYearInput').value = String(today.getFullYear());
+
+    let calFont = 'Helvetica';
+    let checklistFont = 'Helvetica';
+    let schedFont = 'Helvetica';
+    FontLoader.attachPicker({
+      inputEl: document.getElementById('calFontInput'),
+      resultsEl: document.getElementById('calFontResults'),
+      initialValue: calFont,
+      onSelect: (f) => { calFont = f; },
+    });
+    FontLoader.attachPicker({
+      inputEl: document.getElementById('checklistFontInput'),
+      resultsEl: document.getElementById('checklistFontResults'),
+      initialValue: checklistFont,
+      onSelect: (f) => { checklistFont = f; },
+    });
+    FontLoader.attachPicker({
+      inputEl: document.getElementById('schedFontInput'),
+      resultsEl: document.getElementById('schedFontResults'),
+      initialValue: schedFont,
+      onSelect: (f) => { schedFont = f; },
+    });
+
     document.getElementById('insertCalendarBtn').addEventListener('click', () => {
       const view = document.getElementById('calViewSelect').value;
-      const monthValue = document.getElementById('calMonthInput').value;
+      const month = Number(document.getElementById('calMonthSelect').value);
+      const year = clampInput(document.getElementById('calYearInput'), today.getFullYear());
       const style = document.getElementById('calStyleSelect').value;
-      const objects = Generators.buildCalendar({ view, monthValue, style });
+      const objects = Generators.buildCalendar({
+        view, month, year, style,
+        fontFamily: calFont,
+        headerColor: document.getElementById('calHeaderColor').value,
+        textColor: document.getElementById('calTextColor').value,
+        weekendColor: document.getElementById('calWeekendColor').value,
+        highlightColor: document.getElementById('calHighlightColor').value,
+        accentColor: document.getElementById('calAccentColor').value,
+      });
       CanvasEditor.addGeneratedObjects(objects);
     });
 
     document.getElementById('insertChecklistBtn').addEventListener('click', () => {
-      const rows = Number(document.getElementById('checklistRows').value) || 8;
-      const cols = Number(document.getElementById('checklistCols').value) || 1;
+      const rows = clampInput(document.getElementById('checklistRows'), 8);
+      const cols = clampInput(document.getElementById('checklistCols'), 1);
       const title = document.getElementById('checklistTitle').value;
-      const objects = Generators.buildChecklist({ rows, cols, title });
+      const objects = Generators.buildChecklist({
+        rows, cols, title,
+        fontFamily: checklistFont,
+        headerColor: document.getElementById('checklistHeaderColor').value,
+        textColor: document.getElementById('checklistTextColor').value,
+        weekendColor: document.getElementById('checklistWeekendColor').value,
+        accentColor: document.getElementById('checklistAccentColor').value,
+      });
       CanvasEditor.addGeneratedObjects(objects);
     });
 
     document.getElementById('insertScheduleBtn').addEventListener('click', () => {
-      const startHour = Number(document.getElementById('schedStart').value) || 6;
-      const endHour = Number(document.getElementById('schedEnd').value) || 21;
-      const objects = Generators.buildSchedule({ startHour, endHour });
+      const startHour = clampInput(document.getElementById('schedStart'), 6);
+      const endHour = clampInput(document.getElementById('schedEnd'), 21);
+      const title = document.getElementById('schedTitle').value;
+      const objects = Generators.buildSchedule({
+        startHour, endHour, title,
+        fontFamily: schedFont,
+        headerColor: document.getElementById('schedHeaderColor').value,
+        textColor: document.getElementById('schedTextColor').value,
+        highlightColor: document.getElementById('schedHighlightColor').value,
+        accentColor: document.getElementById('schedAccentColor').value,
+      });
+      if (!objects.length) {
+        showToast('End hour must be after start hour');
+        return;
+      }
       CanvasEditor.addGeneratedObjects(objects);
     });
   }

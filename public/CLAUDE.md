@@ -119,6 +119,33 @@ generators (and the planner-wizard/preset-template work described in the
 root `CLAUDE.md`) following this same array-of-plain-objects convention, or
 both bugs come back.
 
+Every `buildCalendar`/`buildChecklist`/`buildSchedule` call also takes
+`fontFamily` + a set of colors (`headerColor`/`textColor`/`accentColor`,
+plus `weekendColor` and/or `highlightColor` where semantically meaningful —
+see the field table in this project's font/generator planning history)
+instead of hardcoding fonts/hex colors — each generator box in
+`index.html`'s `#tab-generators` carries its own font picker and color
+inputs, read at insert time in `app.js`'s `initGenerators()`. `buildSchedule`
+returns `[]` if `endHour <= startHour` — callers must check for that (see
+`CanvasEditor.addGeneratedObjects`'s own empty-array guard) instead of
+assuming a non-empty result. Calendar month/year always take plain numbers
+(`month` 1-12, `year`) from `<select>`/`<input type="number">` — never a
+parsed date string. An earlier version used a free-text "MM-YYYY" field
+whose label didn't match its actual parse order (year-then-month), silently
+producing garbage dates; don't reintroduce a string-format date field here.
+
+## Shared font-picker (`FontLoader.attachPicker`, `js/font-loader.js`)
+
+The searchable font combobox (used by the properties panel's Font field and
+every generator box's font picker) lives in one place:
+`FontLoader.attachPicker({ inputEl, resultsEl, initialValue, onSelect })`.
+It wires search-filter/render/click behavior against `FontLoader.catalog`
+with `FONT_CHOICES` pinned at the top of the unfiltered list. Callers only
+supply the two DOM elements (matching the `.font-picker`/`.font-picker-results`
+markup pattern — copy an existing usage in `index.html` rather than
+hand-rolling new combobox HTML) and an `onSelect(family)` callback; don't
+duplicate the search/render logic inline elsewhere.
+
 ## Security note
 
 `library-panel.js`, `app.js`, and `pages-manager.js` render user-supplied

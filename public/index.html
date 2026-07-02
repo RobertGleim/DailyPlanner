@@ -135,15 +135,46 @@
             <select id="calViewSelect" title="Calendar view">
               <option value="month">Month grid</option>
               <option value="week">Week strip</option>
+              <option value="year">Yearly overview</option>
             </select>
-            <label for="calMonthInput">Month</label>
-            <input type="text" id="calMonthInput" placeholder="MM-YYYY" title="Enter month in MM-YYYY format" />
+            <label for="calMonthSelect">Month</label>
+            <select id="calMonthSelect" title="Month">
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+            <label for="calYearInput">Year</label>
+            <input type="number" id="calYearInput" min="1900" max="2200" title="Year (also used for Yearly overview)" />
             <label for="calStyleSelect">Style</label>
             <select id="calStyleSelect" title="Calendar style">
               <option value="minimal">Minimal</option>
               <option value="boxed">Boxed grid</option>
               <option value="dotted">Dotted</option>
             </select>
+            <label for="calFontInput">Font</label>
+            <div class="font-picker">
+              <input type="text" id="calFontInput" autocomplete="off" placeholder="Search fonts…" />
+              <div id="calFontResults" class="font-picker-results" hidden></div>
+            </div>
+            <label for="calHeaderColor">Header color</label>
+            <input type="color" id="calHeaderColor" value="#1f2430" />
+            <label for="calTextColor">Text color</label>
+            <input type="color" id="calTextColor" value="#1f2430" />
+            <label for="calWeekendColor">Weekend color</label>
+            <input type="color" id="calWeekendColor" value="#e0574c" />
+            <label for="calHighlightColor">Today highlight</label>
+            <input type="color" id="calHighlightColor" value="#FFC93C" />
+            <label for="calAccentColor">Line/border color</label>
+            <input type="color" id="calAccentColor" value="#333333" />
             <button class="tool-btn btn-accent" id="insertCalendarBtn" data-icon="calendar">Insert Calendar</button>
           </div>
 
@@ -155,15 +186,43 @@
             <input type="number" id="checklistCols" value="1" min="1" max="31" />
             <label for="checklistTitle">Title</label>
             <input type="text" id="checklistTitle" value="To Do Today" />
+            <label for="checklistFontInput">Font</label>
+            <div class="font-picker">
+              <input type="text" id="checklistFontInput" autocomplete="off" placeholder="Search fonts…" />
+              <div id="checklistFontResults" class="font-picker-results" hidden></div>
+            </div>
+            <label for="checklistHeaderColor">Header color</label>
+            <input type="color" id="checklistHeaderColor" value="#1f2430" />
+            <label for="checklistTextColor">Text color</label>
+            <input type="color" id="checklistTextColor" value="#1f2430" />
+            <label for="checklistWeekendColor">Weekend color (7-column habit tracker)</label>
+            <input type="color" id="checklistWeekendColor" value="#e0574c" />
+            <label for="checklistAccentColor">Line/border color</label>
+            <input type="color" id="checklistAccentColor" value="#333333" />
             <button class="tool-btn btn-accent" id="insertChecklistBtn" data-icon="checklist">Insert Checklist</button>
           </div>
 
           <div class="sidebar-section">
             <h4>Daily Schedule</h4>
+            <label for="schedTitle">Title (optional)</label>
+            <input type="text" id="schedTitle" placeholder="e.g. Daily Schedule" />
             <label for="schedStart">Start hour</label>
             <input type="number" id="schedStart" value="6" min="0" max="23" />
             <label for="schedEnd">End hour</label>
             <input type="number" id="schedEnd" value="21" min="1" max="24" />
+            <label for="schedFontInput">Font</label>
+            <div class="font-picker">
+              <input type="text" id="schedFontInput" autocomplete="off" placeholder="Search fonts…" />
+              <div id="schedFontResults" class="font-picker-results" hidden></div>
+            </div>
+            <label for="schedHeaderColor">Header color</label>
+            <input type="color" id="schedHeaderColor" value="#1f2430" />
+            <label for="schedTextColor">Text color</label>
+            <input type="color" id="schedTextColor" value="#1f2430" />
+            <label for="schedHighlightColor">Current-hour highlight</label>
+            <input type="color" id="schedHighlightColor" value="#FFC93C" />
+            <label for="schedAccentColor">Line/border color</label>
+            <input type="color" id="schedAccentColor" value="#333333" />
             <button class="tool-btn btn-accent" id="insertScheduleBtn" data-icon="clock">Insert Hourly Schedule</button>
           </div>
         </div>

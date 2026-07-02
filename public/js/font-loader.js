@@ -59,4 +59,60 @@ const FontLoader = {
     });
     await Promise.all(Array.from(families).map((f) => this.ensure(f)));
   },
+
+  // Wires a text input + results container into a searchable combobox over
+  // this catalog, with the 6 built-in FONT_CHOICES pinned at the top of the
+  // unfiltered list as instant, zero-load defaults. Shared by the
+  // properties-panel font field (canvas-editor.js) and every generator
+  // box's font picker (generators tab in app.js) so this ~50-line
+  // search/render/click behavior only lives in one place.
+  attachPicker({ inputEl, resultsEl, initialValue, onSelect }) {
+    if (!inputEl || !resultsEl) return;
+    inputEl.value = initialValue || '';
+
+    const catalogFamilies = this.catalog
+      .map((f) => f.family)
+      .filter((f) => !FONT_CHOICES.includes(f));
+    const MAX_RESULTS = 50;
+
+    const renderResults = (query) => {
+      const q = query.trim().toLowerCase();
+      const matches = q
+        ? [...FONT_CHOICES, ...catalogFamilies].filter((f) => f.toLowerCase().includes(q)).slice(0, MAX_RESULTS)
+        : [...FONT_CHOICES, ...catalogFamilies.slice(0, MAX_RESULTS - FONT_CHOICES.length)];
+
+      resultsEl.textContent = '';
+      if (!matches.length) {
+        const empty = document.createElement('div');
+        empty.className = 'font-picker-empty';
+        empty.textContent = 'No fonts match';
+        resultsEl.appendChild(empty);
+      } else {
+        matches.forEach((family) => {
+          const row = document.createElement('div');
+          row.className = 'font-picker-row';
+          row.textContent = family;
+          row.style.fontFamily = `'${family}'`;
+          row.addEventListener('mousedown', (e) => {
+            e.preventDefault(); // avoid input blur firing before the click registers
+            inputEl.value = family;
+            resultsEl.hidden = true;
+            onSelect(family);
+            this.ensure(family);
+          });
+          resultsEl.appendChild(row);
+        });
+      }
+      resultsEl.hidden = false;
+
+      // Lazily load only the webfonts actually visible in this result set.
+      matches.forEach((family) => this.ensure(family));
+    };
+
+    inputEl.addEventListener('focus', () => renderResults(''));
+    inputEl.addEventListener('input', () => renderResults(inputEl.value));
+    inputEl.addEventListener('blur', () => {
+      setTimeout(() => { resultsEl.hidden = true; }, 150);
+    });
+  },
 };
