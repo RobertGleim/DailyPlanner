@@ -172,10 +172,15 @@ this repo — confirm it's actually enabled before treating this app as
 private. If you're on the Hobby plan, this protection is not active and the
 live URL should be treated as fully public.
 
-Library uploads are restricted to image MIME types
-(`png`/`jpeg`/`gif`/`webp`/`svg`) at up to 8MB via a multer `fileFilter` in
-`server/app.js` — this closes the "anonymous open file host" version of the
-no-auth risk, but doesn't address the underlying missing-auth issue above.
+Library uploads are restricted to raster image MIME types
+(`png`/`jpeg`/`gif`/`webp` — **SVG is deliberately excluded**, since it can
+carry an embedded `<script>` that executes if its storage URL is opened
+directly) at up to 8MB via a multer `fileFilter`, and the actual file bytes
+are checked against each type's magic-byte signature (`hasValidImageSignature`
+in `server/app.js`) so a spoofed `Content-Type` header alone can't get a
+non-image file accepted. Together this closes the "anonymous open file host"
+/ stored-XSS-via-upload version of the no-auth risk, but doesn't address the
+underlying missing-authentication issue above.
 
 Known, accepted-for-now gaps (low severity, not fixed):
 - Error responses return raw `err.message` to the client (`server/app.js`'s

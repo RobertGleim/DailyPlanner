@@ -29,7 +29,10 @@ if (storage.LIBRARY_DIR) {
   app.use('/library-files', express.static(storage.LIBRARY_DIR));
 }
 
-const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml'];
+// SVG deliberately excluded: unlike raster formats, an SVG can carry an
+// embedded <script> that executes if its storage URL is opened directly —
+// a stored-XSS vector. No preloaded or uploaded asset in this app is an SVG.
+const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 8 * 1024 * 1024 },
@@ -41,6 +44,25 @@ const upload = multer({
     }
   },
 });
+
+// The upload's declared mimetype is just a client-supplied header field and
+// trivially spoofable, so also verify the actual file bytes match a known
+// image signature before trusting it (defense in depth alongside fileFilter).
+function hasValidImageSignature(buffer, mimetype) {
+  if (mimetype === 'image/webp') {
+    return buffer.length >= 12
+      && buffer.toString('ascii', 0, 4) === 'RIFF'
+      && buffer.toString('ascii', 8, 12) === 'WEBP';
+  }
+  const signatures = {
+    'image/png': [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a],
+    'image/jpeg': [0xff, 0xd8, 0xff],
+    'image/gif': [0x47, 0x49, 0x46, 0x38],
+  };
+  const sig = signatures[mimetype];
+  if (!sig) return false;
+  return sig.every((byte, i) => buffer[i] === byte);
+}
 
 // ================= LIBRARY API =================
 
@@ -59,6 +81,9 @@ app.post('/api/library/upload', (req, res, next) => {
 }, async (req, res, next) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    if (!hasValidImageSignature(req.file.buffer, req.file.mimetype)) {
+      return res.status(400).json({ error: 'File content does not match a supported image type' });
+    }
     const item = await storage.uploadLibraryAsset({
       buffer: req.file.buffer,
       originalname: req.file.originalname,
