@@ -15,6 +15,7 @@ public/
     constants.js             # PAGE_SIZES, FONT_CHOICES (load first)
     icons.js                  # Self-hosted SVG icon set (see below, load early)
     api.js                     # fetch() wrappers for /api/* (see server/CLAUDE.md)
+    font-loader.js              # Loads /api/fonts catalog, lazily registers webfonts via FontFace API
     library-panel.js            # Library tab: upload/browse/delete assets
     generators.js                # Calendar/checklist/schedule builders
     pages-manager.js              # Multi-page state + thumbnail sidebar
@@ -79,7 +80,19 @@ served from this same origin (`vendor/`, `js/`, `css/`) — **never** add a
 `<script src="https://...">`, external stylesheet, or web font pointing at a
 third-party CDN without also solving CORS/CORP for it, or the page will
 silently fail to load that resource. This is also why the redesign kept the
-system font stack instead of adding a Google Fonts (or similar) dependency.
+system font stack instead of linking directly to `fonts.googleapis.com`.
+
+The full Google Fonts catalog (`js/font-loader.js`, see `scripts/CLAUDE.md`'s
+`seed-fonts.js` entry) sidesteps this without violating the rule above: font
+files are self-hosted in our own Supabase Storage bucket (not a third-party
+font CDN), and `FontFace` always fetches cross-origin resources in CORS
+mode — the same mechanism `canvas-editor.js` already relies on for library
+images via `crossOrigin: 'anonymous'`. Supabase's public bucket sends
+`Access-Control-Allow-Origin: *`, and a passing CORS response satisfies COEP
+`require-corp` on its own (no separate `Cross-Origin-Resource-Policy` header
+needed). If you ever swap storage providers, confirm the new one still sends
+permissive CORS headers on public asset URLs, or both this and existing
+library image loads will start failing under COEP.
 
 ## Security note
 

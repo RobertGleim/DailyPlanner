@@ -258,6 +258,14 @@ select, input[type="text"], input[type="number"], input[type="month"] {
 #tab-generators label { display: block; font-size: 12px; color: var(--muted); margin: 8px 0 3px; }
 #tab-generators input, #tab-generators select { width: 100%; }
 
+/* ---------- Page background controls ---------- */
+.bg-type-chips { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+.bg-subcontrols label { display: block; font-size: 12px; color: var(--muted); margin: 8px 0 3px; }
+.bg-subcontrols input, .bg-subcontrols select { width: 100%; }
+.bg-subcontrols input[type="color"] { height: 32px; padding: 2px; }
+.bg-subcontrols .checkbox-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text); margin: 10px 0; }
+.bg-subcontrols .checkbox-row input[type="checkbox"] { width: auto; }
+
 /* ---------- Canvas area ---------- */
 .canvas-area { flex: 1; display: flex; flex-direction: column; min-width: 0; }
 .canvas-toolbar {
@@ -290,6 +298,18 @@ select, input[type="text"], input[type="number"], input[type="month"] {
 .prop-row label { color: var(--muted); font-size: 12px; flex-shrink: 0; }
 .prop-row input[type="text"], .prop-row input[type="number"] { width: 100px; }
 .prop-row input[type="color"] { width: 40px; height: 28px; padding: 0; border: none; border-radius: 6px; }
+
+.font-picker { position: relative; width: 100px; }
+.font-picker input[type="text"] { width: 100%; }
+.font-picker-results {
+  position: absolute; top: calc(100% + 4px); right: 0; z-index: 20;
+  width: 220px; max-height: 260px; overflow-y: auto;
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.font-picker-row { padding: 7px 10px; font-size: 13px; cursor: pointer; }
+.font-picker-row:hover { background: var(--bg); }
+.font-picker-empty { padding: 7px 10px; font-size: 12px; color: var(--muted); }
 
 /* ---------- Pages list ---------- */
 .pages-list { display: flex; flex-direction: column; gap: 8px; max-height: 40vh; overflow-y: auto; }

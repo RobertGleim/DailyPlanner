@@ -1,0 +1,87 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - img [ref=e7]
+        - generic [ref=e13]: Planner Studio
+      - generic [ref=e15]: Project name
+      - textbox "Project name" [ref=e16]: Untitled Planner
+      - combobox "Page size" [ref=e17]:
+        - option "US Letter (8.5×11in)" [selected]
+        - option "A4"
+    - generic [ref=e18]:
+      - button "New" [ref=e19] [cursor=pointer]:
+        - img [ref=e20]
+        - text: New
+      - button "Open…" [ref=e24] [cursor=pointer]:
+        - img [ref=e25]
+        - text: Open…
+      - button "Save" [ref=e28] [cursor=pointer]:
+        - img [ref=e29]
+        - text: Save
+      - button "Export PDF" [ref=e32] [cursor=pointer]:
+        - img [ref=e33]
+        - text: Export PDF
+  - generic [ref=e35]:
+    - complementary [ref=e36]:
+      - generic [ref=e37]:
+        - button "Elements" [ref=e38] [cursor=pointer]
+        - button "Library" [ref=e39] [cursor=pointer]
+        - button "Generators" [ref=e40] [cursor=pointer]
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - heading "Add to page" [level=4] [ref=e43]
+          - button "Text" [ref=e44] [cursor=pointer]:
+            - img [ref=e45]
+            - text: Text
+          - button "Line" [ref=e47] [cursor=pointer]:
+            - img [ref=e48]
+            - text: Line
+          - button "Rectangle" [ref=e52] [cursor=pointer]:
+            - img [ref=e53]
+            - text: Rectangle
+          - button "Circle" [ref=e55] [cursor=pointer]:
+            - img [ref=e56]
+            - text: Circle
+          - generic [ref=e58] [cursor=pointer]:
+            - img [ref=e59]
+            - text: Upload Image
+        - generic [ref=e63]:
+          - heading "Page Background" [level=4] [ref=e64]
+          - generic [ref=e65]:
+            - button "Solid" [ref=e66] [cursor=pointer]
+            - button "Image" [ref=e67] [cursor=pointer]
+            - button "Gradient" [ref=e68] [cursor=pointer]
+          - textbox "Background color" [ref=e70]: "#ffffff"
+    - main [ref=e71]:
+      - generic [ref=e72]:
+        - button "Delete Selected" [ref=e73] [cursor=pointer]:
+          - img [ref=e74]
+          - text: Delete Selected
+        - generic [ref=e77]:
+          - button "Forward" [ref=e78] [cursor=pointer]:
+            - img [ref=e79]
+            - text: Forward
+          - button "Backward" [ref=e81] [cursor=pointer]:
+            - img [ref=e82]
+            - text: Backward
+        - generic [ref=e84]:
+          - button "Undo" [ref=e85] [cursor=pointer]:
+            - img [ref=e86]
+            - text: Undo
+          - button "Redo" [ref=e89] [cursor=pointer]:
+            - img [ref=e90]
+            - text: Redo
+        - generic [ref=e93]:
+          - img [ref=e94]
+          - text: Zoom
+        - slider "Zoom" [ref=e97]: "70"
+    - complementary [ref=e102]:
+      - generic [ref=e103]:
+        - heading "Properties" [level=4] [ref=e104]
+        - paragraph [ref=e106]: Select an element on the canvas to edit its properties.
+      - generic [ref=e107]:
+        - heading "Pages" [level=4] [ref=e108]
+        - button "Add Page" [ref=e109] [cursor=pointer]:
+          - img [ref=e110]
+          - text: Add Page

@@ -12,6 +12,16 @@ create table if not exists library_assets (
 );
 create index if not exists library_assets_category_idx on library_assets (category);
 
+create table if not exists fonts (
+  id text primary key,
+  family text not null,
+  category text not null,
+  url text not null,
+  weight_range text,
+  created_at timestamptz not null default now()
+);
+create index if not exists fonts_family_idx on fonts (family);
+
 create table if not exists projects (
   id text primary key,
   name text not null default 'Untitled Planner',
@@ -27,3 +37,7 @@ create table if not exists projects (
 --   supabase storage buckets create library --public
 -- The bucket name is configurable via the SUPABASE_LIBRARY_BUCKET env var
 -- if you'd rather name it something else.
+--
+-- Preloaded Google Fonts (see scripts/seed-fonts.js) live in the same
+-- bucket at `fonts/<slug>.woff2`, mirroring the `<category>/<filename>`
+-- layout used for library_assets, with metadata in the `fonts` table above.

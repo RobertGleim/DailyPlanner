@@ -34,6 +34,15 @@ function toLibraryItem(row) {
     createdAt: row.created_at,
   };
 }
+function toFont(row) {
+  return {
+    id: row.id,
+    family: row.family,
+    category: row.category,
+    url: row.url,
+    weightRange: row.weight_range,
+  };
+}
 function toProject(row) {
   return {
     id: row.id,
@@ -108,6 +117,12 @@ module.exports = {
     const { error: deleteError } = await client().from('library_assets').delete().eq('id', id);
     if (deleteError) throw deleteError;
     return toLibraryItem(row);
+  },
+
+  async listFonts() {
+    const { data, error } = await client().from('fonts').select('*').order('family', { ascending: true });
+    if (error) throw error;
+    return data.map(toFont);
   },
 
   async listProjects() {

@@ -19,6 +19,11 @@ const Api = {
     return res.json();
   },
 
+  async listFonts() {
+    const res = await fetch('/api/fonts');
+    return res.json();
+  },
+
   async listProjects() {
     const res = await fetch('/api/projects');
     return res.json();

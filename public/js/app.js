@@ -47,23 +47,78 @@
       e.target.value = '';
     });
 
-    document.getElementById('backgroundUploadInput').addEventListener('change', async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const dataUrl = await fileToDataUrl(file);
-      CanvasEditor.setBackgroundImageFromUrl(dataUrl);
-      e.target.value = '';
+    document.getElementById('deleteSelectedBtn').addEventListener('click', () => CanvasEditor.deleteSelected());
+    document.getElementById('bringForwardBtn').addEventListener('click', () => CanvasEditor.bringForward());
+    document.getElementById('sendBackwardBtn').addEventListener('click', () => CanvasEditor.sendBackward());
+    document.getElementById('undoBtn').addEventListener('click', () => CanvasEditor.undo());
+    document.getElementById('redoBtn').addEventListener('click', () => CanvasEditor.redo());
+  }
+
+  function initBackgroundControls() {
+    const solidControls = document.getElementById('bgSolidControls');
+    const imageControls = document.getElementById('bgImageControls');
+    const gradientControls = document.getElementById('bgGradientControls');
+    const panelsByType = { solid: solidControls, image: imageControls, gradient: gradientControls };
+
+    document.querySelectorAll('.bg-type-chips .chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.bg-type-chips .chip').forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        Object.values(panelsByType).forEach((el) => { el.hidden = true; });
+        panelsByType[chip.dataset.bgtype].hidden = false;
+      });
     });
 
     document.getElementById('bgColorPicker').addEventListener('input', (e) => {
       CanvasEditor.setBackgroundColor(e.target.value);
     });
 
-    document.getElementById('deleteSelectedBtn').addEventListener('click', () => CanvasEditor.deleteSelected());
-    document.getElementById('bringForwardBtn').addEventListener('click', () => CanvasEditor.bringForward());
-    document.getElementById('sendBackwardBtn').addEventListener('click', () => CanvasEditor.sendBackward());
-    document.getElementById('undoBtn').addEventListener('click', () => CanvasEditor.undo());
-    document.getElementById('redoBtn').addEventListener('click', () => CanvasEditor.redo());
+    document.getElementById('backgroundUploadInput').addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const dataUrl = await fileToDataUrl(file);
+      const tile = document.getElementById('bgTileToggle').checked;
+      CanvasEditor.setBackgroundImageFromUrl(dataUrl, { tile });
+      e.target.value = '';
+    });
+
+    document.getElementById('bgTileToggle').addEventListener('change', (e) => {
+      if (!CanvasEditor.currentBackgroundImage) return;
+      CanvasEditor.setBackgroundImageFromUrl(CanvasEditor.currentBackgroundImage, { tile: e.target.checked });
+    });
+
+    document.getElementById('bgImageOpacity').addEventListener('input', (e) => {
+      CanvasEditor.setBackgroundImageOpacity(Number(e.target.value) / 100);
+    });
+
+    const applyBackgroundTint = () => {
+      const color = document.getElementById('bgImageTintColor').value;
+      const intensity = Number(document.getElementById('bgImageTintIntensity').value) / 100;
+      CanvasEditor.setBackgroundImageTint(color, intensity);
+    };
+    document.getElementById('bgImageTintColor').addEventListener('input', applyBackgroundTint);
+    document.getElementById('bgImageTintIntensity').addEventListener('input', applyBackgroundTint);
+
+    document.getElementById('removeBackgroundBtn').addEventListener('click', () => {
+      CanvasEditor.removeBackgroundImage();
+      document.getElementById('bgTileToggle').checked = false;
+      document.getElementById('bgImageOpacity').value = 100;
+      document.getElementById('bgImageTintIntensity').value = 0;
+      document.querySelectorAll('.bg-type-chips .chip').forEach((c) => c.classList.remove('active'));
+      document.querySelector('.bg-type-chips .chip[data-bgtype="solid"]').classList.add('active');
+      Object.values(panelsByType).forEach((el) => { el.hidden = true; });
+      solidControls.hidden = false;
+    });
+
+    const applyGradient = () => {
+      const color1 = document.getElementById('bgGradientColor1').value;
+      const color2 = document.getElementById('bgGradientColor2').value;
+      const angle = document.getElementById('bgGradientAngle').value;
+      CanvasEditor.setBackgroundGradient(color1, color2, angle);
+    };
+    document.getElementById('bgGradientColor1').addEventListener('input', applyGradient);
+    document.getElementById('bgGradientColor2').addEventListener('input', applyGradient);
+    document.getElementById('bgGradientAngle').addEventListener('change', applyGradient);
   }
 
   function initGenerators() {
@@ -161,6 +216,7 @@
 
   async function loadProject(id) {
     const project = await Api.getProject(id);
+    await FontLoader.ensureAllInJSON(project.pages);
     currentProjectId = project.id;
     document.getElementById('projectName').value = project.name;
     document.getElementById('pageSizeSelect').value = project.pageSize;
@@ -214,6 +270,7 @@
       const payload = collectProjectPayload();
       showToast('Generating PDF…');
       try {
+        await FontLoader.ensureAllInJSON(payload.pages);
         await ExportPdf.exportProject(payload);
         showToast('PDF downloaded');
       } catch (err) {
@@ -225,7 +282,8 @@
 
   function insertLibraryAsset(item) {
     if (item.category === 'backgrounds') {
-      CanvasEditor.setBackgroundImageFromUrl(item.url);
+      const tile = document.getElementById('bgTileToggle').checked;
+      CanvasEditor.setBackgroundImageFromUrl(item.url, { tile });
     } else {
       CanvasEditor.addImageFromUrl(item.url);
     }
@@ -237,11 +295,12 @@
     CanvasEditor.onChange = () => captureActivePageIntoModel();
     PagesManager.init({ onSwitchPage: switchToPage });
     initElementTools();
+    initBackgroundControls();
     initGenerators();
     initPageControls();
     initToolbarActions();
     initModal();
-    await LibraryPanel.init(insertLibraryAsset);
+    await Promise.all([FontLoader.init(), LibraryPanel.init(insertLibraryAsset)]);
 
     PagesManager.reset([]);
     switchToPage(0);

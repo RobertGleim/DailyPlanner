@@ -1,0 +1,1613 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]:
+        - img [ref=e7]
+        - generic [ref=e13]: Planner Studio
+      - generic [ref=e15]: Project name
+      - textbox "Project name" [ref=e16]: Untitled Planner
+      - combobox "Page size" [ref=e17]:
+        - option "US Letter (8.5×11in)" [selected]
+        - option "A4"
+    - generic [ref=e18]:
+      - button "New" [ref=e19] [cursor=pointer]:
+        - img [ref=e20]
+        - text: New
+      - button "Open…" [ref=e24] [cursor=pointer]:
+        - img [ref=e25]
+        - text: Open…
+      - button "Save" [ref=e28] [cursor=pointer]:
+        - img [ref=e29]
+        - text: Save
+      - button "Export PDF" [ref=e32] [cursor=pointer]:
+        - img [ref=e33]
+        - text: Export PDF
+  - generic [ref=e35]:
+    - complementary [ref=e36]:
+      - generic [ref=e37]:
+        - button "Elements" [ref=e38] [cursor=pointer]
+        - button "Library" [active] [ref=e39] [cursor=pointer]
+        - button "Generators" [ref=e40] [cursor=pointer]
+      - generic [ref=e126]:
+        - heading "Asset Library" [level=4] [ref=e127]
+        - generic [ref=e128]:
+          - generic [ref=e129] [cursor=pointer]:
+            - img [ref=e130]
+            - text: Upload to Library
+          - combobox "Asset category" [ref=e132]:
+            - option "Image" [selected]
+            - option "Background"
+            - option "Icon/Sticker"
+            - option "Page Border"
+        - generic [ref=e133]:
+          - button "All" [ref=e134] [cursor=pointer]
+          - button "Images" [ref=e135] [cursor=pointer]
+          - button "Backgrounds" [ref=e136] [cursor=pointer]
+          - button "Icons" [ref=e137] [cursor=pointer]
+          - button "Page Borders" [ref=e138] [cursor=pointer]
+        - paragraph [ref=e139]: Page Borders decorate the top/side/corner of a page and place onto the canvas as a regular image — resize or reposition them like any element.
+        - generic [ref=e140]:
+          - generic "Bevel Circle — Blush Pink" [ref=e141]:
+            - img "Bevel Circle — Blush Pink" [ref=e142]
+            - button "Delete Bevel Circle — Blush Pink" [ref=e143] [cursor=pointer]:
+              - img [ref=e144]
+          - generic "Bevel — Circle Lavender" [ref=e146]:
+            - img "Bevel — Circle Lavender" [ref=e147]
+            - button "Delete Bevel — Circle Lavender" [ref=e148] [cursor=pointer]:
+              - img [ref=e149]
+          - generic "Bevel Circle — Powder Blue" [ref=e151]:
+            - img "Bevel Circle — Powder Blue" [ref=e152]
+            - button "Delete Bevel Circle — Powder Blue" [ref=e153] [cursor=pointer]:
+              - img [ref=e154]
+          - generic "Bevel Circle — Sage Green" [ref=e156]:
+            - img "Bevel Circle — Sage Green" [ref=e157]
+            - button "Delete Bevel Circle — Sage Green" [ref=e158] [cursor=pointer]:
+              - img [ref=e159]
+          - generic "Bevel Circle — Warm Cream" [ref=e161]:
+            - img "Bevel Circle — Warm Cream" [ref=e162]
+            - button "Delete Bevel Circle — Warm Cream" [ref=e163] [cursor=pointer]:
+              - img [ref=e164]
+          - generic "Boxes — Blush Pink" [ref=e166]:
+            - img "Boxes — Blush Pink" [ref=e167]
+            - button "Delete Boxes — Blush Pink" [ref=e168] [cursor=pointer]:
+              - img [ref=e169]
+          - generic "— Boxes Lavender" [ref=e171]:
+            - img "— Boxes Lavender" [ref=e172]
+            - button "Delete — Boxes Lavender" [ref=e173] [cursor=pointer]:
+              - img [ref=e174]
+          - generic "Boxes — Powder Blue" [ref=e176]:
+            - img "Boxes — Powder Blue" [ref=e177]
+            - button "Delete Boxes — Powder Blue" [ref=e178] [cursor=pointer]:
+              - img [ref=e179]
+          - generic "Boxes — Sage Green" [ref=e181]:
+            - img "Boxes — Sage Green" [ref=e182]
+            - button "Delete Boxes — Sage Green" [ref=e183] [cursor=pointer]:
+              - img [ref=e184]
+          - generic "Boxes — Warm Cream" [ref=e186]:
+            - img "Boxes — Warm Cream" [ref=e187]
+            - button "Delete Boxes — Warm Cream" [ref=e188] [cursor=pointer]:
+              - img [ref=e189]
+          - generic "Circles And Squares — Blush Pink" [ref=e191]:
+            - img "Circles And Squares — Blush Pink" [ref=e192]
+            - button "Delete Circles And Squares — Blush Pink" [ref=e193] [cursor=pointer]:
+              - img [ref=e194]
+          - generic "Circles And — Squares Lavender" [ref=e196]:
+            - img "Circles And — Squares Lavender" [ref=e197]
+            - button "Delete Circles And — Squares Lavender" [ref=e198] [cursor=pointer]:
+              - img [ref=e199]
+          - generic "Circles And Squares — Powder Blue" [ref=e201]:
+            - img "Circles And Squares — Powder Blue" [ref=e202]
+            - button "Delete Circles And Squares — Powder Blue" [ref=e203] [cursor=pointer]:
+              - img [ref=e204]
+          - generic "Circles And Squares — Sage Green" [ref=e206]:
+            - img "Circles And Squares — Sage Green" [ref=e207]
+            - button "Delete Circles And Squares — Sage Green" [ref=e208] [cursor=pointer]:
+              - img [ref=e209]
+          - generic "Circles And Squares — Warm Cream" [ref=e211]:
+            - img "Circles And Squares — Warm Cream" [ref=e212]
+            - button "Delete Circles And Squares — Warm Cream" [ref=e213] [cursor=pointer]:
+              - img [ref=e214]
+          - generic "Diagonal Lines — Blush Pink" [ref=e216]:
+            - img "Diagonal Lines — Blush Pink" [ref=e217]
+            - button "Delete Diagonal Lines — Blush Pink" [ref=e218] [cursor=pointer]:
+              - img [ref=e219]
+          - generic "Diagonal — Lines Lavender" [ref=e221]:
+            - img "Diagonal — Lines Lavender" [ref=e222]
+            - button "Delete Diagonal — Lines Lavender" [ref=e223] [cursor=pointer]:
+              - img [ref=e224]
+          - generic "Diagonal Lines — Powder Blue" [ref=e226]:
+            - img "Diagonal Lines — Powder Blue" [ref=e227]
+            - button "Delete Diagonal Lines — Powder Blue" [ref=e228] [cursor=pointer]:
+              - img [ref=e229]
+          - generic "Diagonal Lines — Sage Green" [ref=e231]:
+            - img "Diagonal Lines — Sage Green" [ref=e232]
+            - button "Delete Diagonal Lines — Sage Green" [ref=e233] [cursor=pointer]:
+              - img [ref=e234]
+          - generic "Diagonal Lines — Warm Cream" [ref=e236]:
+            - img "Diagonal Lines — Warm Cream" [ref=e237]
+            - button "Delete Diagonal Lines — Warm Cream" [ref=e238] [cursor=pointer]:
+              - img [ref=e239]
+          - generic "Diagonal Stripes — Blush Pink" [ref=e241]:
+            - img "Diagonal Stripes — Blush Pink" [ref=e242]
+            - button "Delete Diagonal Stripes — Blush Pink" [ref=e243] [cursor=pointer]:
+              - img [ref=e244]
+          - generic "Diagonal — Stripes Lavender" [ref=e246]:
+            - img "Diagonal — Stripes Lavender" [ref=e247]
+            - button "Delete Diagonal — Stripes Lavender" [ref=e248] [cursor=pointer]:
+              - img [ref=e249]
+          - generic "Diagonal Stripes — Powder Blue" [ref=e251]:
+            - img "Diagonal Stripes — Powder Blue" [ref=e252]
+            - button "Delete Diagonal Stripes — Powder Blue" [ref=e253] [cursor=pointer]:
+              - img [ref=e254]
+          - generic "Diagonal Stripes — Sage Green" [ref=e256]:
+            - img "Diagonal Stripes — Sage Green" [ref=e257]
+            - button "Delete Diagonal Stripes — Sage Green" [ref=e258] [cursor=pointer]:
+              - img [ref=e259]
+          - generic "Diagonal Stripes — Warm Cream" [ref=e261]:
+            - img "Diagonal Stripes — Warm Cream" [ref=e262]
+            - button "Delete Diagonal Stripes — Warm Cream" [ref=e263] [cursor=pointer]:
+              - img [ref=e264]
+          - generic "Floor Tile — Blush Pink" [ref=e266]:
+            - img "Floor Tile — Blush Pink" [ref=e267]
+            - button "Delete Floor Tile — Blush Pink" [ref=e268] [cursor=pointer]:
+              - img [ref=e269]
+          - generic "Floor — Tile Lavender" [ref=e271]:
+            - img "Floor — Tile Lavender" [ref=e272]
+            - button "Delete Floor — Tile Lavender" [ref=e273] [cursor=pointer]:
+              - img [ref=e274]
+          - generic "Floor Tile — Powder Blue" [ref=e276]:
+            - img "Floor Tile — Powder Blue" [ref=e277]
+            - button "Delete Floor Tile — Powder Blue" [ref=e278] [cursor=pointer]:
+              - img [ref=e279]
+          - generic "Floor Tile — Sage Green" [ref=e281]:
+            - img "Floor Tile — Sage Green" [ref=e282]
+            - button "Delete Floor Tile — Sage Green" [ref=e283] [cursor=pointer]:
+              - img [ref=e284]
+          - generic "Floor Tile — Warm Cream" [ref=e286]:
+            - img "Floor Tile — Warm Cream" [ref=e287]
+            - button "Delete Floor Tile — Warm Cream" [ref=e288] [cursor=pointer]:
+              - img [ref=e289]
+          - generic "Four Point Stars — Blush Pink" [ref=e291]:
+            - img "Four Point Stars — Blush Pink" [ref=e292]
+            - button "Delete Four Point Stars — Blush Pink" [ref=e293] [cursor=pointer]:
+              - img [ref=e294]
+          - generic "Four Point — Stars Lavender" [ref=e296]:
+            - img "Four Point — Stars Lavender" [ref=e297]
+            - button "Delete Four Point — Stars Lavender" [ref=e298] [cursor=pointer]:
+              - img [ref=e299]
+          - generic "Four Point Stars — Powder Blue" [ref=e301]:
+            - img "Four Point Stars — Powder Blue" [ref=e302]
+            - button "Delete Four Point Stars — Powder Blue" [ref=e303] [cursor=pointer]:
+              - img [ref=e304]
+          - generic "Four Point Stars — Sage Green" [ref=e306]:
+            - img "Four Point Stars — Sage Green" [ref=e307]
+            - button "Delete Four Point Stars — Sage Green" [ref=e308] [cursor=pointer]:
+              - img [ref=e309]
+          - generic "Four Point Stars — Warm Cream" [ref=e311]:
+            - img "Four Point Stars — Warm Cream" [ref=e312]
+            - button "Delete Four Point Stars — Warm Cream" [ref=e313] [cursor=pointer]:
+              - img [ref=e314]
+          - generic "Graph Paper — Blush Pink" [ref=e316]:
+            - img "Graph Paper — Blush Pink" [ref=e317]
+            - button "Delete Graph Paper — Blush Pink" [ref=e318] [cursor=pointer]:
+              - img [ref=e319]
+          - generic "Graph — Paper Lavender" [ref=e321]:
+            - img "Graph — Paper Lavender" [ref=e322]
+            - button "Delete Graph — Paper Lavender" [ref=e323] [cursor=pointer]:
+              - img [ref=e324]
+          - generic "Graph Paper — Powder Blue" [ref=e326]:
+            - img "Graph Paper — Powder Blue" [ref=e327]
+            - button "Delete Graph Paper — Powder Blue" [ref=e328] [cursor=pointer]:
+              - img [ref=e329]
+          - generic "Graph Paper — Sage Green" [ref=e331]:
+            - img "Graph Paper — Sage Green" [ref=e332]
+            - button "Delete Graph Paper — Sage Green" [ref=e333] [cursor=pointer]:
+              - img [ref=e334]
+          - generic "Graph Paper — Warm Cream" [ref=e336]:
+            - img "Graph Paper — Warm Cream" [ref=e337]
+            - button "Delete Graph Paper — Warm Cream" [ref=e338] [cursor=pointer]:
+              - img [ref=e339]
+          - generic "Hexagons — Blush Pink" [ref=e341]:
+            - img "Hexagons — Blush Pink" [ref=e342]
+            - button "Delete Hexagons — Blush Pink" [ref=e343] [cursor=pointer]:
+              - img [ref=e344]
+          - generic "— Hexagons Lavender" [ref=e346]:
+            - img "— Hexagons Lavender" [ref=e347]
+            - button "Delete — Hexagons Lavender" [ref=e348] [cursor=pointer]:
+              - img [ref=e349]
+          - generic "Hexagons — Powder Blue" [ref=e351]:
+            - img "Hexagons — Powder Blue" [ref=e352]
+            - button "Delete Hexagons — Powder Blue" [ref=e353] [cursor=pointer]:
+              - img [ref=e354]
+          - generic "Hexagons — Sage Green" [ref=e356]:
+            - img "Hexagons — Sage Green" [ref=e357]
+            - button "Delete Hexagons — Sage Green" [ref=e358] [cursor=pointer]:
+              - img [ref=e359]
+          - generic "Hexagons — Warm Cream" [ref=e361]:
+            - img "Hexagons — Warm Cream" [ref=e362]
+            - button "Delete Hexagons — Warm Cream" [ref=e363] [cursor=pointer]:
+              - img [ref=e364]
+          - generic "Houndstooth — Blush Pink" [ref=e366]:
+            - img "Houndstooth — Blush Pink" [ref=e367]
+            - button "Delete Houndstooth — Blush Pink" [ref=e368] [cursor=pointer]:
+              - img [ref=e369]
+          - generic "— Houndstooth Lavender" [ref=e371]:
+            - img "— Houndstooth Lavender" [ref=e372]
+            - button "Delete — Houndstooth Lavender" [ref=e373] [cursor=pointer]:
+              - img [ref=e374]
+          - generic "Houndstooth — Powder Blue" [ref=e376]:
+            - img "Houndstooth — Powder Blue" [ref=e377]
+            - button "Delete Houndstooth — Powder Blue" [ref=e378] [cursor=pointer]:
+              - img [ref=e379]
+          - generic "Houndstooth — Sage Green" [ref=e381]:
+            - img "Houndstooth — Sage Green" [ref=e382]
+            - button "Delete Houndstooth — Sage Green" [ref=e383] [cursor=pointer]:
+              - img [ref=e384]
+          - generic "Houndstooth — Warm Cream" [ref=e386]:
+            - img "Houndstooth — Warm Cream" [ref=e387]
+            - button "Delete Houndstooth — Warm Cream" [ref=e388] [cursor=pointer]:
+              - img [ref=e389]
+          - generic "Leaf — Blush Pink" [ref=e391]:
+            - img "Leaf — Blush Pink" [ref=e392]
+            - button "Delete Leaf — Blush Pink" [ref=e393] [cursor=pointer]:
+              - img [ref=e394]
+          - generic "— Leaf Lavender" [ref=e396]:
+            - img "— Leaf Lavender" [ref=e397]
+            - button "Delete — Leaf Lavender" [ref=e398] [cursor=pointer]:
+              - img [ref=e399]
+          - generic "Leaf — Powder Blue" [ref=e401]:
+            - img "Leaf — Powder Blue" [ref=e402]
+            - button "Delete Leaf — Powder Blue" [ref=e403] [cursor=pointer]:
+              - img [ref=e404]
+          - generic "Leaf — Sage Green" [ref=e406]:
+            - img "Leaf — Sage Green" [ref=e407]
+            - button "Delete Leaf — Sage Green" [ref=e408] [cursor=pointer]:
+              - img [ref=e409]
+          - generic "Leaf — Warm Cream" [ref=e411]:
+            - img "Leaf — Warm Cream" [ref=e412]
+            - button "Delete Leaf — Warm Cream" [ref=e413] [cursor=pointer]:
+              - img [ref=e414]
+          - generic "Overlapping Circles — Blush Pink" [ref=e416]:
+            - img "Overlapping Circles — Blush Pink" [ref=e417]
+            - button "Delete Overlapping Circles — Blush Pink" [ref=e418] [cursor=pointer]:
+              - img [ref=e419]
+          - generic "Overlapping — Circles Lavender" [ref=e421]:
+            - img "Overlapping — Circles Lavender" [ref=e422]
+            - button "Delete Overlapping — Circles Lavender" [ref=e423] [cursor=pointer]:
+              - img [ref=e424]
+          - generic "Overlapping Circles — Powder Blue" [ref=e426]:
+            - img "Overlapping Circles — Powder Blue" [ref=e427]
+            - button "Delete Overlapping Circles — Powder Blue" [ref=e428] [cursor=pointer]:
+              - img [ref=e429]
+          - generic "Overlapping Circles — Sage Green" [ref=e431]:
+            - img "Overlapping Circles — Sage Green" [ref=e432]
+            - button "Delete Overlapping Circles — Sage Green" [ref=e433] [cursor=pointer]:
+              - img [ref=e434]
+          - generic "Overlapping Circles — Warm Cream" [ref=e436]:
+            - img "Overlapping Circles — Warm Cream" [ref=e437]
+            - button "Delete Overlapping Circles — Warm Cream" [ref=e438] [cursor=pointer]:
+              - img [ref=e439]
+          - generic "Pixel Dots — Blush Pink" [ref=e441]:
+            - img "Pixel Dots — Blush Pink" [ref=e442]
+            - button "Delete Pixel Dots — Blush Pink" [ref=e443] [cursor=pointer]:
+              - img [ref=e444]
+          - generic "Pixel — Dots Lavender" [ref=e446]:
+            - img "Pixel — Dots Lavender" [ref=e447]
+            - button "Delete Pixel — Dots Lavender" [ref=e448] [cursor=pointer]:
+              - img [ref=e449]
+          - generic "Pixel Dots — Powder Blue" [ref=e451]:
+            - img "Pixel Dots — Powder Blue" [ref=e452]
+            - button "Delete Pixel Dots — Powder Blue" [ref=e453] [cursor=pointer]:
+              - img [ref=e454]
+          - generic "Pixel Dots — Sage Green" [ref=e456]:
+            - img "Pixel Dots — Sage Green" [ref=e457]
+            - button "Delete Pixel Dots — Sage Green" [ref=e458] [cursor=pointer]:
+              - img [ref=e459]
+          - generic "Pixel Dots — Warm Cream" [ref=e461]:
+            - img "Pixel Dots — Warm Cream" [ref=e462]
+            - button "Delete Pixel Dots — Warm Cream" [ref=e463] [cursor=pointer]:
+              - img [ref=e464]
+          - generic "Plus — Blush Pink" [ref=e466]:
+            - img "Plus — Blush Pink" [ref=e467]
+            - button "Delete Plus — Blush Pink" [ref=e468] [cursor=pointer]:
+              - img [ref=e469]
+          - generic "— Plus Lavender" [ref=e471]:
+            - img "— Plus Lavender" [ref=e472]
+            - button "Delete — Plus Lavender" [ref=e473] [cursor=pointer]:
+              - img [ref=e474]
+          - generic "Plus — Powder Blue" [ref=e476]:
+            - img "Plus — Powder Blue" [ref=e477]
+            - button "Delete Plus — Powder Blue" [ref=e478] [cursor=pointer]:
+              - img [ref=e479]
+          - generic "Plus — Sage Green" [ref=e481]:
+            - img "Plus — Sage Green" [ref=e482]
+            - button "Delete Plus — Sage Green" [ref=e483] [cursor=pointer]:
+              - img [ref=e484]
+          - generic "Plus — Warm Cream" [ref=e486]:
+            - img "Plus — Warm Cream" [ref=e487]
+            - button "Delete Plus — Warm Cream" [ref=e488] [cursor=pointer]:
+              - img [ref=e489]
+          - generic "Polka Dots — Blush Pink" [ref=e491]:
+            - img "Polka Dots — Blush Pink" [ref=e492]
+            - button "Delete Polka Dots — Blush Pink" [ref=e493] [cursor=pointer]:
+              - img [ref=e494]
+          - generic "Polka — Dots Lavender" [ref=e496]:
+            - img "Polka — Dots Lavender" [ref=e497]
+            - button "Delete Polka — Dots Lavender" [ref=e498] [cursor=pointer]:
+              - img [ref=e499]
+          - generic "Polka Dots — Powder Blue" [ref=e501]:
+            - img "Polka Dots — Powder Blue" [ref=e502]
+            - button "Delete Polka Dots — Powder Blue" [ref=e503] [cursor=pointer]:
+              - img [ref=e504]
+          - generic "Polka Dots — Sage Green" [ref=e506]:
+            - img "Polka Dots — Sage Green" [ref=e507]
+            - button "Delete Polka Dots — Sage Green" [ref=e508] [cursor=pointer]:
+              - img [ref=e509]
+          - generic "Polka Dots — Warm Cream" [ref=e511]:
+            - img "Polka Dots — Warm Cream" [ref=e512]
+            - button "Delete Polka Dots — Warm Cream" [ref=e513] [cursor=pointer]:
+              - img [ref=e514]
+          - generic "Stripes — Blush Pink" [ref=e516]:
+            - img "Stripes — Blush Pink" [ref=e517]
+            - button "Delete Stripes — Blush Pink" [ref=e518] [cursor=pointer]:
+              - img [ref=e519]
+          - generic "— Stripes Lavender" [ref=e521]:
+            - img "— Stripes Lavender" [ref=e522]
+            - button "Delete — Stripes Lavender" [ref=e523] [cursor=pointer]:
+              - img [ref=e524]
+          - generic "Stripes — Powder Blue" [ref=e526]:
+            - img "Stripes — Powder Blue" [ref=e527]
+            - button "Delete Stripes — Powder Blue" [ref=e528] [cursor=pointer]:
+              - img [ref=e529]
+          - generic "Stripes — Sage Green" [ref=e531]:
+            - img "Stripes — Sage Green" [ref=e532]
+            - button "Delete Stripes — Sage Green" [ref=e533] [cursor=pointer]:
+              - img [ref=e534]
+          - generic "Stripes — Warm Cream" [ref=e536]:
+            - img "Stripes — Warm Cream" [ref=e537]
+            - button "Delete Stripes — Warm Cream" [ref=e538] [cursor=pointer]:
+              - img [ref=e539]
+          - generic "Tic Tac Toe — Blush Pink" [ref=e541]:
+            - img "Tic Tac Toe — Blush Pink" [ref=e542]
+            - button "Delete Tic Tac Toe — Blush Pink" [ref=e543] [cursor=pointer]:
+              - img [ref=e544]
+          - generic "Tic Tac — Toe Lavender" [ref=e546]:
+            - img "Tic Tac — Toe Lavender" [ref=e547]
+            - button "Delete Tic Tac — Toe Lavender" [ref=e548] [cursor=pointer]:
+              - img [ref=e549]
+          - generic "Tic Tac Toe — Powder Blue" [ref=e551]:
+            - img "Tic Tac Toe — Powder Blue" [ref=e552]
+            - button "Delete Tic Tac Toe — Powder Blue" [ref=e553] [cursor=pointer]:
+              - img [ref=e554]
+          - generic "Tic Tac Toe — Sage Green" [ref=e556]:
+            - img "Tic Tac Toe — Sage Green" [ref=e557]
+            - button "Delete Tic Tac Toe — Sage Green" [ref=e558] [cursor=pointer]:
+              - img [ref=e559]
+          - generic "Tic Tac Toe — Warm Cream" [ref=e561]:
+            - img "Tic Tac Toe — Warm Cream" [ref=e562]
+            - button "Delete Tic Tac Toe — Warm Cream" [ref=e563] [cursor=pointer]:
+              - img [ref=e564]
+          - generic "Topography — Blush Pink" [ref=e566]:
+            - img "Topography — Blush Pink" [ref=e567]
+            - button "Delete Topography — Blush Pink" [ref=e568] [cursor=pointer]:
+              - img [ref=e569]
+          - generic "— Topography Lavender" [ref=e571]:
+            - img "— Topography Lavender" [ref=e572]
+            - button "Delete — Topography Lavender" [ref=e573] [cursor=pointer]:
+              - img [ref=e574]
+          - generic "Topography — Powder Blue" [ref=e576]:
+            - img "Topography — Powder Blue" [ref=e577]
+            - button "Delete Topography — Powder Blue" [ref=e578] [cursor=pointer]:
+              - img [ref=e579]
+          - generic "Topography — Sage Green" [ref=e581]:
+            - img "Topography — Sage Green" [ref=e582]
+            - button "Delete Topography — Sage Green" [ref=e583] [cursor=pointer]:
+              - img [ref=e584]
+          - generic "Topography — Warm Cream" [ref=e586]:
+            - img "Topography — Warm Cream" [ref=e587]
+            - button "Delete Topography — Warm Cream" [ref=e588] [cursor=pointer]:
+              - img [ref=e589]
+          - generic "Wiggle — Blush Pink" [ref=e591]:
+            - img "Wiggle — Blush Pink" [ref=e592]
+            - button "Delete Wiggle — Blush Pink" [ref=e593] [cursor=pointer]:
+              - img [ref=e594]
+          - generic "— Wiggle Lavender" [ref=e596]:
+            - img "— Wiggle Lavender" [ref=e597]
+            - button "Delete — Wiggle Lavender" [ref=e598] [cursor=pointer]:
+              - img [ref=e599]
+          - generic "Wiggle — Powder Blue" [ref=e601]:
+            - img "Wiggle — Powder Blue" [ref=e602]
+            - button "Delete Wiggle — Powder Blue" [ref=e603] [cursor=pointer]:
+              - img [ref=e604]
+          - generic "Wiggle — Sage Green" [ref=e606]:
+            - img "Wiggle — Sage Green" [ref=e607]
+            - button "Delete Wiggle — Sage Green" [ref=e608] [cursor=pointer]:
+              - img [ref=e609]
+          - generic "Wiggle — Warm Cream" [ref=e611]:
+            - img "Wiggle — Warm Cream" [ref=e612]
+            - button "Delete Wiggle — Warm Cream" [ref=e613] [cursor=pointer]:
+              - img [ref=e614]
+          - generic "Zig Zag — Blush Pink" [ref=e616]:
+            - img "Zig Zag — Blush Pink" [ref=e617]
+            - button "Delete Zig Zag — Blush Pink" [ref=e618] [cursor=pointer]:
+              - img [ref=e619]
+          - generic "Zig — Zag Lavender" [ref=e621]:
+            - img "Zig — Zag Lavender" [ref=e622]
+            - button "Delete Zig — Zag Lavender" [ref=e623] [cursor=pointer]:
+              - img [ref=e624]
+          - generic "Zig Zag — Powder Blue" [ref=e626]:
+            - img "Zig Zag — Powder Blue" [ref=e627]
+            - button "Delete Zig Zag — Powder Blue" [ref=e628] [cursor=pointer]:
+              - img [ref=e629]
+          - generic "Zig Zag — Sage Green" [ref=e631]:
+            - img "Zig Zag — Sage Green" [ref=e632]
+            - button "Delete Zig Zag — Sage Green" [ref=e633] [cursor=pointer]:
+              - img [ref=e634]
+          - generic "Zig Zag — Warm Cream" [ref=e636]:
+            - img "Zig Zag — Warm Cream" [ref=e637]
+            - button "Delete Zig Zag — Warm Cream" [ref=e638] [cursor=pointer]:
+              - img [ref=e639]
+          - generic "Activity" [ref=e641]:
+            - img "Activity" [ref=e642]
+            - button "Delete Activity" [ref=e643] [cursor=pointer]:
+              - img [ref=e644]
+          - generic "Alarm" [ref=e646]:
+            - img "Alarm" [ref=e647]
+            - button "Delete Alarm" [ref=e648] [cursor=pointer]:
+              - img [ref=e649]
+          - generic "Alert Circle" [ref=e651]:
+            - img "Alert Circle" [ref=e652]
+            - button "Delete Alert Circle" [ref=e653] [cursor=pointer]:
+              - img [ref=e654]
+          - generic "Anchor" [ref=e656]:
+            - img "Anchor" [ref=e657]
+            - button "Delete Anchor" [ref=e658] [cursor=pointer]:
+              - img [ref=e659]
+          - generic "Apple" [ref=e661]:
+            - img "Apple" [ref=e662]
+            - button "Delete Apple" [ref=e663] [cursor=pointer]:
+              - img [ref=e664]
+          - generic "Arrow Right" [ref=e666]:
+            - img "Arrow Right" [ref=e667]
+            - button "Delete Arrow Right" [ref=e668] [cursor=pointer]:
+              - img [ref=e669]
+          - generic "Asterisk" [ref=e671]:
+            - img "Asterisk" [ref=e672]
+            - button "Delete Asterisk" [ref=e673] [cursor=pointer]:
+              - img [ref=e674]
+          - generic "Backpack" [ref=e676]:
+            - img "Backpack" [ref=e677]
+            - button "Delete Backpack" [ref=e678] [cursor=pointer]:
+              - img [ref=e679]
+          - generic "Balloon" [ref=e681]:
+            - img "Balloon" [ref=e682]
+            - button "Delete Balloon" [ref=e683] [cursor=pointer]:
+              - img [ref=e684]
+          - generic "Barbell" [ref=e686]:
+            - img "Barbell" [ref=e687]
+            - button "Delete Barbell" [ref=e688] [cursor=pointer]:
+              - img [ref=e689]
+          - generic "Bath" [ref=e691]:
+            - img "Bath" [ref=e692]
+            - button "Delete Bath" [ref=e693] [cursor=pointer]:
+              - img [ref=e694]
+          - generic "Bed" [ref=e696]:
+            - img "Bed" [ref=e697]
+            - button "Delete Bed" [ref=e698] [cursor=pointer]:
+              - img [ref=e699]
+          - generic "Bike" [ref=e701]:
+            - img "Bike" [ref=e702]
+            - button "Delete Bike" [ref=e703] [cursor=pointer]:
+              - img [ref=e704]
+          - generic "Book" [ref=e706]:
+            - img "Book" [ref=e707]
+            - button "Delete Book" [ref=e708] [cursor=pointer]:
+              - img [ref=e709]
+          - generic "Bookmark" [ref=e711]:
+            - img "Bookmark" [ref=e712]
+            - button "Delete Bookmark" [ref=e713] [cursor=pointer]:
+              - img [ref=e714]
+          - generic "Bread" [ref=e716]:
+            - img "Bread" [ref=e717]
+            - button "Delete Bread" [ref=e718] [cursor=pointer]:
+              - img [ref=e719]
+          - generic "Briefcase" [ref=e721]:
+            - img "Briefcase" [ref=e722]
+            - button "Delete Briefcase" [ref=e723] [cursor=pointer]:
+              - img [ref=e724]
+          - generic "Bulb" [ref=e726]:
+            - img "Bulb" [ref=e727]
+            - button "Delete Bulb" [ref=e728] [cursor=pointer]:
+              - img [ref=e729]
+          - generic "Cactus" [ref=e731]:
+            - img "Cactus" [ref=e732]
+            - button "Delete Cactus" [ref=e733] [cursor=pointer]:
+              - img [ref=e734]
+          - generic "Cake" [ref=e736]:
+            - img "Cake" [ref=e737]
+            - button "Delete Cake" [ref=e738] [cursor=pointer]:
+              - img [ref=e739]
+          - generic "Calendar Event" [ref=e741]:
+            - img "Calendar Event" [ref=e742]
+            - button "Delete Calendar Event" [ref=e743] [cursor=pointer]:
+              - img [ref=e744]
+          - generic "Calendar Star" [ref=e746]:
+            - img "Calendar Star" [ref=e747]
+            - button "Delete Calendar Star" [ref=e748] [cursor=pointer]:
+              - img [ref=e749]
+          - generic "Calendar" [ref=e751]:
+            - img "Calendar" [ref=e752]
+            - button "Delete Calendar" [ref=e753] [cursor=pointer]:
+              - img [ref=e754]
+          - generic "Camera" [ref=e756]:
+            - img "Camera" [ref=e757]
+            - button "Delete Camera" [ref=e758] [cursor=pointer]:
+              - img [ref=e759]
+          - generic "Candle" [ref=e761]:
+            - img "Candle" [ref=e762]
+            - button "Delete Candle" [ref=e763] [cursor=pointer]:
+              - img [ref=e764]
+          - generic "Car" [ref=e766]:
+            - img "Car" [ref=e767]
+            - button "Delete Car" [ref=e768] [cursor=pointer]:
+              - img [ref=e769]
+          - generic "Check" [ref=e771]:
+            - img "Check" [ref=e772]
+            - button "Delete Check" [ref=e773] [cursor=pointer]:
+              - img [ref=e774]
+          - generic "Checks" [ref=e776]:
+            - img "Checks" [ref=e777]
+            - button "Delete Checks" [ref=e778] [cursor=pointer]:
+              - img [ref=e779]
+          - generic "Cherry" [ref=e781]:
+            - img "Cherry" [ref=e782]
+            - button "Delete Cherry" [ref=e783] [cursor=pointer]:
+              - img [ref=e784]
+          - generic "Chevron Right" [ref=e786]:
+            - img "Chevron Right" [ref=e787]
+            - button "Delete Chevron Right" [ref=e788] [cursor=pointer]:
+              - img [ref=e789]
+          - generic "Circle Check" [ref=e791]:
+            - img "Circle Check" [ref=e792]
+            - button "Delete Circle Check" [ref=e793] [cursor=pointer]:
+              - img [ref=e794]
+          - generic "Circle Solid" [ref=e796]:
+            - img "Circle Solid" [ref=e797]
+            - button "Delete Circle Solid" [ref=e798] [cursor=pointer]:
+              - img [ref=e799]
+          - generic "Circle" [ref=e801]:
+            - img "Circle" [ref=e802]
+            - button "Delete Circle" [ref=e803] [cursor=pointer]:
+              - img [ref=e804]
+          - generic "Clock" [ref=e806]:
+            - img "Clock" [ref=e807]
+            - button "Delete Clock" [ref=e808] [cursor=pointer]:
+              - img [ref=e809]
+          - generic "Cloud Rain" [ref=e811]:
+            - img "Cloud Rain" [ref=e812]
+            - button "Delete Cloud Rain" [ref=e813] [cursor=pointer]:
+              - img [ref=e814]
+          - generic "Cloud" [ref=e816]:
+            - img "Cloud" [ref=e817]
+            - button "Delete Cloud" [ref=e818] [cursor=pointer]:
+              - img [ref=e819]
+          - generic "Coffee" [ref=e821]:
+            - img "Coffee" [ref=e822]
+            - button "Delete Coffee" [ref=e823] [cursor=pointer]:
+              - img [ref=e824]
+          - generic "Coin" [ref=e826]:
+            - img "Coin" [ref=e827]
+            - button "Delete Coin" [ref=e828] [cursor=pointer]:
+              - img [ref=e829]
+          - generic "Compass" [ref=e831]:
+            - img "Compass" [ref=e832]
+            - button "Delete Compass" [ref=e833] [cursor=pointer]:
+              - img [ref=e834]
+          - generic "Confetti" [ref=e836]:
+            - img "Confetti" [ref=e837]
+            - button "Delete Confetti" [ref=e838] [cursor=pointer]:
+              - img [ref=e839]
+          - generic "Credit Card" [ref=e841]:
+            - img "Credit Card" [ref=e842]
+            - button "Delete Credit Card" [ref=e843] [cursor=pointer]:
+              - img [ref=e844]
+          - generic "Crown" [ref=e846]:
+            - img "Crown" [ref=e847]
+            - button "Delete Crown" [ref=e848] [cursor=pointer]:
+              - img [ref=e849]
+          - generic "Cup" [ref=e851]:
+            - img "Cup" [ref=e852]
+            - button "Delete Cup" [ref=e853] [cursor=pointer]:
+              - img [ref=e854]
+          - generic "Diamond" [ref=e856]:
+            - img "Diamond" [ref=e857]
+            - button "Delete Diamond" [ref=e858] [cursor=pointer]:
+              - img [ref=e859]
+          - generic "Dots" [ref=e861]:
+            - img "Dots" [ref=e862]
+            - button "Delete Dots" [ref=e863] [cursor=pointer]:
+              - img [ref=e864]
+          - generic "Droplet" [ref=e866]:
+            - img "Droplet" [ref=e867]
+            - button "Delete Droplet" [ref=e868] [cursor=pointer]:
+              - img [ref=e869]
+          - generic "Droplets" [ref=e871]:
+            - img "Droplets" [ref=e872]
+            - button "Delete Droplets" [ref=e873] [cursor=pointer]:
+              - img [ref=e874]
+          - generic "Feather" [ref=e876]:
+            - img "Feather" [ref=e877]
+            - button "Delete Feather" [ref=e878] [cursor=pointer]:
+              - img [ref=e879]
+          - generic "First Aid Kit" [ref=e881]:
+            - img "First Aid Kit" [ref=e882]
+            - button "Delete First Aid Kit" [ref=e883] [cursor=pointer]:
+              - img [ref=e884]
+          - generic "Fish" [ref=e886]:
+            - img "Fish" [ref=e887]
+            - button "Delete Fish" [ref=e888] [cursor=pointer]:
+              - img [ref=e889]
+          - generic "Flower" [ref=e891]:
+            - img "Flower" [ref=e892]
+            - button "Delete Flower" [ref=e893] [cursor=pointer]:
+              - img [ref=e894]
+          - generic "Folder" [ref=e896]:
+            - img "Folder" [ref=e897]
+            - button "Delete Folder" [ref=e898] [cursor=pointer]:
+              - img [ref=e899]
+          - generic "Gift" [ref=e901]:
+            - img "Gift" [ref=e902]
+            - button "Delete Gift" [ref=e903] [cursor=pointer]:
+              - img [ref=e904]
+          - generic "Glass" [ref=e906]:
+            - img "Glass" [ref=e907]
+            - button "Delete Glass" [ref=e908] [cursor=pointer]:
+              - img [ref=e909]
+          - generic "Hash" [ref=e911]:
+            - img "Hash" [ref=e912]
+            - button "Delete Hash" [ref=e913] [cursor=pointer]:
+              - img [ref=e914]
+          - generic "Heart Solid" [ref=e916]:
+            - img "Heart Solid" [ref=e917]
+            - button "Delete Heart Solid" [ref=e918] [cursor=pointer]:
+              - img [ref=e919]
+          - generic "Heart" [ref=e921]:
+            - img "Heart" [ref=e922]
+            - button "Delete Heart" [ref=e923] [cursor=pointer]:
+              - img [ref=e924]
+          - generic "Home" [ref=e926]:
+            - img "Home" [ref=e927]
+            - button "Delete Home" [ref=e928] [cursor=pointer]:
+              - img [ref=e929]
+          - generic "Hourglass" [ref=e931]:
+            - img "Hourglass" [ref=e932]
+            - button "Delete Hourglass" [ref=e933] [cursor=pointer]:
+              - img [ref=e934]
+          - generic "Ice Cream" [ref=e936]:
+            - img "Ice Cream" [ref=e937]
+            - button "Delete Ice Cream" [ref=e938] [cursor=pointer]:
+              - img [ref=e939]
+          - generic "Infinity" [ref=e941]:
+            - img "Infinity" [ref=e942]
+            - button "Delete Infinity" [ref=e943] [cursor=pointer]:
+              - img [ref=e944]
+          - generic "Leaf" [ref=e946]:
+            - img "Leaf" [ref=e947]
+            - button "Delete Leaf" [ref=e948] [cursor=pointer]:
+              - img [ref=e949]
+          - generic "Mail" [ref=e951]:
+            - img "Mail" [ref=e952]
+            - button "Delete Mail" [ref=e953] [cursor=pointer]:
+              - img [ref=e954]
+          - generic "Map" [ref=e956]:
+            - img "Map" [ref=e957]
+            - button "Delete Map" [ref=e958] [cursor=pointer]:
+              - img [ref=e959]
+          - generic "Medal" [ref=e961]:
+            - img "Medal" [ref=e962]
+            - button "Delete Medal" [ref=e963] [cursor=pointer]:
+              - img [ref=e964]
+          - generic "Mood Crazy Happy" [ref=e966]:
+            - img "Mood Crazy Happy" [ref=e967]
+            - button "Delete Mood Crazy Happy" [ref=e968] [cursor=pointer]:
+              - img [ref=e969]
+          - generic "Mood Happy" [ref=e971]:
+            - img "Mood Happy" [ref=e972]
+            - button "Delete Mood Happy" [ref=e973] [cursor=pointer]:
+              - img [ref=e974]
+          - generic "Mood Kid" [ref=e976]:
+            - img "Mood Kid" [ref=e977]
+            - button "Delete Mood Kid" [ref=e978] [cursor=pointer]:
+              - img [ref=e979]
+          - generic "Mood Sad" [ref=e981]:
+            - img "Mood Sad" [ref=e982]
+            - button "Delete Mood Sad" [ref=e983] [cursor=pointer]:
+              - img [ref=e984]
+          - generic "Mood Smile" [ref=e986]:
+            - img "Mood Smile" [ref=e987]
+            - button "Delete Mood Smile" [ref=e988] [cursor=pointer]:
+              - img [ref=e989]
+          - generic "Mood Wink" [ref=e991]:
+            - img "Mood Wink" [ref=e992]
+            - button "Delete Mood Wink" [ref=e993] [cursor=pointer]:
+              - img [ref=e994]
+          - generic "Moon Stars" [ref=e996]:
+            - img "Moon Stars" [ref=e997]
+            - button "Delete Moon Stars" [ref=e998] [cursor=pointer]:
+              - img [ref=e999]
+          - generic "Moon" [ref=e1001]:
+            - img "Moon" [ref=e1002]
+            - button "Delete Moon" [ref=e1003] [cursor=pointer]:
+              - img [ref=e1004]
+          - generic "Mountain" [ref=e1006]:
+            - img "Mountain" [ref=e1007]
+            - button "Delete Mountain" [ref=e1008] [cursor=pointer]:
+              - img [ref=e1009]
+          - generic "Music" [ref=e1011]:
+            - img "Music" [ref=e1012]
+            - button "Delete Music" [ref=e1013] [cursor=pointer]:
+              - img [ref=e1014]
+          - generic "Notebook" [ref=e1016]:
+            - img "Notebook" [ref=e1017]
+            - button "Delete Notebook" [ref=e1018] [cursor=pointer]:
+              - img [ref=e1019]
+          - generic "Palette" [ref=e1021]:
+            - img "Palette" [ref=e1022]
+            - button "Delete Palette" [ref=e1023] [cursor=pointer]:
+              - img [ref=e1024]
+          - generic "Paperclip" [ref=e1026]:
+            - img "Paperclip" [ref=e1027]
+            - button "Delete Paperclip" [ref=e1028] [cursor=pointer]:
+              - img [ref=e1029]
+          - generic "Paw" [ref=e1031]:
+            - img "Paw" [ref=e1032]
+            - button "Delete Paw" [ref=e1033] [cursor=pointer]:
+              - img [ref=e1034]
+          - generic "Pencil" [ref=e1036]:
+            - img "Pencil" [ref=e1037]
+            - button "Delete Pencil" [ref=e1038] [cursor=pointer]:
+              - img [ref=e1039]
+          - generic "Phone" [ref=e1041]:
+            - img "Phone" [ref=e1042]
+            - button "Delete Phone" [ref=e1043] [cursor=pointer]:
+              - img [ref=e1044]
+          - generic "Pill" [ref=e1046]:
+            - img "Pill" [ref=e1047]
+            - button "Delete Pill" [ref=e1048] [cursor=pointer]:
+              - img [ref=e1049]
+          - generic "Pizza" [ref=e1051]:
+            - img "Pizza" [ref=e1052]
+            - button "Delete Pizza" [ref=e1053] [cursor=pointer]:
+              - img [ref=e1054]
+          - generic "Plane" [ref=e1056]:
+            - img "Plane" [ref=e1057]
+            - button "Delete Plane" [ref=e1058] [cursor=pointer]:
+              - img [ref=e1059]
+          - generic "Plant" [ref=e1061]:
+            - img "Plant" [ref=e1062]
+            - button "Delete Plant" [ref=e1063] [cursor=pointer]:
+              - img [ref=e1064]
+          - generic "Rainbow" [ref=e1066]:
+            - img "Rainbow" [ref=e1067]
+            - button "Delete Rainbow" [ref=e1068] [cursor=pointer]:
+              - img [ref=e1069]
+          - generic "Receipt" [ref=e1071]:
+            - img "Receipt" [ref=e1072]
+            - button "Delete Receipt" [ref=e1073] [cursor=pointer]:
+              - img [ref=e1074]
+          - generic "Recycle" [ref=e1076]:
+            - img "Recycle" [ref=e1077]
+            - button "Delete Recycle" [ref=e1078] [cursor=pointer]:
+              - img [ref=e1079]
+          - generic "Rocket" [ref=e1081]:
+            - img "Rocket" [ref=e1082]
+            - button "Delete Rocket" [ref=e1083] [cursor=pointer]:
+              - img [ref=e1084]
+          - generic "Run" [ref=e1086]:
+            - img "Run" [ref=e1087]
+            - button "Delete Run" [ref=e1088] [cursor=pointer]:
+              - img [ref=e1089]
+          - generic "Salad" [ref=e1091]:
+            - img "Salad" [ref=e1092]
+            - button "Delete Salad" [ref=e1093] [cursor=pointer]:
+              - img [ref=e1094]
+          - generic "Seedling" [ref=e1096]:
+            - img "Seedling" [ref=e1097]
+            - button "Delete Seedling" [ref=e1098] [cursor=pointer]:
+              - img [ref=e1099]
+          - generic "Shopping Bag" [ref=e1101]:
+            - img "Shopping Bag" [ref=e1102]
+            - button "Delete Shopping Bag" [ref=e1103] [cursor=pointer]:
+              - img [ref=e1104]
+          - generic "Shopping Cart" [ref=e1106]:
+            - img "Shopping Cart" [ref=e1107]
+            - button "Delete Shopping Cart" [ref=e1108] [cursor=pointer]:
+              - img [ref=e1109]
+          - generic "Snowflake" [ref=e1111]:
+            - img "Snowflake" [ref=e1112]
+            - button "Delete Snowflake" [ref=e1113] [cursor=pointer]:
+              - img [ref=e1114]
+          - generic "Sofa" [ref=e1116]:
+            - img "Sofa" [ref=e1117]
+            - button "Delete Sofa" [ref=e1118] [cursor=pointer]:
+              - img [ref=e1119]
+          - generic "Sparkles" [ref=e1121]:
+            - img "Sparkles" [ref=e1122]
+            - button "Delete Sparkles" [ref=e1123] [cursor=pointer]:
+              - img [ref=e1124]
+          - generic "Square Solid" [ref=e1126]:
+            - img "Square Solid" [ref=e1127]
+            - button "Delete Square Solid" [ref=e1128] [cursor=pointer]:
+              - img [ref=e1129]
+          - generic "Square" [ref=e1131]:
+            - img "Square" [ref=e1132]
+            - button "Delete Square" [ref=e1133] [cursor=pointer]:
+              - img [ref=e1134]
+          - generic "Star Solid" [ref=e1136]:
+            - img "Star Solid" [ref=e1137]
+            - button "Delete Star Solid" [ref=e1138] [cursor=pointer]:
+              - img [ref=e1139]
+          - generic "Star" [ref=e1141]:
+            - img "Star" [ref=e1142]
+            - button "Delete Star" [ref=e1143] [cursor=pointer]:
+              - img [ref=e1144]
+          - generic "Stethoscope" [ref=e1146]:
+            - img "Stethoscope" [ref=e1147]
+            - button "Delete Stethoscope" [ref=e1148] [cursor=pointer]:
+              - img [ref=e1149]
+          - generic "Sun High" [ref=e1151]:
+            - img "Sun High" [ref=e1152]
+            - button "Delete Sun High" [ref=e1153] [cursor=pointer]:
+              - img [ref=e1154]
+          - generic "Sun" [ref=e1156]:
+            - img "Sun" [ref=e1157]
+            - button "Delete Sun" [ref=e1158] [cursor=pointer]:
+              - img [ref=e1159]
+          - generic "Swimming" [ref=e1161]:
+            - img "Swimming" [ref=e1162]
+            - button "Delete Swimming" [ref=e1163] [cursor=pointer]:
+              - img [ref=e1164]
+          - generic "Tag" [ref=e1166]:
+            - img "Tag" [ref=e1167]
+            - button "Delete Tag" [ref=e1168] [cursor=pointer]:
+              - img [ref=e1169]
+          - generic "Target" [ref=e1171]:
+            - img "Target" [ref=e1172]
+            - button "Delete Target" [ref=e1173] [cursor=pointer]:
+              - img [ref=e1174]
+          - generic "Tree" [ref=e1176]:
+            - img "Tree" [ref=e1177]
+            - button "Delete Tree" [ref=e1178] [cursor=pointer]:
+              - img [ref=e1179]
+          - generic "Triangle Solid" [ref=e1181]:
+            - img "Triangle Solid" [ref=e1182]
+            - button "Delete Triangle Solid" [ref=e1183] [cursor=pointer]:
+              - img [ref=e1184]
+          - generic "Triangle" [ref=e1186]:
+            - img "Triangle" [ref=e1187]
+            - button "Delete Triangle" [ref=e1188] [cursor=pointer]:
+              - img [ref=e1189]
+          - generic "Trophy" [ref=e1191]:
+            - img "Trophy" [ref=e1192]
+            - button "Delete Trophy" [ref=e1193] [cursor=pointer]:
+              - img [ref=e1194]
+          - generic "Umbrella" [ref=e1196]:
+            - img "Umbrella" [ref=e1197]
+            - button "Delete Umbrella" [ref=e1198] [cursor=pointer]:
+              - img [ref=e1199]
+          - generic "Vaccine" [ref=e1201]:
+            - img "Vaccine" [ref=e1202]
+            - button "Delete Vaccine" [ref=e1203] [cursor=pointer]:
+              - img [ref=e1204]
+          - generic "Vacuum Cleaner" [ref=e1206]:
+            - img "Vacuum Cleaner" [ref=e1207]
+            - button "Delete Vacuum Cleaner" [ref=e1208] [cursor=pointer]:
+              - img [ref=e1209]
+          - generic "Wallet" [ref=e1211]:
+            - img "Wallet" [ref=e1212]
+            - button "Delete Wallet" [ref=e1213] [cursor=pointer]:
+              - img [ref=e1214]
+          - generic "Wash" [ref=e1216]:
+            - img "Wash" [ref=e1217]
+            - button "Delete Wash" [ref=e1218] [cursor=pointer]:
+              - img [ref=e1219]
+          - generic "Wave Square" [ref=e1221]:
+            - img "Wave Square" [ref=e1222]
+            - button "Delete Wave Square" [ref=e1223] [cursor=pointer]:
+              - img [ref=e1224]
+          - generic "Wind" [ref=e1226]:
+            - img "Wind" [ref=e1227]
+            - button "Delete Wind" [ref=e1228] [cursor=pointer]:
+              - img [ref=e1229]
+          - generic "World" [ref=e1231]:
+            - img "World" [ref=e1232]
+            - button "Delete World" [ref=e1233] [cursor=pointer]:
+              - img [ref=e1234]
+          - generic "X" [ref=e1236]:
+            - img "X" [ref=e1237]
+            - button "Delete X" [ref=e1238] [cursor=pointer]:
+              - img [ref=e1239]
+          - generic "Yoga" [ref=e1241]:
+            - img "Yoga" [ref=e1242]
+            - button "Delete Yoga" [ref=e1243] [cursor=pointer]:
+              - img [ref=e1244]
+          - generic "Baby & Nursery — Corner Accent (Bottomleft Footprints Bows)" [ref=e1246]:
+            - img "Baby & Nursery — Corner Accent (Bottomleft Footprints Bows)" [ref=e1247]
+            - button "Delete Baby & Nursery — Corner Accent (Bottomleft Footprints Bows)" [ref=e1248] [cursor=pointer]:
+              - img [ref=e1249]
+          - generic "Baby & Nursery — Corner Accent (Bottomright Pacifiers Stars)" [ref=e1251]:
+            - img "Baby & Nursery — Corner Accent (Bottomright Pacifiers Stars)" [ref=e1252]
+            - button "Delete Baby & Nursery — Corner Accent (Bottomright Pacifiers Stars)" [ref=e1253] [cursor=pointer]:
+              - img [ref=e1254]
+          - generic "Baby & Nursery — Corner Accent (Topleft Clouds Moon)" [ref=e1256]:
+            - img "Baby & Nursery — Corner Accent (Topleft Clouds Moon)" [ref=e1257]
+            - button "Delete Baby & Nursery — Corner Accent (Topleft Clouds Moon)" [ref=e1258] [cursor=pointer]:
+              - img [ref=e1259]
+          - generic "Baby & Nursery — Corner Accent (Topright Bunnies Stars)" [ref=e1261]:
+            - img "Baby & Nursery — Corner Accent (Topright Bunnies Stars)" [ref=e1262]
+            - button "Delete Baby & Nursery — Corner Accent (Topright Bunnies Stars)" [ref=e1263] [cursor=pointer]:
+              - img [ref=e1264]
+          - generic "Baby & Nursery — Full Frame (Bunnies Stars)" [ref=e1266]:
+            - img "Baby & Nursery — Full Frame (Bunnies Stars)" [ref=e1267]
+            - button "Delete Baby & Nursery — Full Frame (Bunnies Stars)" [ref=e1268] [cursor=pointer]:
+              - img [ref=e1269]
+          - generic "Baby & Nursery — Full Frame (Clouds Moon)" [ref=e1271]:
+            - img "Baby & Nursery — Full Frame (Clouds Moon)" [ref=e1272]
+            - button "Delete Baby & Nursery — Full Frame (Clouds Moon)" [ref=e1273] [cursor=pointer]:
+              - img [ref=e1274]
+          - generic "Baby & Nursery — Full Frame (Footprints Bows)" [ref=e1276]:
+            - img "Baby & Nursery — Full Frame (Footprints Bows)" [ref=e1277]
+            - button "Delete Baby & Nursery — Full Frame (Footprints Bows)" [ref=e1278] [cursor=pointer]:
+              - img [ref=e1279]
+          - generic "Baby & Nursery — Full Frame (Pacifiers Stars)" [ref=e1281]:
+            - img "Baby & Nursery — Full Frame (Pacifiers Stars)" [ref=e1282]
+            - button "Delete Baby & Nursery — Full Frame (Pacifiers Stars)" [ref=e1283] [cursor=pointer]:
+              - img [ref=e1284]
+          - generic "Baby & Nursery — Side Border (Left Clouds Moon)" [ref=e1286]:
+            - img "Baby & Nursery — Side Border (Left Clouds Moon)" [ref=e1287]
+            - button "Delete Baby & Nursery — Side Border (Left Clouds Moon)" [ref=e1288] [cursor=pointer]:
+              - img [ref=e1289]
+          - generic "Baby & Nursery — Side Border (Left Footprints Bows)" [ref=e1291]:
+            - img "Baby & Nursery — Side Border (Left Footprints Bows)" [ref=e1292]
+            - button "Delete Baby & Nursery — Side Border (Left Footprints Bows)" [ref=e1293] [cursor=pointer]:
+              - img [ref=e1294]
+          - generic "Baby & Nursery — Side Border (Right Bunnies Stars)" [ref=e1296]:
+            - img "Baby & Nursery — Side Border (Right Bunnies Stars)" [ref=e1297]
+            - button "Delete Baby & Nursery — Side Border (Right Bunnies Stars)" [ref=e1298] [cursor=pointer]:
+              - img [ref=e1299]
+          - generic "Baby & Nursery — Side Border (Right Pacifiers Stars)" [ref=e1301]:
+            - img "Baby & Nursery — Side Border (Right Pacifiers Stars)" [ref=e1302]
+            - button "Delete Baby & Nursery — Side Border (Right Pacifiers Stars)" [ref=e1303] [cursor=pointer]:
+              - img [ref=e1304]
+          - generic "Baby & Nursery — Top Border (Bunnies Stars)" [ref=e1306]:
+            - img "Baby & Nursery — Top Border (Bunnies Stars)" [ref=e1307]
+            - button "Delete Baby & Nursery — Top Border (Bunnies Stars)" [ref=e1308] [cursor=pointer]:
+              - img [ref=e1309]
+          - generic "Baby & Nursery — Top Border (Clouds Moon)" [ref=e1311]:
+            - img "Baby & Nursery — Top Border (Clouds Moon)" [ref=e1312]
+            - button "Delete Baby & Nursery — Top Border (Clouds Moon)" [ref=e1313] [cursor=pointer]:
+              - img [ref=e1314]
+          - generic "Baby & Nursery — Top Border (Footprints Bows)" [ref=e1316]:
+            - img "Baby & Nursery — Top Border (Footprints Bows)" [ref=e1317]
+            - button "Delete Baby & Nursery — Top Border (Footprints Bows)" [ref=e1318] [cursor=pointer]:
+              - img [ref=e1319]
+          - generic "Baby & Nursery — Top Border (Pacifiers Stars)" [ref=e1321]:
+            - img "Baby & Nursery — Top Border (Pacifiers Stars)" [ref=e1322]
+            - button "Delete Baby & Nursery — Top Border (Pacifiers Stars)" [ref=e1323] [cursor=pointer]:
+              - img [ref=e1324]
+          - generic "Baby & Nursery — Top+Side Corner Wrap (Topleft Clouds Moon)" [ref=e1326]:
+            - img "Baby & Nursery — Top+Side Corner Wrap (Topleft Clouds Moon)" [ref=e1327]
+            - button "Delete Baby & Nursery — Top+Side Corner Wrap (Topleft Clouds Moon)" [ref=e1328] [cursor=pointer]:
+              - img [ref=e1329]
+          - generic "Baby & Nursery — Top+Side Corner Wrap (Topleft Footprints Bows)" [ref=e1331]:
+            - img "Baby & Nursery — Top+Side Corner Wrap (Topleft Footprints Bows)" [ref=e1332]
+            - button "Delete Baby & Nursery — Top+Side Corner Wrap (Topleft Footprints Bows)" [ref=e1333] [cursor=pointer]:
+              - img [ref=e1334]
+          - generic "Baby & Nursery — Top+Side Corner Wrap (Topright Bunnies Stars)" [ref=e1336]:
+            - img "Baby & Nursery — Top+Side Corner Wrap (Topright Bunnies Stars)" [ref=e1337]
+            - button "Delete Baby & Nursery — Top+Side Corner Wrap (Topright Bunnies Stars)" [ref=e1338] [cursor=pointer]:
+              - img [ref=e1339]
+          - generic "Baby & Nursery — Top+Side Corner Wrap (Topright Pacifiers Stars)" [ref=e1341]:
+            - img "Baby & Nursery — Top+Side Corner Wrap (Topright Pacifiers Stars)" [ref=e1342]
+            - button "Delete Baby & Nursery — Top+Side Corner Wrap (Topright Pacifiers Stars)" [ref=e1343] [cursor=pointer]:
+              - img [ref=e1344]
+          - generic "Balloons & Celebration — Corner Accent (Bottomleft Streamers)" [ref=e1346]:
+            - img "Balloons & Celebration — Corner Accent (Bottomleft Streamers)" [ref=e1347]
+            - button "Delete Balloons & Celebration — Corner Accent (Bottomleft Streamers)" [ref=e1348] [cursor=pointer]:
+              - img [ref=e1349]
+          - generic "Balloons & Celebration — Corner Accent (Bottomright Gold Confetti)" [ref=e1351]:
+            - img "Balloons & Celebration — Corner Accent (Bottomright Gold Confetti)" [ref=e1352]
+            - button "Delete Balloons & Celebration — Corner Accent (Bottomright Gold Confetti)" [ref=e1353] [cursor=pointer]:
+              - img [ref=e1354]
+          - generic "Balloons & Celebration — Corner Accent (Topleft Classic)" [ref=e1356]:
+            - img "Balloons & Celebration — Corner Accent (Topleft Classic)" [ref=e1357]
+            - button "Delete Balloons & Celebration — Corner Accent (Topleft Classic)" [ref=e1358] [cursor=pointer]:
+              - img [ref=e1359]
+          - generic "Balloons & Celebration — Corner Accent (Topright Pastel)" [ref=e1361]:
+            - img "Balloons & Celebration — Corner Accent (Topright Pastel)" [ref=e1362]
+            - button "Delete Balloons & Celebration — Corner Accent (Topright Pastel)" [ref=e1363] [cursor=pointer]:
+              - img [ref=e1364]
+          - generic "Balloons & Celebration — Full Frame (Classic)" [ref=e1366]:
+            - img "Balloons & Celebration — Full Frame (Classic)" [ref=e1367]
+            - button "Delete Balloons & Celebration — Full Frame (Classic)" [ref=e1368] [cursor=pointer]:
+              - img [ref=e1369]
+          - generic "Balloons & Celebration — Full Frame (Gold Confetti)" [ref=e1371]:
+            - img "Balloons & Celebration — Full Frame (Gold Confetti)" [ref=e1372]
+            - button "Delete Balloons & Celebration — Full Frame (Gold Confetti)" [ref=e1373] [cursor=pointer]:
+              - img [ref=e1374]
+          - generic "Balloons & Celebration — Full Frame (Pastel)" [ref=e1376]:
+            - img "Balloons & Celebration — Full Frame (Pastel)" [ref=e1377]
+            - button "Delete Balloons & Celebration — Full Frame (Pastel)" [ref=e1378] [cursor=pointer]:
+              - img [ref=e1379]
+          - generic "Balloons & Celebration — Full Frame (Streamers)" [ref=e1381]:
+            - img "Balloons & Celebration — Full Frame (Streamers)" [ref=e1382]
+            - button "Delete Balloons & Celebration — Full Frame (Streamers)" [ref=e1383] [cursor=pointer]:
+              - img [ref=e1384]
+          - generic "Balloons & Celebration — Side Border (Left Classic)" [ref=e1386]:
+            - img "Balloons & Celebration — Side Border (Left Classic)" [ref=e1387]
+            - button "Delete Balloons & Celebration — Side Border (Left Classic)" [ref=e1388] [cursor=pointer]:
+              - img [ref=e1389]
+          - generic "Balloons & Celebration — Side Border (Left Streamers)" [ref=e1391]:
+            - img "Balloons & Celebration — Side Border (Left Streamers)" [ref=e1392]
+            - button "Delete Balloons & Celebration — Side Border (Left Streamers)" [ref=e1393] [cursor=pointer]:
+              - img [ref=e1394]
+          - generic "Balloons & Celebration — Side Border (Right Gold Confetti)" [ref=e1396]:
+            - img "Balloons & Celebration — Side Border (Right Gold Confetti)" [ref=e1397]
+            - button "Delete Balloons & Celebration — Side Border (Right Gold Confetti)" [ref=e1398] [cursor=pointer]:
+              - img [ref=e1399]
+          - generic "Balloons & Celebration — Side Border (Right Pastel)" [ref=e1401]:
+            - img "Balloons & Celebration — Side Border (Right Pastel)" [ref=e1402]
+            - button "Delete Balloons & Celebration — Side Border (Right Pastel)" [ref=e1403] [cursor=pointer]:
+              - img [ref=e1404]
+          - generic "Balloons & Celebration — Top Border (Classic)" [ref=e1406]:
+            - img "Balloons & Celebration — Top Border (Classic)" [ref=e1407]
+            - button "Delete Balloons & Celebration — Top Border (Classic)" [ref=e1408] [cursor=pointer]:
+              - img [ref=e1409]
+          - generic "Balloons & Celebration — Top Border (Gold Confetti)" [ref=e1411]:
+            - img "Balloons & Celebration — Top Border (Gold Confetti)" [ref=e1412]
+            - button "Delete Balloons & Celebration — Top Border (Gold Confetti)" [ref=e1413] [cursor=pointer]:
+              - img [ref=e1414]
+          - generic "Balloons & Celebration — Top Border (Pastel)" [ref=e1416]:
+            - img "Balloons & Celebration — Top Border (Pastel)" [ref=e1417]
+            - button "Delete Balloons & Celebration — Top Border (Pastel)" [ref=e1418] [cursor=pointer]:
+              - img [ref=e1419]
+          - generic "Balloons & Celebration — Top Border (Streamers)" [ref=e1421]:
+            - img "Balloons & Celebration — Top Border (Streamers)" [ref=e1422]
+            - button "Delete Balloons & Celebration — Top Border (Streamers)" [ref=e1423] [cursor=pointer]:
+              - img [ref=e1424]
+          - generic "Balloons & Celebration — Top+Side Corner Wrap (Topleft Classic)" [ref=e1426]:
+            - img "Balloons & Celebration — Top+Side Corner Wrap (Topleft Classic)" [ref=e1427]
+            - button "Delete Balloons & Celebration — Top+Side Corner Wrap (Topleft Classic)" [ref=e1428] [cursor=pointer]:
+              - img [ref=e1429]
+          - generic "Balloons & Celebration — Top+Side Corner Wrap (Topleft Streamers)" [ref=e1431]:
+            - img "Balloons & Celebration — Top+Side Corner Wrap (Topleft Streamers)" [ref=e1432]
+            - button "Delete Balloons & Celebration — Top+Side Corner Wrap (Topleft Streamers)" [ref=e1433] [cursor=pointer]:
+              - img [ref=e1434]
+          - generic "Balloons & Celebration — Top+Side Corner Wrap (Topright Gold Confetti)" [ref=e1436]:
+            - img "Balloons & Celebration — Top+Side Corner Wrap (Topright Gold Confetti)" [ref=e1437]
+            - button "Delete Balloons & Celebration — Top+Side Corner Wrap (Topright Gold Confetti)" [ref=e1438] [cursor=pointer]:
+              - img [ref=e1439]
+          - generic "Balloons & Celebration — Top+Side Corner Wrap (Topright Pastel)" [ref=e1441]:
+            - img "Balloons & Celebration — Top+Side Corner Wrap (Topright Pastel)" [ref=e1442]
+            - button "Delete Balloons & Celebration — Top+Side Corner Wrap (Topright Pastel)" [ref=e1443] [cursor=pointer]:
+              - img [ref=e1444]
+          - generic "Watercolor Florals — Corner Accent (Bottomleft Wildflower)" [ref=e1446]:
+            - img "Watercolor Florals — Corner Accent (Bottomleft Wildflower)" [ref=e1447]
+            - button "Delete Watercolor Florals — Corner Accent (Bottomleft Wildflower)" [ref=e1448] [cursor=pointer]:
+              - img [ref=e1449]
+          - generic "Watercolor Florals — Corner Accent (Bottomright Ranunculus)" [ref=e1451]:
+            - img "Watercolor Florals — Corner Accent (Bottomright Ranunculus)" [ref=e1452]
+            - button "Delete Watercolor Florals — Corner Accent (Bottomright Ranunculus)" [ref=e1453] [cursor=pointer]:
+              - img [ref=e1454]
+          - generic "Watercolor Florals — Corner Accent (Topleft Rose)" [ref=e1456]:
+            - img "Watercolor Florals — Corner Accent (Topleft Rose)" [ref=e1457]
+            - button "Delete Watercolor Florals — Corner Accent (Topleft Rose)" [ref=e1458] [cursor=pointer]:
+              - img [ref=e1459]
+          - generic "Watercolor Florals — Corner Accent (Topright Peony)" [ref=e1461]:
+            - img "Watercolor Florals — Corner Accent (Topright Peony)" [ref=e1462]
+            - button "Delete Watercolor Florals — Corner Accent (Topright Peony)" [ref=e1463] [cursor=pointer]:
+              - img [ref=e1464]
+          - generic "Watercolor Florals — Full Frame (Peony)" [ref=e1466]:
+            - img "Watercolor Florals — Full Frame (Peony)" [ref=e1467]
+            - button "Delete Watercolor Florals — Full Frame (Peony)" [ref=e1468] [cursor=pointer]:
+              - img [ref=e1469]
+          - generic "Watercolor Florals — Full Frame (Ranunculus)" [ref=e1471]:
+            - img "Watercolor Florals — Full Frame (Ranunculus)" [ref=e1472]
+            - button "Delete Watercolor Florals — Full Frame (Ranunculus)" [ref=e1473] [cursor=pointer]:
+              - img [ref=e1474]
+          - generic "Watercolor Florals — Full Frame (Rose)" [ref=e1476]:
+            - img "Watercolor Florals — Full Frame (Rose)" [ref=e1477]
+            - button "Delete Watercolor Florals — Full Frame (Rose)" [ref=e1478] [cursor=pointer]:
+              - img [ref=e1479]
+          - generic "Watercolor Florals — Full Frame (Wildflower)" [ref=e1481]:
+            - img "Watercolor Florals — Full Frame (Wildflower)" [ref=e1482]
+            - button "Delete Watercolor Florals — Full Frame (Wildflower)" [ref=e1483] [cursor=pointer]:
+              - img [ref=e1484]
+          - generic "Watercolor Florals — Side Border (Left Rose)" [ref=e1486]:
+            - img "Watercolor Florals — Side Border (Left Rose)" [ref=e1487]
+            - button "Delete Watercolor Florals — Side Border (Left Rose)" [ref=e1488] [cursor=pointer]:
+              - img [ref=e1489]
+          - generic "Watercolor Florals — Side Border (Left Wildflower)" [ref=e1491]:
+            - img "Watercolor Florals — Side Border (Left Wildflower)" [ref=e1492]
+            - button "Delete Watercolor Florals — Side Border (Left Wildflower)" [ref=e1493] [cursor=pointer]:
+              - img [ref=e1494]
+          - generic "Watercolor Florals — Side Border (Right Peony)" [ref=e1496]:
+            - img "Watercolor Florals — Side Border (Right Peony)" [ref=e1497]
+            - button "Delete Watercolor Florals — Side Border (Right Peony)" [ref=e1498] [cursor=pointer]:
+              - img [ref=e1499]
+          - generic "Watercolor Florals — Side Border (Right Ranunculus)" [ref=e1501]:
+            - img "Watercolor Florals — Side Border (Right Ranunculus)" [ref=e1502]
+            - button "Delete Watercolor Florals — Side Border (Right Ranunculus)" [ref=e1503] [cursor=pointer]:
+              - img [ref=e1504]
+          - generic "Watercolor Florals — Top Border (Peony)" [ref=e1506]:
+            - img "Watercolor Florals — Top Border (Peony)" [ref=e1507]
+            - button "Delete Watercolor Florals — Top Border (Peony)" [ref=e1508] [cursor=pointer]:
+              - img [ref=e1509]
+          - generic "Watercolor Florals — Top Border (Ranunculus)" [ref=e1511]:
+            - img "Watercolor Florals — Top Border (Ranunculus)" [ref=e1512]
+            - button "Delete Watercolor Florals — Top Border (Ranunculus)" [ref=e1513] [cursor=pointer]:
+              - img [ref=e1514]
+          - generic "Watercolor Florals — Top Border (Rose)" [ref=e1516]:
+            - img "Watercolor Florals — Top Border (Rose)" [ref=e1517]
+            - button "Delete Watercolor Florals — Top Border (Rose)" [ref=e1518] [cursor=pointer]:
+              - img [ref=e1519]
+          - generic "Watercolor Florals — Top Border (Wildflower)" [ref=e1521]:
+            - img "Watercolor Florals — Top Border (Wildflower)" [ref=e1522]
+            - button "Delete Watercolor Florals — Top Border (Wildflower)" [ref=e1523] [cursor=pointer]:
+              - img [ref=e1524]
+          - generic "Watercolor Florals — Top+Side Corner Wrap (Topleft Rose)" [ref=e1526]:
+            - img "Watercolor Florals — Top+Side Corner Wrap (Topleft Rose)" [ref=e1527]
+            - button "Delete Watercolor Florals — Top+Side Corner Wrap (Topleft Rose)" [ref=e1528] [cursor=pointer]:
+              - img [ref=e1529]
+          - generic "Watercolor Florals — Top+Side Corner Wrap (Topleft Wildflower)" [ref=e1531]:
+            - img "Watercolor Florals — Top+Side Corner Wrap (Topleft Wildflower)" [ref=e1532]
+            - button "Delete Watercolor Florals — Top+Side Corner Wrap (Topleft Wildflower)" [ref=e1533] [cursor=pointer]:
+              - img [ref=e1534]
+          - generic "Watercolor Florals — Top+Side Corner Wrap (Topright Peony)" [ref=e1536]:
+            - img "Watercolor Florals — Top+Side Corner Wrap (Topright Peony)" [ref=e1537]
+            - button "Delete Watercolor Florals — Top+Side Corner Wrap (Topright Peony)" [ref=e1538] [cursor=pointer]:
+              - img [ref=e1539]
+          - generic "Watercolor Florals — Top+Side Corner Wrap (Topright Ranunculus)" [ref=e1541]:
+            - img "Watercolor Florals — Top+Side Corner Wrap (Topright Ranunculus)" [ref=e1542]
+            - button "Delete Watercolor Florals — Top+Side Corner Wrap (Topright Ranunculus)" [ref=e1543] [cursor=pointer]:
+              - img [ref=e1544]
+          - generic "Kids & Playful — Corner Accent (Bottomleft Stars Doodles)" [ref=e1546]:
+            - img "Kids & Playful — Corner Accent (Bottomleft Stars Doodles)" [ref=e1547]
+            - button "Delete Kids & Playful — Corner Accent (Bottomleft Stars Doodles)" [ref=e1548] [cursor=pointer]:
+              - img [ref=e1549]
+          - generic "Kids & Playful — Corner Accent (Bottomright Paperplanes)" [ref=e1551]:
+            - img "Kids & Playful — Corner Accent (Bottomright Paperplanes)" [ref=e1552]
+            - button "Delete Kids & Playful — Corner Accent (Bottomright Paperplanes)" [ref=e1553] [cursor=pointer]:
+              - img [ref=e1554]
+          - generic "Kids & Playful — Corner Accent (Topleft Rainbow)" [ref=e1556]:
+            - img "Kids & Playful — Corner Accent (Topleft Rainbow)" [ref=e1557]
+            - button "Delete Kids & Playful — Corner Accent (Topleft Rainbow)" [ref=e1558] [cursor=pointer]:
+              - img [ref=e1559]
+          - generic "Kids & Playful — Corner Accent (Topright Animals)" [ref=e1561]:
+            - img "Kids & Playful — Corner Accent (Topright Animals)" [ref=e1562]
+            - button "Delete Kids & Playful — Corner Accent (Topright Animals)" [ref=e1563] [cursor=pointer]:
+              - img [ref=e1564]
+          - generic "Kids & Playful — Full Frame (Animals)" [ref=e1566]:
+            - img "Kids & Playful — Full Frame (Animals)" [ref=e1567]
+            - button "Delete Kids & Playful — Full Frame (Animals)" [ref=e1568] [cursor=pointer]:
+              - img [ref=e1569]
+          - generic "Kids & Playful — Full Frame (Paperplanes)" [ref=e1571]:
+            - img "Kids & Playful — Full Frame (Paperplanes)" [ref=e1572]
+            - button "Delete Kids & Playful — Full Frame (Paperplanes)" [ref=e1573] [cursor=pointer]:
+              - img [ref=e1574]
+          - generic "Kids & Playful — Full Frame (Rainbow)" [ref=e1576]:
+            - img "Kids & Playful — Full Frame (Rainbow)" [ref=e1577]
+            - button "Delete Kids & Playful — Full Frame (Rainbow)" [ref=e1578] [cursor=pointer]:
+              - img [ref=e1579]
+          - generic "Kids & Playful — Full Frame (Stars Doodles)" [ref=e1581]:
+            - img "Kids & Playful — Full Frame (Stars Doodles)" [ref=e1582]
+            - button "Delete Kids & Playful — Full Frame (Stars Doodles)" [ref=e1583] [cursor=pointer]:
+              - img [ref=e1584]
+          - generic "Kids & Playful — Side Border (Left Rainbow)" [ref=e1586]:
+            - img "Kids & Playful — Side Border (Left Rainbow)" [ref=e1587]
+            - button "Delete Kids & Playful — Side Border (Left Rainbow)" [ref=e1588] [cursor=pointer]:
+              - img [ref=e1589]
+          - generic "Kids & Playful — Side Border (Left Stars Doodles)" [ref=e1591]:
+            - img "Kids & Playful — Side Border (Left Stars Doodles)" [ref=e1592]
+            - button "Delete Kids & Playful — Side Border (Left Stars Doodles)" [ref=e1593] [cursor=pointer]:
+              - img [ref=e1594]
+          - generic "Kids & Playful — Side Border (Right Animals)" [ref=e1596]:
+            - img "Kids & Playful — Side Border (Right Animals)" [ref=e1597]
+            - button "Delete Kids & Playful — Side Border (Right Animals)" [ref=e1598] [cursor=pointer]:
+              - img [ref=e1599]
+          - generic "Kids & Playful — Side Border (Right Paperplanes)" [ref=e1601]:
+            - img "Kids & Playful — Side Border (Right Paperplanes)" [ref=e1602]
+            - button "Delete Kids & Playful — Side Border (Right Paperplanes)" [ref=e1603] [cursor=pointer]:
+              - img [ref=e1604]
+          - generic "Kids & Playful — Top Border (Animals)" [ref=e1606]:
+            - img "Kids & Playful — Top Border (Animals)" [ref=e1607]
+            - button "Delete Kids & Playful — Top Border (Animals)" [ref=e1608] [cursor=pointer]:
+              - img [ref=e1609]
+          - generic "Kids & Playful — Top Border (Paperplanes)" [ref=e1611]:
+            - img "Kids & Playful — Top Border (Paperplanes)" [ref=e1612]
+            - button "Delete Kids & Playful — Top Border (Paperplanes)" [ref=e1613] [cursor=pointer]:
+              - img [ref=e1614]
+          - generic "Kids & Playful — Top Border (Rainbow)" [ref=e1616]:
+            - img "Kids & Playful — Top Border (Rainbow)" [ref=e1617]
+            - button "Delete Kids & Playful — Top Border (Rainbow)" [ref=e1618] [cursor=pointer]:
+              - img [ref=e1619]
+          - generic "Kids & Playful — Top Border (Stars Doodles)" [ref=e1621]:
+            - img "Kids & Playful — Top Border (Stars Doodles)" [ref=e1622]
+            - button "Delete Kids & Playful — Top Border (Stars Doodles)" [ref=e1623] [cursor=pointer]:
+              - img [ref=e1624]
+          - generic "Kids & Playful — Top+Side Corner Wrap (Topleft Rainbow)" [ref=e1626]:
+            - img "Kids & Playful — Top+Side Corner Wrap (Topleft Rainbow)" [ref=e1627]
+            - button "Delete Kids & Playful — Top+Side Corner Wrap (Topleft Rainbow)" [ref=e1628] [cursor=pointer]:
+              - img [ref=e1629]
+          - generic "Kids & Playful — Top+Side Corner Wrap (Topleft Stars Doodles)" [ref=e1631]:
+            - img "Kids & Playful — Top+Side Corner Wrap (Topleft Stars Doodles)" [ref=e1632]
+            - button "Delete Kids & Playful — Top+Side Corner Wrap (Topleft Stars Doodles)" [ref=e1633] [cursor=pointer]:
+              - img [ref=e1634]
+          - generic "Kids & Playful — Top+Side Corner Wrap (Topright Animals)" [ref=e1636]:
+            - img "Kids & Playful — Top+Side Corner Wrap (Topright Animals)" [ref=e1637]
+            - button "Delete Kids & Playful — Top+Side Corner Wrap (Topright Animals)" [ref=e1638] [cursor=pointer]:
+              - img [ref=e1639]
+          - generic "Kids & Playful — Top+Side Corner Wrap (Topright Paperplanes)" [ref=e1641]:
+            - img "Kids & Playful — Top+Side Corner Wrap (Topright Paperplanes)" [ref=e1642]
+            - button "Delete Kids & Playful — Top+Side Corner Wrap (Topright Paperplanes)" [ref=e1643] [cursor=pointer]:
+              - img [ref=e1644]
+          - generic "Parent & Family — Corner Accent (Bottomleft Babybottle)" [ref=e1646]:
+            - img "Parent & Family — Corner Accent (Bottomleft Babybottle)" [ref=e1647]
+            - button "Delete Parent & Family — Corner Accent (Bottomleft Babybottle)" [ref=e1648] [cursor=pointer]:
+              - img [ref=e1649]
+          - generic "Parent & Family — Corner Accent (Bottomright Lovenote)" [ref=e1651]:
+            - img "Parent & Family — Corner Accent (Bottomright Lovenote)" [ref=e1652]
+            - button "Delete Parent & Family — Corner Accent (Bottomright Lovenote)" [ref=e1653] [cursor=pointer]:
+              - img [ref=e1654]
+          - generic "Parent & Family — Corner Accent (Topleft House Hearts)" [ref=e1656]:
+            - img "Parent & Family — Corner Accent (Topleft House Hearts)" [ref=e1657]
+            - button "Delete Parent & Family — Corner Accent (Topleft House Hearts)" [ref=e1658] [cursor=pointer]:
+              - img [ref=e1659]
+          - generic "Parent & Family — Corner Accent (Topright Silhouette)" [ref=e1661]:
+            - img "Parent & Family — Corner Accent (Topright Silhouette)" [ref=e1662]
+            - button "Delete Parent & Family — Corner Accent (Topright Silhouette)" [ref=e1663] [cursor=pointer]:
+              - img [ref=e1664]
+          - generic "Parent & Family — Full Frame (Babybottle)" [ref=e1666]:
+            - img "Parent & Family — Full Frame (Babybottle)" [ref=e1667]
+            - button "Delete Parent & Family — Full Frame (Babybottle)" [ref=e1668] [cursor=pointer]:
+              - img [ref=e1669]
+          - generic "Parent & Family — Full Frame (House Hearts)" [ref=e1671]:
+            - img "Parent & Family — Full Frame (House Hearts)" [ref=e1672]
+            - button "Delete Parent & Family — Full Frame (House Hearts)" [ref=e1673] [cursor=pointer]:
+              - img [ref=e1674]
+          - generic "Parent & Family — Full Frame (Lovenote)" [ref=e1676]:
+            - img "Parent & Family — Full Frame (Lovenote)" [ref=e1677]
+            - button "Delete Parent & Family — Full Frame (Lovenote)" [ref=e1678] [cursor=pointer]:
+              - img [ref=e1679]
+          - generic "Parent & Family — Full Frame (Silhouette)" [ref=e1681]:
+            - img "Parent & Family — Full Frame (Silhouette)" [ref=e1682]
+            - button "Delete Parent & Family — Full Frame (Silhouette)" [ref=e1683] [cursor=pointer]:
+              - img [ref=e1684]
+          - generic "Parent & Family — Side Border (Left Babybottle)" [ref=e1686]:
+            - img "Parent & Family — Side Border (Left Babybottle)" [ref=e1687]
+            - button "Delete Parent & Family — Side Border (Left Babybottle)" [ref=e1688] [cursor=pointer]:
+              - img [ref=e1689]
+          - generic "Parent & Family — Side Border (Left House Hearts)" [ref=e1691]:
+            - img "Parent & Family — Side Border (Left House Hearts)" [ref=e1692]
+            - button "Delete Parent & Family — Side Border (Left House Hearts)" [ref=e1693] [cursor=pointer]:
+              - img [ref=e1694]
+          - generic "Parent & Family — Side Border (Right Lovenote)" [ref=e1696]:
+            - img "Parent & Family — Side Border (Right Lovenote)" [ref=e1697]
+            - button "Delete Parent & Family — Side Border (Right Lovenote)" [ref=e1698] [cursor=pointer]:
+              - img [ref=e1699]
+          - generic "Parent & Family — Side Border (Right Silhouette)" [ref=e1701]:
+            - img "Parent & Family — Side Border (Right Silhouette)" [ref=e1702]
+            - button "Delete Parent & Family — Side Border (Right Silhouette)" [ref=e1703] [cursor=pointer]:
+              - img [ref=e1704]
+          - generic "Parent & Family — Top Border (Babybottle)" [ref=e1706]:
+            - img "Parent & Family — Top Border (Babybottle)" [ref=e1707]
+            - button "Delete Parent & Family — Top Border (Babybottle)" [ref=e1708] [cursor=pointer]:
+              - img [ref=e1709]
+          - generic "Parent & Family — Top Border (House Hearts)" [ref=e1711]:
+            - img "Parent & Family — Top Border (House Hearts)" [ref=e1712]
+            - button "Delete Parent & Family — Top Border (House Hearts)" [ref=e1713] [cursor=pointer]:
+              - img [ref=e1714]
+          - generic "Parent & Family — Top Border (Lovenote)" [ref=e1716]:
+            - img "Parent & Family — Top Border (Lovenote)" [ref=e1717]
+            - button "Delete Parent & Family — Top Border (Lovenote)" [ref=e1718] [cursor=pointer]:
+              - img [ref=e1719]
+          - generic "Parent & Family — Top Border (Silhouette)" [ref=e1721]:
+            - img "Parent & Family — Top Border (Silhouette)" [ref=e1722]
+            - button "Delete Parent & Family — Top Border (Silhouette)" [ref=e1723] [cursor=pointer]:
+              - img [ref=e1724]
+          - generic "Parent & Family — Top+Side Corner Wrap (Topleft Babybottle)" [ref=e1726]:
+            - img "Parent & Family — Top+Side Corner Wrap (Topleft Babybottle)" [ref=e1727]
+            - button "Delete Parent & Family — Top+Side Corner Wrap (Topleft Babybottle)" [ref=e1728] [cursor=pointer]:
+              - img [ref=e1729]
+          - generic "Parent & Family — Top+Side Corner Wrap (Topleft House Hearts)" [ref=e1731]:
+            - img "Parent & Family — Top+Side Corner Wrap (Topleft House Hearts)" [ref=e1732]
+            - button "Delete Parent & Family — Top+Side Corner Wrap (Topleft House Hearts)" [ref=e1733] [cursor=pointer]:
+              - img [ref=e1734]
+          - generic "Parent & Family — Top+Side Corner Wrap (Topright Lovenote)" [ref=e1736]:
+            - img "Parent & Family — Top+Side Corner Wrap (Topright Lovenote)" [ref=e1737]
+            - button "Delete Parent & Family — Top+Side Corner Wrap (Topright Lovenote)" [ref=e1738] [cursor=pointer]:
+              - img [ref=e1739]
+          - generic "Parent & Family — Top+Side Corner Wrap (Topright Silhouette)" [ref=e1741]:
+            - img "Parent & Family — Top+Side Corner Wrap (Topright Silhouette)" [ref=e1742]
+            - button "Delete Parent & Family — Top+Side Corner Wrap (Topright Silhouette)" [ref=e1743] [cursor=pointer]:
+              - img [ref=e1744]
+          - generic "Seasonal — Corner Accent (Bottomleft Spring)" [ref=e1746]:
+            - img "Seasonal — Corner Accent (Bottomleft Spring)" [ref=e1747]
+            - button "Delete Seasonal — Corner Accent (Bottomleft Spring)" [ref=e1748] [cursor=pointer]:
+              - img [ref=e1749]
+          - generic "Seasonal — Corner Accent (Bottomright Summer)" [ref=e1751]:
+            - img "Seasonal — Corner Accent (Bottomright Summer)" [ref=e1752]
+            - button "Delete Seasonal — Corner Accent (Bottomright Summer)" [ref=e1753] [cursor=pointer]:
+              - img [ref=e1754]
+          - generic "Seasonal — Corner Accent (Topleft Autumn)" [ref=e1756]:
+            - img "Seasonal — Corner Accent (Topleft Autumn)" [ref=e1757]
+            - button "Delete Seasonal — Corner Accent (Topleft Autumn)" [ref=e1758] [cursor=pointer]:
+              - img [ref=e1759]
+          - generic "Seasonal — Corner Accent (Topright Winter)" [ref=e1761]:
+            - img "Seasonal — Corner Accent (Topright Winter)" [ref=e1762]
+            - button "Delete Seasonal — Corner Accent (Topright Winter)" [ref=e1763] [cursor=pointer]:
+              - img [ref=e1764]
+          - generic "Seasonal — Full Frame (Autumn)" [ref=e1766]:
+            - img "Seasonal — Full Frame (Autumn)" [ref=e1767]
+            - button "Delete Seasonal — Full Frame (Autumn)" [ref=e1768] [cursor=pointer]:
+              - img [ref=e1769]
+          - generic "Seasonal — Full Frame (Spring)" [ref=e1771]:
+            - img "Seasonal — Full Frame (Spring)" [ref=e1772]
+            - button "Delete Seasonal — Full Frame (Spring)" [ref=e1773] [cursor=pointer]:
+              - img [ref=e1774]
+          - generic "Seasonal — Full Frame (Summer)" [ref=e1776]:
+            - img "Seasonal — Full Frame (Summer)" [ref=e1777]
+            - button "Delete Seasonal — Full Frame (Summer)" [ref=e1778] [cursor=pointer]:
+              - img [ref=e1779]
+          - generic "Seasonal — Full Frame (Winter)" [ref=e1781]:
+            - img "Seasonal — Full Frame (Winter)" [ref=e1782]
+            - button "Delete Seasonal — Full Frame (Winter)" [ref=e1783] [cursor=pointer]:
+              - img [ref=e1784]
+          - generic "Seasonal — Side Border (Left Autumn)" [ref=e1786]:
+            - img "Seasonal — Side Border (Left Autumn)" [ref=e1787]
+            - button "Delete Seasonal — Side Border (Left Autumn)" [ref=e1788] [cursor=pointer]:
+              - img [ref=e1789]
+          - generic "Seasonal — Side Border (Left Spring)" [ref=e1791]:
+            - img "Seasonal — Side Border (Left Spring)" [ref=e1792]
+            - button "Delete Seasonal — Side Border (Left Spring)" [ref=e1793] [cursor=pointer]:
+              - img [ref=e1794]
+          - generic "Seasonal — Side Border (Right Summer)" [ref=e1796]:
+            - img "Seasonal — Side Border (Right Summer)" [ref=e1797]
+            - button "Delete Seasonal — Side Border (Right Summer)" [ref=e1798] [cursor=pointer]:
+              - img [ref=e1799]
+          - generic "Seasonal — Side Border (Right Winter)" [ref=e1801]:
+            - img "Seasonal — Side Border (Right Winter)" [ref=e1802]
+            - button "Delete Seasonal — Side Border (Right Winter)" [ref=e1803] [cursor=pointer]:
+              - img [ref=e1804]
+          - generic "Seasonal — Top Border (Autumn)" [ref=e1806]:
+            - img "Seasonal — Top Border (Autumn)" [ref=e1807]
+            - button "Delete Seasonal — Top Border (Autumn)" [ref=e1808] [cursor=pointer]:
+              - img [ref=e1809]
+          - generic "Seasonal — Top Border (Spring)" [ref=e1811]:
+            - img "Seasonal — Top Border (Spring)" [ref=e1812]
+            - button "Delete Seasonal — Top Border (Spring)" [ref=e1813] [cursor=pointer]:
+              - img [ref=e1814]
+          - generic "Seasonal — Top Border (Summer)" [ref=e1816]:
+            - img "Seasonal — Top Border (Summer)" [ref=e1817]
+            - button "Delete Seasonal — Top Border (Summer)" [ref=e1818] [cursor=pointer]:
+              - img [ref=e1819]
+          - generic "Seasonal — Top Border (Winter)" [ref=e1821]:
+            - img "Seasonal — Top Border (Winter)" [ref=e1822]
+            - button "Delete Seasonal — Top Border (Winter)" [ref=e1823] [cursor=pointer]:
+              - img [ref=e1824]
+          - generic "Seasonal — Top+Side Corner Wrap (Topleft Autumn)" [ref=e1826]:
+            - img "Seasonal — Top+Side Corner Wrap (Topleft Autumn)" [ref=e1827]
+            - button "Delete Seasonal — Top+Side Corner Wrap (Topleft Autumn)" [ref=e1828] [cursor=pointer]:
+              - img [ref=e1829]
+          - generic "Seasonal — Top+Side Corner Wrap (Topleft Spring)" [ref=e1831]:
+            - img "Seasonal — Top+Side Corner Wrap (Topleft Spring)" [ref=e1832]
+            - button "Delete Seasonal — Top+Side Corner Wrap (Topleft Spring)" [ref=e1833] [cursor=pointer]:
+              - img [ref=e1834]
+          - generic "Seasonal — Top+Side Corner Wrap (Topright Summer)" [ref=e1836]:
+            - img "Seasonal — Top+Side Corner Wrap (Topright Summer)" [ref=e1837]
+            - button "Delete Seasonal — Top+Side Corner Wrap (Topright Summer)" [ref=e1838] [cursor=pointer]:
+              - img [ref=e1839]
+          - generic "Seasonal — Top+Side Corner Wrap (Topright Winter)" [ref=e1841]:
+            - img "Seasonal — Top+Side Corner Wrap (Topright Winter)" [ref=e1842]
+            - button "Delete Seasonal — Top+Side Corner Wrap (Topright Winter)" [ref=e1843] [cursor=pointer]:
+              - img [ref=e1844]
+          - generic "Teacher & School — Corner Accent (Bottomleft Alphabet)" [ref=e1846]:
+            - img "Teacher & School — Corner Accent (Bottomleft Alphabet)" [ref=e1847]
+            - button "Delete Teacher & School — Corner Accent (Bottomleft Alphabet)" [ref=e1848] [cursor=pointer]:
+              - img [ref=e1849]
+          - generic "Teacher & School — Corner Accent (Bottomright Crayons Globe)" [ref=e1851]:
+            - img "Teacher & School — Corner Accent (Bottomright Crayons Globe)" [ref=e1852]
+            - button "Delete Teacher & School — Corner Accent (Bottomright Crayons Globe)" [ref=e1853] [cursor=pointer]:
+              - img [ref=e1854]
+          - generic "Teacher & School — Corner Accent (Topleft Apples)" [ref=e1856]:
+            - img "Teacher & School — Corner Accent (Topleft Apples)" [ref=e1857]
+            - button "Delete Teacher & School — Corner Accent (Topleft Apples)" [ref=e1858] [cursor=pointer]:
+              - img [ref=e1859]
+          - generic "Teacher & School — Corner Accent (Topright Books)" [ref=e1861]:
+            - img "Teacher & School — Corner Accent (Topright Books)" [ref=e1862]
+            - button "Delete Teacher & School — Corner Accent (Topright Books)" [ref=e1863] [cursor=pointer]:
+              - img [ref=e1864]
+          - generic "Teacher & School — Full Frame (Alphabet)" [ref=e1866]:
+            - img "Teacher & School — Full Frame (Alphabet)" [ref=e1867]
+            - button "Delete Teacher & School — Full Frame (Alphabet)" [ref=e1868] [cursor=pointer]:
+              - img [ref=e1869]
+          - generic "Teacher & School — Full Frame (Apples)" [ref=e1871]:
+            - img "Teacher & School — Full Frame (Apples)" [ref=e1872]
+            - button "Delete Teacher & School — Full Frame (Apples)" [ref=e1873] [cursor=pointer]:
+              - img [ref=e1874]
+          - generic "Teacher & School — Full Frame (Books)" [ref=e1876]:
+            - img "Teacher & School — Full Frame (Books)" [ref=e1877]
+            - button "Delete Teacher & School — Full Frame (Books)" [ref=e1878] [cursor=pointer]:
+              - img [ref=e1879]
+          - generic "Teacher & School — Full Frame (Crayons Globe)" [ref=e1881]:
+            - img "Teacher & School — Full Frame (Crayons Globe)" [ref=e1882]
+            - button "Delete Teacher & School — Full Frame (Crayons Globe)" [ref=e1883] [cursor=pointer]:
+              - img [ref=e1884]
+          - generic "Teacher & School — Side Border (Left Alphabet)" [ref=e1886]:
+            - img "Teacher & School — Side Border (Left Alphabet)" [ref=e1887]
+            - button "Delete Teacher & School — Side Border (Left Alphabet)" [ref=e1888] [cursor=pointer]:
+              - img [ref=e1889]
+          - generic "Teacher & School — Side Border (Left Apples)" [ref=e1891]:
+            - img "Teacher & School — Side Border (Left Apples)" [ref=e1892]
+            - button "Delete Teacher & School — Side Border (Left Apples)" [ref=e1893] [cursor=pointer]:
+              - img [ref=e1894]
+          - generic "Teacher & School — Side Border (Right Books)" [ref=e1896]:
+            - img "Teacher & School — Side Border (Right Books)" [ref=e1897]
+            - button "Delete Teacher & School — Side Border (Right Books)" [ref=e1898] [cursor=pointer]:
+              - img [ref=e1899]
+          - generic "Teacher & School — Side Border (Right Crayons Globe)" [ref=e1901]:
+            - img "Teacher & School — Side Border (Right Crayons Globe)" [ref=e1902]
+            - button "Delete Teacher & School — Side Border (Right Crayons Globe)" [ref=e1903] [cursor=pointer]:
+              - img [ref=e1904]
+          - generic "Teacher & School — Top Border (Alphabet)" [ref=e1906]:
+            - img "Teacher & School — Top Border (Alphabet)" [ref=e1907]
+            - button "Delete Teacher & School — Top Border (Alphabet)" [ref=e1908] [cursor=pointer]:
+              - img [ref=e1909]
+          - generic "Teacher & School — Top Border (Apples)" [ref=e1911]:
+            - img "Teacher & School — Top Border (Apples)" [ref=e1912]
+            - button "Delete Teacher & School — Top Border (Apples)" [ref=e1913] [cursor=pointer]:
+              - img [ref=e1914]
+          - generic "Teacher & School — Top Border (Books)" [ref=e1916]:
+            - img "Teacher & School — Top Border (Books)" [ref=e1917]
+            - button "Delete Teacher & School — Top Border (Books)" [ref=e1918] [cursor=pointer]:
+              - img [ref=e1919]
+          - generic "Teacher & School — Top Border (Crayons Globe)" [ref=e1921]:
+            - img "Teacher & School — Top Border (Crayons Globe)" [ref=e1922]
+            - button "Delete Teacher & School — Top Border (Crayons Globe)" [ref=e1923] [cursor=pointer]:
+              - img [ref=e1924]
+          - generic "Teacher & School — Top+Side Corner Wrap (Topleft Alphabet)" [ref=e1926]:
+            - img "Teacher & School — Top+Side Corner Wrap (Topleft Alphabet)" [ref=e1927]
+            - button "Delete Teacher & School — Top+Side Corner Wrap (Topleft Alphabet)" [ref=e1928] [cursor=pointer]:
+              - img [ref=e1929]
+          - generic "Teacher & School — Top+Side Corner Wrap (Topleft Apples)" [ref=e1931]:
+            - img "Teacher & School — Top+Side Corner Wrap (Topleft Apples)" [ref=e1932]
+            - button "Delete Teacher & School — Top+Side Corner Wrap (Topleft Apples)" [ref=e1933] [cursor=pointer]:
+              - img [ref=e1934]
+          - generic "Teacher & School — Top+Side Corner Wrap (Topright Books)" [ref=e1936]:
+            - img "Teacher & School — Top+Side Corner Wrap (Topright Books)" [ref=e1937]
+            - button "Delete Teacher & School — Top+Side Corner Wrap (Topright Books)" [ref=e1938] [cursor=pointer]:
+              - img [ref=e1939]
+          - generic "Teacher & School — Top+Side Corner Wrap (Topright Crayons Globe)" [ref=e1941]:
+            - img "Teacher & School — Top+Side Corner Wrap (Topright Crayons Globe)" [ref=e1942]
+            - button "Delete Teacher & School — Top+Side Corner Wrap (Topright Crayons Globe)" [ref=e1943] [cursor=pointer]:
+              - img [ref=e1944]
+          - generic "Vines & Botanical — Corner Accent (Bottomleft Olive)" [ref=e1946]:
+            - img "Vines & Botanical — Corner Accent (Bottomleft Olive)" [ref=e1947]
+            - button "Delete Vines & Botanical — Corner Accent (Bottomleft Olive)" [ref=e1948] [cursor=pointer]:
+              - img [ref=e1949]
+          - generic "Vines & Botanical — Corner Accent (Bottomright Teal)" [ref=e1951]:
+            - img "Vines & Botanical — Corner Accent (Bottomright Teal)" [ref=e1952]
+            - button "Delete Vines & Botanical — Corner Accent (Bottomright Teal)" [ref=e1953] [cursor=pointer]:
+              - img [ref=e1954]
+          - generic "Vines & Botanical — Corner Accent (Topleft Forest)" [ref=e1956]:
+            - img "Vines & Botanical — Corner Accent (Topleft Forest)" [ref=e1957]
+            - button "Delete Vines & Botanical — Corner Accent (Topleft Forest)" [ref=e1958] [cursor=pointer]:
+              - img [ref=e1959]
+          - generic "Vines & Botanical — Corner Accent (Topright Sage)" [ref=e1961]:
+            - img "Vines & Botanical — Corner Accent (Topright Sage)" [ref=e1962]
+            - button "Delete Vines & Botanical — Corner Accent (Topright Sage)" [ref=e1963] [cursor=pointer]:
+              - img [ref=e1964]
+          - generic "Vines & Botanical — Full Frame (Forest)" [ref=e1966]:
+            - img "Vines & Botanical — Full Frame (Forest)" [ref=e1967]
+            - button "Delete Vines & Botanical — Full Frame (Forest)" [ref=e1968] [cursor=pointer]:
+              - img [ref=e1969]
+          - generic "Vines & Botanical — Full Frame (Olive)" [ref=e1971]:
+            - img "Vines & Botanical — Full Frame (Olive)" [ref=e1972]
+            - button "Delete Vines & Botanical — Full Frame (Olive)" [ref=e1973] [cursor=pointer]:
+              - img [ref=e1974]
+          - generic "Vines & Botanical — Full Frame (Sage)" [ref=e1976]:
+            - img "Vines & Botanical — Full Frame (Sage)" [ref=e1977]
+            - button "Delete Vines & Botanical — Full Frame (Sage)" [ref=e1978] [cursor=pointer]:
+              - img [ref=e1979]
+          - generic "Vines & Botanical — Full Frame (Teal)" [ref=e1981]:
+            - img "Vines & Botanical — Full Frame (Teal)" [ref=e1982]
+            - button "Delete Vines & Botanical — Full Frame (Teal)" [ref=e1983] [cursor=pointer]:
+              - img [ref=e1984]
+          - generic "Vines & Botanical — Side Border (Left Forest)" [ref=e1986]:
+            - img "Vines & Botanical — Side Border (Left Forest)" [ref=e1987]
+            - button "Delete Vines & Botanical — Side Border (Left Forest)" [ref=e1988] [cursor=pointer]:
+              - img [ref=e1989]
+          - generic "Vines & Botanical — Side Border (Left Olive)" [ref=e1991]:
+            - img "Vines & Botanical — Side Border (Left Olive)" [ref=e1992]
+            - button "Delete Vines & Botanical — Side Border (Left Olive)" [ref=e1993] [cursor=pointer]:
+              - img [ref=e1994]
+          - generic "Vines & Botanical — Side Border (Right Sage)" [ref=e1996]:
+            - img "Vines & Botanical — Side Border (Right Sage)" [ref=e1997]
+            - button "Delete Vines & Botanical — Side Border (Right Sage)" [ref=e1998] [cursor=pointer]:
+              - img [ref=e1999]
+          - generic "Vines & Botanical — Side Border (Right Teal)" [ref=e2001]:
+            - img "Vines & Botanical — Side Border (Right Teal)" [ref=e2002]
+            - button "Delete Vines & Botanical — Side Border (Right Teal)" [ref=e2003] [cursor=pointer]:
+              - img [ref=e2004]
+          - generic "Vines & Botanical — Top Border (Forest)" [ref=e2006]:
+            - img "Vines & Botanical — Top Border (Forest)" [ref=e2007]
+            - button "Delete Vines & Botanical — Top Border (Forest)" [ref=e2008] [cursor=pointer]:
+              - img [ref=e2009]
+          - generic "Vines & Botanical — Top Border (Olive)" [ref=e2011]:
+            - img "Vines & Botanical — Top Border (Olive)" [ref=e2012]
+            - button "Delete Vines & Botanical — Top Border (Olive)" [ref=e2013] [cursor=pointer]:
+              - img [ref=e2014]
+          - generic "Vines & Botanical — Top Border (Sage)" [ref=e2016]:
+            - img "Vines & Botanical — Top Border (Sage)" [ref=e2017]
+            - button "Delete Vines & Botanical — Top Border (Sage)" [ref=e2018] [cursor=pointer]:
+              - img [ref=e2019]
+          - generic "Vines & Botanical — Top Border (Teal)" [ref=e2021]:
+            - img "Vines & Botanical — Top Border (Teal)" [ref=e2022]
+            - button "Delete Vines & Botanical — Top Border (Teal)" [ref=e2023] [cursor=pointer]:
+              - img [ref=e2024]
+          - generic "Vines & Botanical — Top+Side Corner Wrap (Topleft Forest)" [ref=e2026]:
+            - img "Vines & Botanical — Top+Side Corner Wrap (Topleft Forest)" [ref=e2027]
+            - button "Delete Vines & Botanical — Top+Side Corner Wrap (Topleft Forest)" [ref=e2028] [cursor=pointer]:
+              - img [ref=e2029]
+          - generic "Vines & Botanical — Top+Side Corner Wrap (Topleft Olive)" [ref=e2031]:
+            - img "Vines & Botanical — Top+Side Corner Wrap (Topleft Olive)" [ref=e2032]
+            - button "Delete Vines & Botanical — Top+Side Corner Wrap (Topleft Olive)" [ref=e2033] [cursor=pointer]:
+              - img [ref=e2034]
+          - generic "Vines & Botanical — Top+Side Corner Wrap (Topright Sage)" [ref=e2036]:
+            - img "Vines & Botanical — Top+Side Corner Wrap (Topright Sage)" [ref=e2037]
+            - button "Delete Vines & Botanical — Top+Side Corner Wrap (Topright Sage)" [ref=e2038] [cursor=pointer]:
+              - img [ref=e2039]
+          - generic "Vines & Botanical — Top+Side Corner Wrap (Topright Teal)" [ref=e2041]:
+            - img "Vines & Botanical — Top+Side Corner Wrap (Topright Teal)" [ref=e2042]
+            - button "Delete Vines & Botanical — Top+Side Corner Wrap (Topright Teal)" [ref=e2043] [cursor=pointer]:
+              - img [ref=e2044]
+    - main [ref=e71]:
+      - generic [ref=e72]:
+        - button "Delete Selected" [ref=e73] [cursor=pointer]:
+          - img [ref=e74]
+          - text: Delete Selected
+        - generic [ref=e77]:
+          - button "Forward" [ref=e78] [cursor=pointer]:
+            - img [ref=e79]
+            - text: Forward
+          - button "Backward" [ref=e81] [cursor=pointer]:
+            - img [ref=e82]
+            - text: Backward
+        - generic [ref=e84]:
+          - button "Undo" [ref=e85] [cursor=pointer]:
+            - img [ref=e86]
+            - text: Undo
+          - button "Redo" [ref=e89] [cursor=pointer]:
+            - img [ref=e90]
+            - text: Redo
+        - generic [ref=e93]:
+          - img [ref=e94]
+          - text: Zoom
+        - slider "Zoom" [ref=e97]: "70"
+    - complementary [ref=e102]:
+      - generic [ref=e103]:
+        - heading "Properties" [level=4] [ref=e104]
+        - paragraph [ref=e106]: Select an element on the canvas to edit its properties.
+      - generic [ref=e107]:
+        - heading "Pages" [level=4] [ref=e108]
+        - generic [ref=e113] [cursor=pointer]:
+          - img "Page 1" [ref=e114]
+          - generic [ref=e115]: Page 1
+          - generic [ref=e116]:
+            - button "Duplicate page 1" [ref=e117]:
+              - img [ref=e118]
+            - button "Delete page 1" [ref=e121]:
+              - img [ref=e122]
+        - button "Add Page" [ref=e109] [cursor=pointer]:
+          - img [ref=e110]
+          - text: Add Page

@@ -78,6 +78,14 @@ in `server/app.js` only ever call this interface — never `fs` directly.
 `local.js` and `supabase.js`, and update `supabase/schema.sql` if it changes
 the Postgres shape.
 
+One deliberate exception to "both drivers store the same way": the ~1,800
+-family Google Fonts catalog (`fonts` table + `GET /api/fonts`, seeded by
+`scripts/seed-fonts.js`) lives in Supabase Storage only — too large to
+commit to git or keep in `server/data/library` alongside the other
+preloaded assets. `local.js` proxies to Supabase when credentials are
+configured, else falls back to 6 built-in system fonts. See
+`server/CLAUDE.md` and `public/CLAUDE.md` for the full picture.
+
 ## Folder map
 
 ```
@@ -100,13 +108,14 @@ planner-studio/
     schema.sql                # Postgres schema for the supabase driver
   scripts/
     seed-library.js            # one-time: uploads preloaded assets to Supabase
+    seed-fonts.js                # one-time: downloads/converts/uploads all Google Fonts
   public/
     index.html                # app shell
     css/style.css
     js/                       # app.js, canvas-editor.js, generators.js,
                                 #  library-panel.js, pages-manager.js,
                                 #  export-pdf.js, api.js, constants.js,
-                                #  bg-removal-module.js
+                                #  font-loader.js, bg-removal-module.js
     vendor/                   # fabric.min.js, jspdf.umd.min.js, onnxruntime-web,
                                 #  bg-removal engine (all bundled, work offline)
 ```
@@ -123,6 +132,8 @@ planner-studio/
   habit-tracker generator, hourly daily-schedule generator.
 - Asset library — 381 preloaded assets (100 backgrounds, 121 icons, 160
   border decorations) plus user uploads, shared across all planners.
+- Full Google Fonts catalog (~1,800 families, self-hosted, searchable font
+  picker in the text tool's properties panel) — see `public/CLAUDE.md`.
 - Multi-page planners: add/duplicate/reorder/delete pages; US Letter or A4.
 - Save/Open projects; Export to a single print-ready multi-page PDF (300 DPI).
 - Summer-branded UI (coral/turquoise/sunshine-yellow on warm cream) with a

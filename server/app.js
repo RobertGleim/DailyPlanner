@@ -103,6 +103,15 @@ app.delete('/api/library/:id', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
+// ================= FONTS API =================
+
+app.get('/api/fonts', async (req, res, next) => {
+  try {
+    const items = await storage.listFonts();
+    res.json({ items });
+  } catch (e) { next(e); }
+});
+
 // ================= PROJECT API =================
 
 app.get('/api/projects', async (req, res, next) => {

@@ -25,8 +25,9 @@
           <span class="brand-word">Planner Studio</span>
         </div>
         <div class="toolbar-divider"></div>
-        <input id="projectName" class="project-name-input" value="Untitled Planner" />
-        <select id="pageSizeSelect" title="Page size">
+        <label for="projectName" class="sr-only">Project name</label>
+        <input id="projectName" class="project-name-input" value="Untitled Planner" placeholder="Project name" />
+        <select id="pageSizeSelect" title="Page size" aria-label="Page size">
           <option value="letter">US Letter (8.5×11in)</option>
           <option value="a4">A4</option>
         </select>
@@ -59,13 +60,45 @@
             <label class="tool-btn file-btn" data-icon="image">Upload Image
               <input type="file" id="imageUploadInput" accept="image/*" hidden />
             </label>
-            <label class="tool-btn file-btn" data-icon="palette">Set Page Background
-              <input type="file" id="backgroundUploadInput" accept="image/*" hidden />
-            </label>
           </div>
           <div class="sidebar-section">
-            <h4>Background color</h4>
-            <input type="color" id="bgColorPicker" value="#ffffff" />
+            <h4>Page Background</h4>
+            <div class="bg-type-chips">
+              <button class="chip active" data-bgtype="solid" type="button">Solid</button>
+              <button class="chip" data-bgtype="image" type="button">Image</button>
+              <button class="chip" data-bgtype="gradient" type="button">Gradient</button>
+            </div>
+
+            <div class="bg-subcontrols" id="bgSolidControls">
+              <input type="color" id="bgColorPicker" value="#ffffff" title="Background color" />
+            </div>
+
+            <div class="bg-subcontrols" id="bgImageControls" hidden>
+              <label class="tool-btn file-btn" data-icon="palette">Upload Background Image
+                <input type="file" id="backgroundUploadInput" accept="image/*" hidden />
+              </label>
+              <label class="checkbox-row"><input type="checkbox" id="bgTileToggle" /> Tile as repeating pattern</label>
+              <label for="bgImageOpacity">Opacity</label>
+              <input type="range" id="bgImageOpacity" min="0" max="100" value="100" />
+              <label for="bgImageTintColor">Tint color</label>
+              <input type="color" id="bgImageTintColor" value="#ff0000" />
+              <label for="bgImageTintIntensity">Tint intensity</label>
+              <input type="range" id="bgImageTintIntensity" min="0" max="100" value="0" />
+              <button class="tool-btn btn-danger full-width" id="removeBackgroundBtn" data-icon="trash">Remove Background</button>
+            </div>
+
+            <div class="bg-subcontrols" id="bgGradientControls" hidden>
+              <label for="bgGradientColor1">Color 1</label>
+              <input type="color" id="bgGradientColor1" value="#ffe0e0" />
+              <label for="bgGradientColor2">Color 2</label>
+              <input type="color" id="bgGradientColor2" value="#e0f0ff" />
+              <label for="bgGradientAngle">Direction</label>
+              <select id="bgGradientAngle" title="Gradient direction">
+                <option value="vertical">Vertical</option>
+                <option value="horizontal">Horizontal</option>
+                <option value="diagonal">Diagonal</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -76,7 +109,7 @@
               <label class="tool-btn file-btn" data-icon="plus">Upload to Library
                 <input type="file" id="libraryUploadInput" accept="image/*" hidden />
               </label>
-              <select id="libraryUploadCategory">
+              <select id="libraryUploadCategory" title="Asset category">
                 <option value="images">Image</option>
                 <option value="backgrounds">Background</option>
                 <option value="icons">Icon/Sticker</option>
@@ -98,15 +131,15 @@
         <div class="tab-panel" id="tab-generators">
           <div class="sidebar-section">
             <h4>Calendar Generator</h4>
-            <label>View</label>
-            <select id="calViewSelect">
+            <label for="calViewSelect">View</label>
+            <select id="calViewSelect" title="Calendar view">
               <option value="month">Month grid</option>
               <option value="week">Week strip</option>
             </select>
-            <label>Month</label>
-            <input type="month" id="calMonthInput" />
-            <label>Style</label>
-            <select id="calStyleSelect">
+            <label for="calMonthInput">Month</label>
+            <input type="text" id="calMonthInput" placeholder="MM-YYYY" title="Enter month in MM-YYYY format" />
+            <label for="calStyleSelect">Style</label>
+            <select id="calStyleSelect" title="Calendar style">
               <option value="minimal">Minimal</option>
               <option value="boxed">Boxed grid</option>
               <option value="dotted">Dotted</option>
@@ -116,20 +149,20 @@
 
           <div class="sidebar-section">
             <h4>Checklist / Habit Tracker</h4>
-            <label>Rows</label>
+            <label for="checklistRows">Rows</label>
             <input type="number" id="checklistRows" value="8" min="1" max="40" />
-            <label>Columns (habit tracker)</label>
+            <label for="checklistCols">Columns (habit tracker)</label>
             <input type="number" id="checklistCols" value="1" min="1" max="31" />
-            <label>Title</label>
+            <label for="checklistTitle">Title</label>
             <input type="text" id="checklistTitle" value="To Do Today" />
             <button class="tool-btn btn-accent" id="insertChecklistBtn" data-icon="checklist">Insert Checklist</button>
           </div>
 
           <div class="sidebar-section">
             <h4>Daily Schedule</h4>
-            <label>Start hour</label>
+            <label for="schedStart">Start hour</label>
             <input type="number" id="schedStart" value="6" min="0" max="23" />
-            <label>End hour</label>
+            <label for="schedEnd">End hour</label>
             <input type="number" id="schedEnd" value="21" min="1" max="24" />
             <button class="tool-btn btn-accent" id="insertScheduleBtn" data-icon="clock">Insert Hourly Schedule</button>
           </div>
@@ -148,7 +181,7 @@
             <button id="undoBtn" class="btn" data-icon="undo">Undo</button>
             <button id="redoBtn" class="btn" data-icon="redo">Redo</button>
           </div>
-          <span class="zoom-label" data-icon="zoom">Zoom</span>
+          <label for="zoomSlider" class="zoom-label" data-icon="zoom">Zoom</label>
           <input type="range" id="zoomSlider" min="40" max="150" value="70" />
         </div>
         <div class="canvas-scroll">
@@ -191,6 +224,7 @@
   <script src="/js/constants.js"></script>
   <script src="/js/icons.js"></script>
   <script src="/js/api.js"></script>
+  <script src="/js/font-loader.js"></script>
   <script src="/js/library-panel.js"></script>
   <script src="/js/generators.js"></script>
   <script src="/js/pages-manager.js"></script>

@@ -93,10 +93,29 @@ const CanvasEditor = {
   setBackgroundColor(color) {
     this.canvas.setBackgroundColor(color, () => this.canvas.renderAll());
     this.currentBackgroundImage = null;
+    this.currentBackgroundTiled = false;
     this.pushHistory();
   },
 
-  setBackgroundImageFromUrl(url) {
+  // { tile: true } sets the image as a repeating fabric.Pattern (via
+  // backgroundColor) instead of a single full-bleed backgroundImage.
+  setBackgroundImageFromUrl(url, { tile = false } = {}) {
+    this.currentBackgroundImage = url;
+    this.currentBackgroundTiled = tile;
+
+    if (tile) {
+      const imgEl = new Image();
+      imgEl.crossOrigin = 'anonymous';
+      imgEl.onload = () => {
+        const pattern = new fabric.Pattern({ source: imgEl, repeat: 'repeat' });
+        this.canvas.setBackgroundImage(null, () => {});
+        this.canvas.setBackgroundColor(pattern, () => this.canvas.renderAll());
+        this.pushHistory();
+      };
+      imgEl.src = url;
+      return;
+    }
+
     fabric.Image.fromURL(url, (img) => {
       img.set({
         originX: 'left', originY: 'top',
@@ -106,9 +125,48 @@ const CanvasEditor = {
         evented: false,
       });
       this.canvas.setBackgroundImage(img, () => this.canvas.renderAll());
-      this.currentBackgroundImage = url;
       this.pushHistory();
     }, { crossOrigin: 'anonymous' });
+  },
+
+  setBackgroundImageOpacity(opacity) {
+    if (!this.canvas.backgroundImage) return;
+    this.canvas.backgroundImage.opacity = opacity;
+    this.canvas.requestRenderAll();
+  },
+
+  setBackgroundImageTint(color, intensity) {
+    if (!this.canvas.backgroundImage) return;
+    tintFabricImage(this.canvas.backgroundImage, color, intensity);
+    this.canvas.requestRenderAll();
+  },
+
+  removeBackgroundImage() {
+    this.canvas.setBackgroundImage(null, () => {});
+    this.canvas.setBackgroundColor('#ffffff', () => this.canvas.renderAll());
+    this.currentBackgroundImage = null;
+    this.currentBackgroundTiled = false;
+    this.pushHistory();
+  },
+
+  setBackgroundGradient(color1, color2, angle) {
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+    const coordsByAngle = {
+      vertical: { x1: 0, y1: 0, x2: 0, y2: h },
+      horizontal: { x1: 0, y1: 0, x2: w, y2: 0 },
+      diagonal: { x1: 0, y1: 0, x2: w, y2: h },
+    };
+    const gradient = new fabric.Gradient({
+      type: 'linear',
+      coords: coordsByAngle[angle] || coordsByAngle.vertical,
+      colorStops: [{ offset: 0, color: color1 }, { offset: 1, color: color2 }],
+    });
+    this.canvas.setBackgroundImage(null, () => {});
+    this.canvas.setBackgroundColor(gradient, () => this.canvas.renderAll());
+    this.currentBackgroundImage = null;
+    this.currentBackgroundTiled = false;
+    this.pushHistory();
   },
 
   deleteSelected() {
@@ -139,13 +197,7 @@ const CanvasEditor = {
 
   applyImageTint(obj, color, intensity) {
     if (!obj || obj.type !== 'image') return;
-    obj.filters = (obj.filters || []).filter((f) => f.type !== 'BlendColor');
-    if (intensity > 0) {
-      obj.filters.push(new fabric.Image.filters.BlendColor({
-        color, mode: 'tint', alpha: intensity,
-      }));
-    }
-    obj.applyFilters();
+    tintFabricImage(obj, color, intensity);
     this.canvas.requestRenderAll();
   },
 
@@ -194,7 +246,10 @@ const CanvasEditor = {
     let rows = '';
     if (obj.type === 'textbox' || obj.type === 'text' || obj.type === 'i-text') {
       rows += this.propRow('Text', `<input type="text" id="propText" value="${(obj.text || '').replace(/"/g, '&quot;')}" />`);
-      rows += this.propRow('Font', `<select id="propFont">${FONT_CHOICES.map((f) => `<option value="${f}" ${obj.fontFamily === f ? 'selected' : ''}>${f}</option>`).join('')}</select>`);
+      rows += this.propRow('Font', `<div class="font-picker">
+        <input type="text" id="propFont" autocomplete="off" placeholder="Search fonts…" value="${(obj.fontFamily || '').replace(/"/g, '&quot;')}" />
+        <div id="propFontResults" class="font-picker-results" hidden></div>
+      </div>`);
       rows += this.propRow('Size', `<input type="number" id="propFontSize" value="${obj.fontSize || 20}" min="6" max="200" />`);
       rows += this.propRow('Color', `<input type="color" id="propFill" value="${toHex(obj.fill) || '#000000'}" />`);
     } else if (obj.type === 'rect' || obj.type === 'circle') {
@@ -228,7 +283,7 @@ const CanvasEditor = {
       if (el) el.addEventListener('input', handler);
     };
     bind('propText', (e) => { obj.set('text', e.target.value); this.canvas.requestRenderAll(); });
-    bind('propFont', (e) => { obj.set('fontFamily', e.target.value); this.canvas.requestRenderAll(); });
+    this.bindFontPicker(obj);
     bind('propFontSize', (e) => { obj.set('fontSize', Number(e.target.value)); this.canvas.requestRenderAll(); });
     bind('propFill', (e) => { obj.set('fill', e.target.value); this.canvas.requestRenderAll(); });
     bind('propStroke', (e) => { obj.set('stroke', e.target.value); this.canvas.requestRenderAll(); });
@@ -286,6 +341,62 @@ const CanvasEditor = {
 
   propRow(label, inputHtml) {
     return `<div class="prop-row"><label>${label}</label>${inputHtml}</div>`;
+  },
+
+  // Searchable combobox over the preloaded Google Fonts catalog (see
+  // FontLoader), with the 6 built-in system fonts pinned at the top of the
+  // unfiltered list as instant, zero-load defaults.
+  bindFontPicker(obj) {
+    const input = document.getElementById('propFont');
+    const results = document.getElementById('propFontResults');
+    if (!input || !results) return;
+
+    const catalogFamilies = (typeof FontLoader !== 'undefined' ? FontLoader.catalog : [])
+      .map((f) => f.family)
+      .filter((f) => !FONT_CHOICES.includes(f));
+    const MAX_RESULTS = 50;
+
+    const renderResults = (query) => {
+      const q = query.trim().toLowerCase();
+      const matches = q
+        ? [...FONT_CHOICES, ...catalogFamilies].filter((f) => f.toLowerCase().includes(q)).slice(0, MAX_RESULTS)
+        : [...FONT_CHOICES, ...catalogFamilies.slice(0, MAX_RESULTS - FONT_CHOICES.length)];
+
+      results.textContent = '';
+      if (!matches.length) {
+        const empty = document.createElement('div');
+        empty.className = 'font-picker-empty';
+        empty.textContent = 'No fonts match';
+        results.appendChild(empty);
+      } else {
+        matches.forEach((family) => {
+          const row = document.createElement('div');
+          row.className = 'font-picker-row';
+          row.textContent = family;
+          row.style.fontFamily = `'${family}'`;
+          row.addEventListener('mousedown', (e) => {
+            e.preventDefault(); // avoid input blur firing before the click registers
+            input.value = family;
+            results.hidden = true;
+            obj.set('fontFamily', family);
+            const done = () => this.canvas.requestRenderAll();
+            if (typeof FontLoader !== 'undefined') FontLoader.ensure(family).then(done);
+            else done();
+          });
+          results.appendChild(row);
+        });
+      }
+      results.hidden = false;
+
+      // Lazily load only the webfonts actually visible in this result set.
+      matches.forEach((family) => { if (typeof FontLoader !== 'undefined') FontLoader.ensure(family); });
+    };
+
+    input.addEventListener('focus', () => renderResults(''));
+    input.addEventListener('input', () => renderResults(input.value));
+    input.addEventListener('blur', () => {
+      setTimeout(() => { results.hidden = true; }, 150);
+    });
   },
 
   // -------- history --------
@@ -346,6 +457,18 @@ const CanvasEditor = {
     };
   },
 };
+
+// Shared by per-image tinting (properties panel) and background-image
+// tinting — applies/clears a BlendColor filter on any fabric.Image.
+function tintFabricImage(img, color, intensity) {
+  img.filters = (img.filters || []).filter((f) => f.type !== 'BlendColor');
+  if (intensity > 0) {
+    img.filters.push(new fabric.Image.filters.BlendColor({
+      color, mode: 'tint', alpha: intensity,
+    }));
+  }
+  img.applyFilters();
+}
 
 function toHex(color) {
   if (!color || typeof color !== 'string') return null;

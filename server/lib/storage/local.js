@@ -11,6 +11,15 @@ const LIBRARY_DIR = path.join(DATA_DIR, 'library');
 const LIBRARY_INDEX = path.join(LIBRARY_DIR, 'index.json');
 const LIBRARY_CATEGORIES = ['images', 'backgrounds', 'icons', 'borders'];
 
+// The ~1,800-family Google Fonts catalog (see scripts/seed-fonts.js) lives in
+// Supabase Storage only — too large to ship in this git-tracked local data
+// dir. Local dev proxies to Supabase when credentials are configured; with
+// no credentials, fall back to the same handful of system fonts the app
+// shipped with, so `npm start` still works fully offline.
+const FALLBACK_FONTS = [
+  'Helvetica', 'Georgia', 'Times New Roman', 'Courier New', 'Verdana', 'Trebuchet MS',
+].map((family) => ({ id: family.toLowerCase().replace(/\s+/g, '-'), family, category: 'system', url: null, weightRange: null }));
+
 [PROJECTS_DIR, LIBRARY_DIR, ...LIBRARY_CATEGORIES.map((c) => path.join(LIBRARY_DIR, c))]
   .forEach((dir) => fs.mkdirSync(dir, { recursive: true }));
 
@@ -71,6 +80,13 @@ module.exports = {
       if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
     } catch (e) { /* ignore */ }
     return item;
+  },
+
+  async listFonts() {
+    if (process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return require('./supabase').listFonts();
+    }
+    return FALLBACK_FONTS;
   },
 
   async listProjects() {
