@@ -86,8 +86,22 @@ const CanvasEditor = {
     }, { crossOrigin: 'anonymous' });
   },
 
-  addGroupObject(group) {
-    this.canvas.add(group).setActiveObject(group);
+  // Adds generator output (plain objects, not a fabric.Group — see
+  // generators.js) and selects them all together via an ActiveSelection so
+  // the whole block can still be moved as one unit right after insert.
+  // Side handles are hidden on that initial selection so even a resize
+  // right after insert stays proportional (corner handles only) instead of
+  // distorting text — once the user clicks away, each piece becomes a
+  // normal independently-editable object.
+  addGeneratedObjects(objects) {
+    this.suppressHistory = true;
+    objects.forEach((o) => this.canvas.add(o));
+    this.suppressHistory = false;
+    const selection = new fabric.ActiveSelection(objects, { canvas: this.canvas });
+    selection.setControlsVisibility({ ml: false, mr: false, mt: false, mb: false });
+    this.canvas.setActiveObject(selection);
+    this.canvas.requestRenderAll();
+    this.pushHistory();
   },
 
   setBackgroundColor(color) {

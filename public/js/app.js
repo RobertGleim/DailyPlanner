@@ -126,23 +126,23 @@
       const view = document.getElementById('calViewSelect').value;
       const monthValue = document.getElementById('calMonthInput').value;
       const style = document.getElementById('calStyleSelect').value;
-      const group = Generators.buildCalendar({ view, monthValue, style });
-      CanvasEditor.addGroupObject(group);
+      const objects = Generators.buildCalendar({ view, monthValue, style });
+      CanvasEditor.addGeneratedObjects(objects);
     });
 
     document.getElementById('insertChecklistBtn').addEventListener('click', () => {
       const rows = Number(document.getElementById('checklistRows').value) || 8;
       const cols = Number(document.getElementById('checklistCols').value) || 1;
       const title = document.getElementById('checklistTitle').value;
-      const group = Generators.buildChecklist({ rows, cols, title });
-      CanvasEditor.addGroupObject(group);
+      const objects = Generators.buildChecklist({ rows, cols, title });
+      CanvasEditor.addGeneratedObjects(objects);
     });
 
     document.getElementById('insertScheduleBtn').addEventListener('click', () => {
       const startHour = Number(document.getElementById('schedStart').value) || 6;
       const endHour = Number(document.getElementById('schedEnd').value) || 21;
-      const group = Generators.buildSchedule({ startHour, endHour });
-      CanvasEditor.addGroupObject(group);
+      const objects = Generators.buildSchedule({ startHour, endHour });
+      CanvasEditor.addGeneratedObjects(objects);
     });
   }
 

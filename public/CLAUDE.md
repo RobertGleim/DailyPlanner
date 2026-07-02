@@ -94,6 +94,31 @@ needed). If you ever swap storage providers, confirm the new one still sends
 permissive CORS headers on public asset URLs, or both this and existing
 library image loads will start failing under COEP.
 
+## Generator output convention (`js/generators.js`, `js/canvas-editor.js`)
+
+`Generators.buildCalendar`/`buildChecklist`/`buildSchedule` each return a
+**plain array of Fabric objects** — never a `fabric.Group`. Text objects
+they create must set `lockScalingX: true, lockScalingY: true` (hides that
+object's resize handles; its size can only change via the properties
+panel's Size field). Insertion goes through
+`CanvasEditor.addGeneratedObjects(objects)`, never `canvas.add()` directly —
+it adds the whole batch as one undo step and selects everything via a
+`fabric.ActiveSelection` with side handles hidden (`setControlsVisibility`),
+so the block still moves/resizes as one unit immediately after insert
+without distorting.
+
+This exists because wrapping generator output in a `fabric.Group` (the
+original implementation) broke two things at once: resizing a Group applies
+one affine transform to every child, so a side-handle drag gave
+`scaleX !== scaleY` and visibly stretched text glyphs; and
+`CanvasEditor.renderProperties()` has no `case` for `obj.type === 'group'`,
+so a selected Group only ever showed an Opacity slider — every line, text
+label, and border rect a generator produced was completely uneditable after
+insert (no way to recolor a divider line or delete a border). Keep future
+generators (and the planner-wizard/preset-template work described in the
+root `CLAUDE.md`) following this same array-of-plain-objects convention, or
+both bugs come back.
+
 ## Security note
 
 `library-panel.js`, `app.js`, and `pages-manager.js` render user-supplied
