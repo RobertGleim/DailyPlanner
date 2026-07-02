@@ -1,0 +1,23 @@
+#!/usr/bin/env sh
+
+changed=$(git diff --cached --name-only)
+
+touches_app=$(echo "$changed" | grep -E '^(server/|public/|api/|supabase/)' || true)
+touches_claude_md=$(echo "$changed" | grep -x 'CLAUDE.md' || true)
+
+if [ -n "$touches_app" ] && [ -z "$touches_claude_md" ]; then
+  echo ""
+  echo "This commit changes app code (server/, public/, api/, and/or supabase/)"
+  echo "but does not update CLAUDE.md."
+  echo ""
+  echo "CLAUDE.md documents this project's architecture and feature list for"
+  echo "future Claude Code sessions (and humans). If this change is user-facing"
+  echo "or structural, update CLAUDE.md before committing."
+  echo ""
+  echo "If this commit genuinely doesn't need a doc update, bypass with:"
+  echo "  git commit --no-verify"
+  echo ""
+  exit 1
+fi
+
+exit 0
