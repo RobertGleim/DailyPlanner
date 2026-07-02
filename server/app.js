@@ -29,7 +29,18 @@ if (storage.LIBRARY_DIR) {
   app.use('/library-files', express.static(storage.LIBRARY_DIR));
 }
 
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20 * 1024 * 1024 } });
+const ALLOWED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml'];
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 8 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (ALLOWED_IMAGE_TYPES.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`Unsupported file type: ${file.mimetype}. Only images are allowed.`));
+    }
+  },
+});
 
 // ================= LIBRARY API =================
 
@@ -40,7 +51,12 @@ app.get('/api/library', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-app.post('/api/library/upload', upload.single('file'), async (req, res, next) => {
+app.post('/api/library/upload', (req, res, next) => {
+  upload.single('file')(req, res, (err) => {
+    if (err) return res.status(400).json({ error: err.message });
+    next();
+  });
+}, async (req, res, next) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     const item = await storage.uploadLibraryAsset({

@@ -160,6 +160,35 @@ Supabase account needed.
 6. Connect the GitHub repo to a new Vercel project (Vercel auto-detects
    `vercel.json`) and deploy.
 
+## Security posture (audited 2026-07-02)
+
+**No authentication exists on any `/api/*` route.** Anyone with the deployed
+URL can read/create/update/delete any project or library asset — there's no
+per-user scoping at all. The intended fix is **Vercel Deployment Protection**
+(Settings → Deployment Protection in the Vercel dashboard — a Pro-plan
+feature, gates the whole app including `/api/*` behind a password before any
+request reaches the code). This is a dashboard setting, not something in
+this repo — confirm it's actually enabled before treating this app as
+private. If you're on the Hobby plan, this protection is not active and the
+live URL should be treated as fully public.
+
+Library uploads are restricted to image MIME types
+(`png`/`jpeg`/`gif`/`webp`/`svg`) at up to 8MB via a multer `fileFilter` in
+`server/app.js` — this closes the "anonymous open file host" version of the
+no-auth risk, but doesn't address the underlying missing-auth issue above.
+
+Known, accepted-for-now gaps (low severity, not fixed):
+- Error responses return raw `err.message` to the client (`server/app.js`'s
+  final error-handling middleware) — no credential leakage, but does expose
+  backend implementation details.
+- No rate limiting on any route — repeated calls could run up Supabase usage
+  with nothing in the way.
+
+Confirmed clean as of this audit: no secrets in git history or any tracked
+file (verified via full `git log --all -p` scan), `.env`/`.vercel` correctly
+gitignored, `npm audit` reports 0 known vulnerabilities, no path traversal
+in the upload/delete code paths.
+
 ## Notes
 
 - All frontend API calls (`public/js/api.js`) use relative `/api/...` paths,
