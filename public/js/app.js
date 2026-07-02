@@ -119,19 +119,36 @@
     projects.forEach((p) => {
       const row = document.createElement('div');
       row.className = 'project-row';
-      row.innerHTML = `
-        <img src="${p.thumbnail || ''}" />
-        <div class="proj-meta">
-          <div class="name">${p.name}</div>
-          <div class="sub">${p.pageCount} page(s) · ${PAGE_SIZES[p.pageSize]?.name || p.pageSize} · updated ${new Date(p.updatedAt).toLocaleString()}</div>
-        </div>
-        <button data-id="${p.id}">🗑</button>`;
+
+      const img = document.createElement('img');
+      img.src = p.thumbnail || '';
+
+      const meta = document.createElement('div');
+      meta.className = 'proj-meta';
+      const name = document.createElement('div');
+      name.className = 'name';
+      name.textContent = p.name;
+      const sub = document.createElement('div');
+      sub.className = 'sub';
+      sub.textContent = `${p.pageCount} page(s) · ${PAGE_SIZES[p.pageSize]?.name || p.pageSize} · updated ${new Date(p.updatedAt).toLocaleString()}`;
+      meta.appendChild(name);
+      meta.appendChild(sub);
+
+      const delBtn = document.createElement('button');
+      delBtn.dataset.id = p.id;
+      delBtn.setAttribute('aria-label', `Delete ${p.name}`);
+      delBtn.innerHTML = icon('trash', { size: 14 });
+
+      row.appendChild(img);
+      row.appendChild(meta);
+      row.appendChild(delBtn);
+
       row.addEventListener('click', async (e) => {
         if (e.target.tagName === 'BUTTON') return;
         await loadProject(p.id);
         overlay.hidden = true;
       });
-      row.querySelector('button').addEventListener('click', async (e) => {
+      delBtn.addEventListener('click', async (e) => {
         e.stopPropagation();
         await Api.deleteProject(p.id);
         const { projects: refreshed } = await Api.listProjects();

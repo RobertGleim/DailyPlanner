@@ -3,9 +3,26 @@
 This file is the living architecture/feature doc for this project. **Update
 it whenever you ship a feature, change the data model, or change how the app
 is deployed.** A git pre-commit hook (`.husky/pre-commit`) blocks commits
-that touch `server/`, `public/`, `api/`, or `supabase/` without also touching
-this file — bypass with `git commit --no-verify` only when a change genuinely
-doesn't need a doc update (e.g. a pure typo fix).
+that touch `server/`, `public/`, `api/`, `supabase/`, or `scripts/` without
+also touching that directory's own `CLAUDE.md` (or this root one) — bypass
+with `git commit --no-verify` only when a change genuinely doesn't need a
+doc update (e.g. a pure typo fix).
+
+## Per-path docs
+
+Each top-level directory has its own `CLAUDE.md` with path-local detail —
+Claude Code loads the nearest one automatically when working inside that
+directory, so this root file stays a high-level index instead of growing
+unbounded:
+
+- [`public/CLAUDE.md`](public/CLAUDE.md) — frontend file map, design tokens/
+  brand palette, the self-hosted icon system, the no-external-CDN/COEP rule.
+- [`server/CLAUDE.md`](server/CLAUDE.md) — Express app structure, the
+  storage-driver interface contract.
+- [`api/CLAUDE.md`](api/CLAUDE.md) — the Vercel serverless entry point.
+- [`supabase/CLAUDE.md`](supabase/CLAUDE.md) — schema/bucket notes, where
+  credentials live.
+- [`scripts/CLAUDE.md`](scripts/CLAUDE.md) — standalone script conventions.
 
 ## Agent/subagent rule
 
@@ -108,6 +125,16 @@ planner-studio/
   border decorations) plus user uploads, shared across all planners.
 - Multi-page planners: add/duplicate/reorder/delete pages; US Letter or A4.
 - Save/Open projects; Export to a single print-ready multi-page PDF (300 DPI).
+- Summer-branded UI (coral/turquoise/sunshine-yellow on warm cream) with a
+  self-hosted SVG icon system — see `public/CLAUDE.md`.
+
+## Live deployment
+
+- Production: https://daily-planner-umber.vercel.app (Vercel project
+  `daily-planner`, team `robert-gleims-projects`)
+- Source: https://github.com/RobertGleim/DailyPlanner (`main` branch,
+  auto-deploys on push via Vercel's GitHub integration)
+- Data: Supabase project created 2026-07-02 (see `supabase/CLAUDE.md`)
 
 ## Local development
 

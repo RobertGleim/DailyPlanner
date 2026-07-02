@@ -43,14 +43,26 @@ const LibraryPanel = {
       const el = document.createElement('div');
       el.className = 'library-item';
       el.title = item.name;
-      el.innerHTML = `<img src="${item.url}" alt="${item.name}" draggable="false" />
-        <button class="del-btn" data-id="${item.id}">✕</button>`;
-      el.querySelector('img').addEventListener('click', () => this.onInsertAsset(item));
-      el.querySelector('.del-btn').addEventListener('click', async (ev) => {
+
+      const img = document.createElement('img');
+      img.src = item.url;
+      img.alt = item.name;
+      img.draggable = false;
+      img.addEventListener('click', () => this.onInsertAsset(item));
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'del-btn';
+      delBtn.dataset.id = item.id;
+      delBtn.setAttribute('aria-label', `Delete ${item.name}`);
+      delBtn.innerHTML = icon('close', { size: 11 });
+      delBtn.addEventListener('click', async (ev) => {
         ev.stopPropagation();
         await Api.deleteLibraryAsset(item.id);
         await this.refresh();
       });
+
+      el.appendChild(img);
+      el.appendChild(delBtn);
       this.grid.appendChild(el);
     });
   },

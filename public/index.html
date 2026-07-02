@@ -20,7 +20,11 @@
     <!-- TOP TOOLBAR -->
     <header class="toolbar">
       <div class="toolbar-left">
-        <span class="logo">🗓️ Planner Studio</span>
+        <div class="brand">
+          <span class="brand-mark" data-icon="brand"></span>
+          <span class="brand-word">Planner Studio</span>
+        </div>
+        <div class="toolbar-divider"></div>
         <input id="projectName" class="project-name-input" value="Untitled Planner" />
         <select id="pageSizeSelect" title="Page size">
           <option value="letter">US Letter (8.5×11in)</option>
@@ -28,10 +32,10 @@
         </select>
       </div>
       <div class="toolbar-right">
-        <button id="newProjectBtn" class="btn">New</button>
-        <button id="openProjectBtn" class="btn">Open…</button>
-        <button id="saveProjectBtn" class="btn btn-primary">Save</button>
-        <button id="exportPdfBtn" class="btn btn-accent">Export PDF</button>
+        <button id="newProjectBtn" class="btn" data-icon="new">New</button>
+        <button id="openProjectBtn" class="btn" data-icon="folder-open">Open…</button>
+        <button id="saveProjectBtn" class="btn btn-primary" data-icon="save">Save</button>
+        <button id="exportPdfBtn" class="btn btn-accent" data-icon="download">Export PDF</button>
       </div>
     </header>
 
@@ -46,89 +50,105 @@
         </div>
 
         <div class="tab-panel active" id="tab-elements">
-          <h4>Add to page</h4>
-          <button class="tool-btn" id="addTextBtn">🔤 Text</button>
-          <button class="tool-btn" id="addLineBtn">➖ Line</button>
-          <button class="tool-btn" id="addRectBtn">▭ Rectangle</button>
-          <button class="tool-btn" id="addCircleBtn">◯ Circle</button>
-          <label class="tool-btn file-btn">🖼️ Upload Image
-            <input type="file" id="imageUploadInput" accept="image/*" hidden />
-          </label>
-          <label class="tool-btn file-btn">🎨 Set Page Background
-            <input type="file" id="backgroundUploadInput" accept="image/*" hidden />
-          </label>
-          <h4>Background color</h4>
-          <input type="color" id="bgColorPicker" value="#ffffff" />
+          <div class="sidebar-section">
+            <h4>Add to page</h4>
+            <button class="tool-btn" id="addTextBtn" data-icon="text">Text</button>
+            <button class="tool-btn" id="addLineBtn" data-icon="line">Line</button>
+            <button class="tool-btn" id="addRectBtn" data-icon="rectangle">Rectangle</button>
+            <button class="tool-btn" id="addCircleBtn" data-icon="circle">Circle</button>
+            <label class="tool-btn file-btn" data-icon="image">Upload Image
+              <input type="file" id="imageUploadInput" accept="image/*" hidden />
+            </label>
+            <label class="tool-btn file-btn" data-icon="palette">Set Page Background
+              <input type="file" id="backgroundUploadInput" accept="image/*" hidden />
+            </label>
+          </div>
+          <div class="sidebar-section">
+            <h4>Background color</h4>
+            <input type="color" id="bgColorPicker" value="#ffffff" />
+          </div>
         </div>
 
         <div class="tab-panel" id="tab-library">
-          <h4>Asset Library</h4>
-          <div class="library-upload">
-            <label class="tool-btn file-btn">＋ Upload to Library
-              <input type="file" id="libraryUploadInput" accept="image/*" hidden />
-            </label>
-            <select id="libraryUploadCategory">
-              <option value="images">Image</option>
-              <option value="backgrounds">Background</option>
-              <option value="icons">Icon/Sticker</option>
-              <option value="borders">Page Border</option>
-            </select>
+          <div class="sidebar-section">
+            <h4>Asset Library</h4>
+            <div class="library-upload">
+              <label class="tool-btn file-btn" data-icon="plus">Upload to Library
+                <input type="file" id="libraryUploadInput" accept="image/*" hidden />
+              </label>
+              <select id="libraryUploadCategory">
+                <option value="images">Image</option>
+                <option value="backgrounds">Background</option>
+                <option value="icons">Icon/Sticker</option>
+                <option value="borders">Page Border</option>
+              </select>
+            </div>
+            <div class="library-filter">
+              <button class="chip active" data-cat="all">All</button>
+              <button class="chip" data-cat="images">Images</button>
+              <button class="chip" data-cat="backgrounds">Backgrounds</button>
+              <button class="chip" data-cat="icons">Icons</button>
+              <button class="chip" data-cat="borders">Page Borders</button>
+            </div>
+            <p class="callout">Page Borders decorate the top/side/corner of a page and place onto the canvas as a regular image — resize or reposition them like any element.</p>
+            <div id="libraryGrid" class="library-grid"></div>
           </div>
-          <div class="library-filter">
-            <button class="chip active" data-cat="all">All</button>
-            <button class="chip" data-cat="images">Images</button>
-            <button class="chip" data-cat="backgrounds">Backgrounds</button>
-            <button class="chip" data-cat="icons">Icons</button>
-            <button class="chip" data-cat="borders">Page Borders</button>
-          </div>
-          <p class="hint" style="margin: 4px 0 8px;">Page Borders decorate the top/side/corner of a page and place onto the canvas as a regular image — resize or reposition them like any element.</p>
-          <div id="libraryGrid" class="library-grid"></div>
         </div>
 
         <div class="tab-panel" id="tab-generators">
-          <h4>Calendar Generator</h4>
-          <label>View</label>
-          <select id="calViewSelect">
-            <option value="month">Month grid</option>
-            <option value="week">Week strip</option>
-          </select>
-          <label>Month</label>
-          <input type="month" id="calMonthInput" />
-          <label>Style</label>
-          <select id="calStyleSelect">
-            <option value="minimal">Minimal</option>
-            <option value="boxed">Boxed grid</option>
-            <option value="dotted">Dotted</option>
-          </select>
-          <button class="tool-btn btn-accent" id="insertCalendarBtn">＋ Insert Calendar</button>
+          <div class="sidebar-section">
+            <h4>Calendar Generator</h4>
+            <label>View</label>
+            <select id="calViewSelect">
+              <option value="month">Month grid</option>
+              <option value="week">Week strip</option>
+            </select>
+            <label>Month</label>
+            <input type="month" id="calMonthInput" />
+            <label>Style</label>
+            <select id="calStyleSelect">
+              <option value="minimal">Minimal</option>
+              <option value="boxed">Boxed grid</option>
+              <option value="dotted">Dotted</option>
+            </select>
+            <button class="tool-btn btn-accent" id="insertCalendarBtn" data-icon="calendar">Insert Calendar</button>
+          </div>
 
-          <h4>Checklist / Habit Tracker</h4>
-          <label>Rows</label>
-          <input type="number" id="checklistRows" value="8" min="1" max="40" />
-          <label>Columns (habit tracker)</label>
-          <input type="number" id="checklistCols" value="1" min="1" max="31" />
-          <label>Title</label>
-          <input type="text" id="checklistTitle" value="To Do Today" />
-          <button class="tool-btn btn-accent" id="insertChecklistBtn">＋ Insert Checklist</button>
+          <div class="sidebar-section">
+            <h4>Checklist / Habit Tracker</h4>
+            <label>Rows</label>
+            <input type="number" id="checklistRows" value="8" min="1" max="40" />
+            <label>Columns (habit tracker)</label>
+            <input type="number" id="checklistCols" value="1" min="1" max="31" />
+            <label>Title</label>
+            <input type="text" id="checklistTitle" value="To Do Today" />
+            <button class="tool-btn btn-accent" id="insertChecklistBtn" data-icon="checklist">Insert Checklist</button>
+          </div>
 
-          <h4>Daily Schedule</h4>
-          <label>Start hour</label>
-          <input type="number" id="schedStart" value="6" min="0" max="23" />
-          <label>End hour</label>
-          <input type="number" id="schedEnd" value="21" min="1" max="24" />
-          <button class="tool-btn btn-accent" id="insertScheduleBtn">＋ Insert Hourly Schedule</button>
+          <div class="sidebar-section">
+            <h4>Daily Schedule</h4>
+            <label>Start hour</label>
+            <input type="number" id="schedStart" value="6" min="0" max="23" />
+            <label>End hour</label>
+            <input type="number" id="schedEnd" value="21" min="1" max="24" />
+            <button class="tool-btn btn-accent" id="insertScheduleBtn" data-icon="clock">Insert Hourly Schedule</button>
+          </div>
         </div>
       </aside>
 
       <!-- CENTER CANVAS -->
       <main class="canvas-area">
         <div class="canvas-toolbar">
-          <button id="deleteSelectedBtn" class="btn btn-danger">Delete Selected</button>
-          <button id="bringForwardBtn" class="btn">Forward</button>
-          <button id="sendBackwardBtn" class="btn">Backward</button>
-          <button id="undoBtn" class="btn">Undo</button>
-          <button id="redoBtn" class="btn">Redo</button>
-          <span class="zoom-label">Zoom</span>
+          <button id="deleteSelectedBtn" class="btn btn-danger" data-icon="trash">Delete Selected</button>
+          <div class="toolbar-group">
+            <button id="bringForwardBtn" class="btn" data-icon="forward">Forward</button>
+            <button id="sendBackwardBtn" class="btn" data-icon="backward">Backward</button>
+          </div>
+          <div class="toolbar-group">
+            <button id="undoBtn" class="btn" data-icon="undo">Undo</button>
+            <button id="redoBtn" class="btn" data-icon="redo">Redo</button>
+          </div>
+          <span class="zoom-label" data-icon="zoom">Zoom</span>
           <input type="range" id="zoomSlider" min="40" max="150" value="70" />
         </div>
         <div class="canvas-scroll">
@@ -138,13 +158,17 @@
 
       <!-- RIGHT SIDEBAR: PROPERTIES + PAGES -->
       <aside class="sidebar sidebar-right">
-        <h4>Properties</h4>
-        <div id="propertiesPanel" class="properties-panel">
-          <p class="hint">Select an element on the canvas to edit its properties.</p>
+        <div class="sidebar-section">
+          <h4>Properties</h4>
+          <div id="propertiesPanel" class="properties-panel">
+            <p class="hint">Select an element on the canvas to edit its properties.</p>
+          </div>
         </div>
-        <h4>Pages</h4>
-        <div id="pagesList" class="pages-list"></div>
-        <button id="addPageBtn" class="btn btn-primary full-width">＋ Add Page</button>
+        <div class="sidebar-section">
+          <h4>Pages</h4>
+          <div id="pagesList" class="pages-list"></div>
+          <button id="addPageBtn" class="btn btn-primary full-width" data-icon="plus">Add Page</button>
+        </div>
       </aside>
 
     </div>
@@ -155,7 +179,7 @@
     <div class="modal">
       <div class="modal-header">
         <h3 id="modalTitle">Open Project</h3>
-        <button id="modalCloseBtn" class="btn">✕</button>
+        <button id="modalCloseBtn" class="btn" data-icon="close" aria-label="Close"></button>
       </div>
       <div id="modalBody" class="modal-body"></div>
     </div>
@@ -165,6 +189,7 @@
   <script src="/vendor/jspdf.umd.min.js"></script>
   <script type="module" src="/js/bg-removal-module.js"></script>
   <script src="/js/constants.js"></script>
+  <script src="/js/icons.js"></script>
   <script src="/js/api.js"></script>
   <script src="/js/library-panel.js"></script>
   <script src="/js/generators.js"></script>

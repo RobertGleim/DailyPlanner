@@ -216,10 +216,10 @@ const CanvasEditor = {
     rows += this.propRow('Opacity', `<input type="number" id="propOpacity" value="${Math.round((obj.opacity ?? 1) * 100)}" min="0" max="100" />`);
 
     if (obj.type === 'image') {
-      rows += `<button id="removeBgBtn" class="tool-btn btn-accent full-width" style="margin-top:10px;">✂️ Remove Background</button>`;
+      rows += `<button id="removeBgBtn" class="tool-btn btn-accent full-width" style="margin-top:10px;">${icon('scissors')} Remove Background</button>`;
       rows += `<p id="bgStatusMsg" class="hint" style="margin-top:6px;"></p>`;
     }
-    rows += `<button id="deletePropBtn" class="tool-btn btn-danger full-width" style="margin-top:6px;">🗑 Delete Element</button>`;
+    rows += `<button id="deletePropBtn" class="tool-btn btn-danger full-width" style="margin-top:6px;">${icon('trash')} Delete Element</button>`;
 
     panel.innerHTML = rows;
 
@@ -259,7 +259,7 @@ const CanvasEditor = {
         removeBgBtn.disabled = true;
         this.removeBackgroundOnSelected((status, payload) => {
           if (status === 'start') {
-            removeBgBtn.textContent = '⏳ Removing background…';
+            removeBgBtn.innerHTML = `${icon('clock')} Removing background…`;
             if (statusMsg) statusMsg.textContent = 'First use downloads the AI model (one-time, needs internet). This can take up to a minute.';
           } else if (status === 'progress' && payload) {
             if (statusMsg && payload.total) {
@@ -270,7 +270,7 @@ const CanvasEditor = {
             this.renderProperties();
           } else if (status === 'error') {
             removeBgBtn.disabled = false;
-            removeBgBtn.textContent = '✂️ Remove Background';
+            removeBgBtn.innerHTML = `${icon('scissors')} Remove Background`;
             if (statusMsg) statusMsg.textContent = payload || 'Something went wrong.';
             showToast('Background removal failed');
           }

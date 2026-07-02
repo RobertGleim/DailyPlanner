@@ -70,8 +70,8 @@ const PagesManager = {
         <img src="${page.thumbnail || ''}" alt="Page ${i + 1}" />
         <div class="page-meta">Page ${i + 1}</div>
         <div class="page-actions">
-          <button class="dup-btn" title="Duplicate">⧉</button>
-          <button class="del-btn" title="Delete">🗑</button>
+          <button class="dup-btn" title="Duplicate" aria-label="Duplicate page ${i + 1}">${icon('duplicate', { size: 14 })}</button>
+          <button class="del-btn" title="Delete" aria-label="Delete page ${i + 1}">${icon('trash', { size: 14 })}</button>
         </div>`;
       row.addEventListener('click', (e) => {
         if (e.target.closest('.page-actions')) return;
