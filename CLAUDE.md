@@ -30,6 +30,35 @@ unbounded:
 asking the user first.** Before using the Agent tool or Skill tool, state
 what you want to run and why, and wait for explicit approval. No exceptions.
 
+## Dev tooling: graphify knowledge graph
+
+This repo's codebase is graphed by [graphify](https://github.com/safishamsi/graphify)
+(a Claude Code skill + CLI, triggered by `/graphify`) — purely a dev/AI-assistant
+aid for understanding this codebase, not an app feature end users see. Output
+(`graph.html` interactive viz, `GRAPH_REPORT.md` plain-language summary,
+`graph.json` raw graph) lives in `graphify-out/`, which is **gitignored** —
+it's regenerated, not committed, same as `node_modules/`.
+
+- **Kept fresh automatically**: `.husky/post-commit` runs `graphify update .`
+  (fast, no-LLM incremental re-extraction) after every commit. It never
+  blocks a commit — failures are only logged.
+- **Force a full rebuild** (e.g. after a large refactor, or for richer
+  INFERRED edges) by re-invoking the skill: `/graphify` or `/graphify --mode
+  deep`.
+- **`.graphifyignore`** (gitignore-style syntax) excludes content that isn't
+  meaningful project code from the graph: `server/data/library/` (381
+  preloaded binary assets — backgrounds/icons/borders, not conceptually
+  rich), `public/vendor/` (third-party bundled libraries — Fabric.js, jsPDF,
+  ONNX runtime, bg-removal engine — see `public/CLAUDE.md`), and various
+  tool-local/machine-local dirs (`.husky/_/`, `.vercel/`,
+  `.claude/settings.local.json`, `.playwright-mcp/`, `.serena/`). If you add
+  a new vendored dependency or generated-binary-asset directory, add it here
+  too, or a future rebuild will burn time/tokens re-graphing it.
+- Ask questions about the codebase via `/graphify query "<question>"` (or
+  just ask Claude Code directly — the `graphify` skill treats
+  natural-language codebase questions as a query against the existing graph
+  automatically when `graphify-out/graph.json` exists).
+
 ## What this app is
 
 A full-stack app for designing custom printable/digital daily, weekly, and

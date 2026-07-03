@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# Keeps graphify-out/'s knowledge graph in sync with the codebase after every
+# commit. Runs the lightweight, no-LLM incremental re-extraction (`graphify
+# update`) rather than a full rebuild, so it stays fast enough for a git hook.
+# The commit has already succeeded by the time a post-commit hook runs, so
+# this never blocks it - failures are only logged.
+if command -v graphify >/dev/null 2>&1; then
+  graphify update . >/dev/null 2>&1 || echo "graphify update failed - run 'graphify update .' manually to inspect"
+fi
+
+exit 0

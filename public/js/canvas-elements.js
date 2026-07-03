@@ -76,7 +76,24 @@ Object.assign(CanvasEditor, {
     selection.setCoords();
     this.canvas.setActiveObject(selection);
     this.suppressHistory = false;
-    this.canvas.requestRenderAll();
+    // selection:updated fired above while suppressHistory was still true, so
+    // onSelectionChanged's renderProperties() call was a no-op — re-fire it
+    // manually so the Properties panel switches to GroupEditor's bulk-edit
+    // fields for the new group immediately, instead of only updating on the
+    // user's next click.
+    this.renderProperties();
+    // Synchronous, unconditional repaint right after adding a whole batch —
+    // requestRenderAll() only schedules a paint on the next animation frame,
+    // which leaves a brief async gap after a multi-object insert.
+    this.canvas.renderAll();
+    // Belt-and-suspenders follow-up repaint one frame later — a
+    // live-confirmed bug had the synchronous renderAll() above still leave
+    // a freshly-inserted generator batch unpainted until some later
+    // interaction (e.g. clicking its own layer row) forced a render, same
+    // symptom/class as the "Guaranteed immediate paint" fix elsewhere in
+    // this method; the exact Fabric-internal trigger wasn't pinned down, so
+    // this second, next-frame render guards against it unconditionally.
+    requestAnimationFrame(() => this.canvas.renderAll());
     this.pushHistory();
     this.notifyLayersChange();
   },

@@ -13,3 +13,6 @@ npm-debug.log*
 # user-generated saved planner projects (not shipped app content)
 server/data/projects/*.json
 !server/data/projects/.gitkeep
+
+# graphify knowledge-graph output (regenerated locally/via .husky/post-commit)
+graphify-out/

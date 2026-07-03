@@ -317,6 +317,45 @@ parsed date string. An earlier version used a free-text "MM-YYYY" field
 whose label didn't match its actual parse order (year-then-month), silently
 producing garbage dates; don't reintroduce a string-format date field here.
 
+**Guaranteed immediate paint after a batch mutation**: `addGeneratedObjects`
+and `regenerate()` both end with `canvas.renderAll()` (synchronous,
+unconditional) rather than `canvas.requestRenderAll()` (which only
+schedules a paint on the next animation frame) — a real, live-confirmed bug
+had freshly-inserted generator output sit unpainted in `canvas.getObjects()`
+until some later interaction (e.g. clicking its own layer row) forced a
+render. The exact mechanism was never conclusively pinned down (Fabric's own
+render-scheduling code in `public/vendor/fabric.min.js` reads as an
+unmodified, standard implementation), but forcing a synchronous repaint
+right after a multi-object batch removes the async/rAF gap as a variable
+entirely, at negligible cost since this only runs on an infrequent user
+action. If a similar "added objects don't show up" bug resurfaces elsewhere,
+apply the same swap at that call site before assuming it's a positioning bug.
+
+**Vendored Fabric.js has one confirmed hand-fixed typo**: `public/vendor/fabric.min.js`'s
+`_setTextStyles` originally read `t.textBaseline="alphabetical"` — the real
+upstream Fabric 5.1.0 source uses the correctly-spelled `'alphabetic'`. This
+was patched in place (single string replacement, verified as the only
+occurrence). It fired a console warning on every text render but, per the
+Canvas 2D spec, an invalid `textBaseline` enum value is silently ignored
+rather than thrown, so it wasn't actually corrupting rendering — confirmed
+live by the fact that text rendered correctly both before and after the
+patch. If this vendor file is ever re-downloaded/replaced, don't
+reintroduce this typo, and don't assume a fresh copy is pristine either —
+this one was corrupted from the very first commit despite version-labeling
+itself `5.1.0`.
+
+**Field-row labels are associated with their control.** `propRow(label,
+inputHtml, forId)` in both `properties-panel.js` and `group-editor.js`
+(matching, independently-maintained copies — see that section's own
+top-of-file comment for why) takes a third argument, the target field's
+`id`, and renders `<label for="${forId}">` instead of a bare `<label>`. Every
+call site passes the same id string already embedded in its `inputHtml`.
+`colorRow()` (`group-editor.js`) forwards its own `id` parameter through
+automatically. When adding a new field row anywhere in either file, always
+pass the third argument — an accessibility checker will flag any row that
+doesn't (a real "label not associated with a form field" finding surfaced
+exactly this gap across 12 existing rows).
+
 ## Shared font-picker (`FontLoader.attachPicker`, `js/font-loader.js`)
 
 The searchable font combobox (used by the properties panel's Font field and

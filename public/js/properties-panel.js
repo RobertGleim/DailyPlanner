@@ -21,30 +21,30 @@ Object.assign(CanvasEditor, {
 
     let rows = '';
     if (obj.type === 'textbox' || obj.type === 'text' || obj.type === 'i-text') {
-      rows += this.propRow('Text', `<input type="text" id="propText" value="${(obj.text || '').replace(/"/g, '&quot;')}" />`);
+      rows += this.propRow('Text', `<input type="text" id="propText" value="${(obj.text || '').replace(/"/g, '&quot;')}" />`, 'propText');
       rows += this.propRow('Font', `<div class="font-picker">
         <input type="text" id="propFont" autocomplete="off" placeholder="Search fonts…" value="${(obj.fontFamily || '').replace(/"/g, '&quot;')}" />
         <div id="propFontResults" class="font-picker-results" hidden></div>
-      </div>`);
-      rows += this.propRow('Size', `<input type="number" id="propFontSize" value="${obj.fontSize || 20}" min="6" max="200" />`);
-      rows += this.propRow('Color', `<input type="color" id="propFill" value="${toHex(obj.fill) || '#000000'}" />`);
+      </div>`, 'propFont');
+      rows += this.propRow('Size', `<input type="number" id="propFontSize" value="${obj.fontSize || 20}" min="6" max="200" />`, 'propFontSize');
+      rows += this.propRow('Color', `<input type="color" id="propFill" value="${toHex(obj.fill) || '#000000'}" />`, 'propFill');
     } else if (obj.type === 'rect' || obj.type === 'circle') {
-      rows += this.propRow('Fill', `<input type="color" id="propFill" value="${toHex(obj.fill) || '#ffffff'}" />`);
-      rows += this.propRow('Stroke', `<input type="color" id="propStroke" value="${toHex(obj.stroke) || '#000000'}" />`);
-      rows += this.propRow('Stroke width', `<input type="number" id="propStrokeWidth" value="${obj.strokeWidth || 1}" min="0" max="30" />`);
+      rows += this.propRow('Fill', `<input type="color" id="propFill" value="${toHex(obj.fill) || '#ffffff'}" />`, 'propFill');
+      rows += this.propRow('Stroke', `<input type="color" id="propStroke" value="${toHex(obj.stroke) || '#000000'}" />`, 'propStroke');
+      rows += this.propRow('Stroke width', `<input type="number" id="propStrokeWidth" value="${obj.strokeWidth || 1}" min="0" max="30" />`, 'propStrokeWidth');
     } else if (obj.type === 'line') {
-      rows += this.propRow('Color', `<input type="color" id="propStroke" value="${toHex(obj.stroke) || '#000000'}" />`);
-      rows += this.propRow('Thickness', `<input type="number" id="propStrokeWidth" value="${obj.strokeWidth || 1}" min="1" max="30" />`);
+      rows += this.propRow('Color', `<input type="color" id="propStroke" value="${toHex(obj.stroke) || '#000000'}" />`, 'propStroke');
+      rows += this.propRow('Thickness', `<input type="number" id="propStrokeWidth" value="${obj.strokeWidth || 1}" min="1" max="30" />`, 'propStrokeWidth');
     } else if (obj.type === 'image') {
       const existingTint = (obj.filters || []).find((f) => f.type === 'BlendColor');
       const w = Math.round(obj.getScaledWidth());
       const h = Math.round(obj.getScaledHeight());
-      rows += this.propRow('Width (px)', `<input type="number" id="propWidth" value="${w}" min="10" max="3000" />`);
-      rows += this.propRow('Height (px)', `<input type="number" id="propHeight" value="${h}" min="10" max="3000" />`);
-      rows += this.propRow('Tint color', `<input type="color" id="propTintColor" value="${existingTint ? existingTint.color : '#ff0000'}" />`);
-      rows += this.propRow('Tint intensity', `<input type="number" id="propTintIntensity" value="${existingTint ? Math.round(existingTint.alpha * 100) : 0}" min="0" max="100" />`);
+      rows += this.propRow('Width (px)', `<input type="number" id="propWidth" value="${w}" min="10" max="3000" />`, 'propWidth');
+      rows += this.propRow('Height (px)', `<input type="number" id="propHeight" value="${h}" min="10" max="3000" />`, 'propHeight');
+      rows += this.propRow('Tint color', `<input type="color" id="propTintColor" value="${existingTint ? existingTint.color : '#ff0000'}" />`, 'propTintColor');
+      rows += this.propRow('Tint intensity', `<input type="number" id="propTintIntensity" value="${existingTint ? Math.round(existingTint.alpha * 100) : 0}" min="0" max="100" />`, 'propTintIntensity');
     }
-    rows += this.propRow('Opacity', `<input type="number" id="propOpacity" value="${Math.round((obj.opacity ?? 1) * 100)}" min="0" max="100" />`);
+    rows += this.propRow('Opacity', `<input type="number" id="propOpacity" value="${Math.round((obj.opacity ?? 1) * 100)}" min="0" max="100" />`, 'propOpacity');
 
     if (obj.type === 'image') {
       rows += `<button id="removeBgBtn" class="tool-btn btn-accent full-width" style="margin-top:10px;">${icon('scissors')} Remove Background</button>`;
@@ -115,8 +115,9 @@ Object.assign(CanvasEditor, {
     }
   },
 
-  propRow(label, inputHtml) {
-    return `<div class="prop-row"><label>${label}</label>${inputHtml}</div>`;
+  propRow(label, inputHtml, forId) {
+    const forAttr = forId ? ` for="${forId}"` : '';
+    return `<div class="prop-row"><label${forAttr}>${label}</label>${inputHtml}</div>`;
   },
 
   // Searchable combobox over the preloaded Google Fonts catalog — see

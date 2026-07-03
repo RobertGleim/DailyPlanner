@@ -1,0 +1,12 @@
+server/data/library/
+
+# Tool-generated / machine-local artifacts, not authored project code
+.husky/_/
+.vercel/
+.claude/settings.local.json
+.playwright-mcp/
+.serena/
+
+# Third-party bundled/vendored libraries (fabric.js, ONNX runtime, jsPDF,
+# bg-removal engine) - not project-authored code, see public/CLAUDE.md
+public/vendor/

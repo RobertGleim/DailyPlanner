@@ -25,13 +25,13 @@ const GroupEditor = {
         const isYear = p.view === 'year';
         const sizeFields = isYear
           ? '<p class="hint">Resize isn\'t available for the yearly overview.</p>'
-          : propRow('Width (px)', `<input type="number" id="geWidth" min="100" value="${p.width || 620}" />`)
-            + propRow('Height (px)', `<input type="number" id="geRowHeight" min="10" value="${p.rowHeight || (p.view === 'week' ? 240 : 70)}" />`);
+          : propRow('Width (px)', `<input type="number" id="geWidth" min="100" value="${p.width || 620}" />`, 'geWidth')
+            + propRow('Height (px)', `<input type="number" id="geRowHeight" min="10" value="${p.rowHeight || (p.view === 'week' ? 240 : 70)}" />`, 'geRowHeight');
         return [
-          propRow('View', selectHtml('geView', [['month', 'Month grid'], ['week', 'Week strip'], ['year', 'Yearly overview']], p.view)),
-          propRow('Month', selectHtml('geMonth', GroupEditor.MONTH_OPTIONS, String(p.month))),
-          propRow('Year', `<input type="number" id="geYear" min="1900" max="2200" value="${p.year}" />`),
-          propRow('Style', selectHtml('geStyle', [['minimal', 'Minimal'], ['boxed', 'Boxed grid'], ['dotted', 'Dotted']], p.style)),
+          propRow('View', selectHtml('geView', [['month', 'Month grid'], ['week', 'Week strip'], ['year', 'Yearly overview']], p.view), 'geView'),
+          propRow('Month', selectHtml('geMonth', GroupEditor.MONTH_OPTIONS, String(p.month)), 'geMonth'),
+          propRow('Year', `<input type="number" id="geYear" min="1900" max="2200" value="${p.year}" />`, 'geYear'),
+          propRow('Style', selectHtml('geStyle', [['minimal', 'Minimal'], ['boxed', 'Boxed grid'], ['dotted', 'Dotted']], p.style), 'geStyle'),
           sizeFields,
           fontFieldRow(p.fontFamily),
           colorRow('geHeaderColor', 'Header color', p.headerColor),
@@ -62,11 +62,11 @@ const GroupEditor = {
       fields(p) {
         const defaultWidth = p.cols > 1 ? 340 + p.cols * 26 : 320;
         return [
-          propRow('Rows', `<input type="number" id="geRows" min="1" max="40" value="${p.rows}" />`),
-          propRow('Columns', `<input type="number" id="geCols" min="1" max="31" value="${p.cols}" />`),
-          propRow('Title', `<input type="text" id="geTitle" value="${(p.title || '').replace(/"/g, '&quot;')}" />`),
-          propRow('Width (px)', `<input type="number" id="geWidth" min="100" value="${p.width || defaultWidth}" />`),
-          propRow('Height (px)', `<input type="number" id="geRowHeight" min="10" value="${p.rowHeight || 28}" />`),
+          propRow('Rows', `<input type="number" id="geRows" min="1" max="40" value="${p.rows}" />`, 'geRows'),
+          propRow('Columns', `<input type="number" id="geCols" min="1" max="31" value="${p.cols}" />`, 'geCols'),
+          propRow('Title', `<input type="text" id="geTitle" value="${(p.title || '').replace(/"/g, '&quot;')}" />`, 'geTitle'),
+          propRow('Width (px)', `<input type="number" id="geWidth" min="100" value="${p.width || defaultWidth}" />`, 'geWidth'),
+          propRow('Height (px)', `<input type="number" id="geRowHeight" min="10" value="${p.rowHeight || 28}" />`, 'geRowHeight'),
           fontFieldRow(p.fontFamily),
           colorRow('geHeaderColor', 'Header color', p.headerColor),
           colorRow('geTextColor', 'Text color', p.textColor),
@@ -92,11 +92,11 @@ const GroupEditor = {
     Schedule: {
       fields(p) {
         return [
-          propRow('Title', `<input type="text" id="geTitle" value="${(p.title || '').replace(/"/g, '&quot;')}" />`),
-          propRow('Start hour', `<input type="number" id="geStartHour" min="0" max="23" value="${p.startHour}" />`),
-          propRow('End hour', `<input type="number" id="geEndHour" min="1" max="24" value="${p.endHour}" />`),
-          propRow('Width (px)', `<input type="number" id="geWidth" min="100" value="${p.width || 480}" />`),
-          propRow('Height (px)', `<input type="number" id="geRowHeight" min="10" value="${p.rowHeight || 32}" />`),
+          propRow('Title', `<input type="text" id="geTitle" value="${(p.title || '').replace(/"/g, '&quot;')}" />`, 'geTitle'),
+          propRow('Start hour', `<input type="number" id="geStartHour" min="0" max="23" value="${p.startHour}" />`, 'geStartHour'),
+          propRow('End hour', `<input type="number" id="geEndHour" min="1" max="24" value="${p.endHour}" />`, 'geEndHour'),
+          propRow('Width (px)', `<input type="number" id="geWidth" min="100" value="${p.width || 480}" />`, 'geWidth'),
+          propRow('Height (px)', `<input type="number" id="geRowHeight" min="10" value="${p.rowHeight || 32}" />`, 'geRowHeight'),
           fontFieldRow(p.fontFamily),
           colorRow('geHeaderColor', 'Header color', p.headerColor),
           colorRow('geTextColor', 'Text color', p.textColor),
@@ -217,7 +217,9 @@ const GroupEditor = {
     canvas.setActiveObject(selection);
 
     CanvasEditor.suppressHistory = false;
-    canvas.requestRenderAll();
+    // Synchronous, unconditional repaint right after a batch rebuild — see
+    // the matching comment on CanvasEditor.addGeneratedObjects.
+    canvas.renderAll();
     CanvasEditor.pushHistory();
     CanvasEditor.notifyLayersChange();
   },
@@ -292,12 +294,13 @@ function boundingTopLeft(objects) {
 
 // Mirrors CanvasEditor.propRow — kept local rather than reached into across
 // modules, same one-line template either way.
-function propRow(label, inputHtml) {
-  return `<div class="prop-row"><label>${label}</label>${inputHtml}</div>`;
+function propRow(label, inputHtml, forId) {
+  const forAttr = forId ? ` for="${forId}"` : '';
+  return `<div class="prop-row"><label${forAttr}>${label}</label>${inputHtml}</div>`;
 }
 
 function colorRow(id, label, value) {
-  return propRow(label, `<input type="color" id="${id}" value="${value || '#000000'}" />`);
+  return propRow(label, `<input type="color" id="${id}" value="${value || '#000000'}" />`, id);
 }
 
 function selectHtml(id, options, selectedValue) {
@@ -309,7 +312,7 @@ function fontFieldRow(fontFamily) {
   return propRow('Font', `<div class="font-picker">
     <input type="text" id="geFontInput" autocomplete="off" placeholder="Search fonts…" value="${(fontFamily || '').replace(/"/g, '&quot;')}" />
     <div id="geFontResults" class="font-picker-results" hidden></div>
-  </div>`);
+  </div>`, 'geFontInput');
 }
 
 function bindField(panelEl, id, params, key, onChange, transform) {
