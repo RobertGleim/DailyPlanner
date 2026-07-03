@@ -71,6 +71,10 @@ const CanvasEditor = {
   setZoom(zoom) {
     this.zoom = zoom;
     this.applyZoomToCanvasSize();
+    // Regenerate the grid pattern for the new zoom (canvas-grid.js) — a
+    // no-op via its own guard until initGrid() has run (setZoom() also
+    // fires once earlier, during init(), before the grid overlay exists).
+    if (this.updateGridPattern) this.updateGridPattern();
   },
 
   applyZoomToCanvasSize() {

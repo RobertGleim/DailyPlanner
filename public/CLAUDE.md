@@ -191,6 +191,17 @@ one" click handler fired right after these buttons' own listener and
 silently undid whatever they'd just set, making Snap to Grid/Snap to
 Objects appear permanently stuck highlighted.
 
+`#gridOverlay`'s ruled lines are a CSS `repeating-linear-gradient`
+background-image, rasterized once at the element's native resolution
+*before* the ancestor `.canvas-container`'s `transform: scale(zoom)`
+(`applyZoomToCanvasSize()`) resizes that bitmap — so a flat 1px line at a
+non-integer zoom aliases unevenly (some lines survive resampling, others
+land between destination pixels and nearly vanish), a real, previously
+-shipped bug. `updateGridPattern()` pre-compensates by declaring line
+thickness as `1 / zoom` so it always renders at exactly 1px after the
+ancestor's scale is applied; it's called from `initGrid()` and from
+`setZoom()` on every zoom change.
+
 ## Layers panel (`js/layers-panel.js`)
 
 A Photoshop-style layers list in the right sidebar, between Properties and
