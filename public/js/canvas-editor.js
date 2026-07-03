@@ -9,7 +9,6 @@ const CanvasEditor = {
   pageSizeKey: 'letter',
   history: [],
   historyIndex: -1,
-  suppressHistory: false,
   bgRemovalInFlight: false,
 
   // Custom Fabric props that must survive toJSON/loadFromJSON (history,
@@ -17,6 +16,17 @@ const CanvasEditor = {
   // toggle; id/name back the layers panel; generatorGroupId/generatorLabel/
   // generatorParams back the generator group layer + its bulk editor.
   EXTRA_SERIALIZE_PROPS: ['selectable', 'evented', 'id', 'name', 'generatorGroupId', 'generatorLabel', 'generatorParams'],
+
+  // Set true around a multi-step canvas mutation (adding/removing a whole
+  // generator batch, regenerating a group in place) so the per-object
+  // add/remove/selection events that fire mid-batch don't each independently
+  // trigger a history push, a layers-panel rebuild, or (critically) a
+  // Properties-panel re-render — a discardActiveObject() mid-batch fires
+  // 'selection:cleared', and without this guard that wipes the panel's
+  // <input> the user may be actively dragging/typing in. Callers flip it
+  // back off and fire the suppressed side effects once, after the whole
+  // batch settles.
+  suppressHistory: false,
 
   init() {
     this.canvas = new fabric.Canvas('pageCanvas', {
@@ -26,8 +36,8 @@ const CanvasEditor = {
     this.setPageSize(this.pageSizeKey);
     this.setZoom(0.7);
 
-    const onObjectsChanged = () => { this.pushHistory(); this.notifyLayersChange(); };
-    const onSelectionChanged = () => { this.renderProperties(); this.notifyLayersChange(); };
+    const onObjectsChanged = () => { if (this.suppressHistory) return; this.pushHistory(); this.notifyLayersChange(); };
+    const onSelectionChanged = () => { if (this.suppressHistory) return; this.renderProperties(); this.notifyLayersChange(); };
     ['object:modified', 'object:added', 'object:removed'].forEach((evt) => this.canvas.on(evt, onObjectsChanged));
     ['selection:created', 'selection:updated', 'selection:cleared'].forEach((evt) => this.canvas.on(evt, onSelectionChanged));
     // A generator group's side-handle drag ends here — snap it into a clean regenerated layout.

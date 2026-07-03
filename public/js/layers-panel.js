@@ -214,8 +214,14 @@ const LayersPanel = {
   selectGroup(generatorGroupId) {
     const members = this.canvas().getObjects().filter((o) => o.generatorGroupId === generatorGroupId);
     if (!members.length) return;
+    // A locked group's members are already selectable:false/evented:false
+    // individually, but the ActiveSelection wrapper built around them has
+    // its own independent selectable/evented state — without mirroring the
+    // members' lock state here, the wrapper stays fully draggable even when
+    // every member is locked.
+    const allLocked = members.every((o) => o.selectable === false);
     this.canvas().discardActiveObject();
-    const selection = new fabric.ActiveSelection(members, { canvas: this.canvas() });
+    const selection = new fabric.ActiveSelection(members, { canvas: this.canvas(), selectable: !allLocked, evented: !allLocked });
     selection.setCoords();
     this.canvas().setActiveObject(selection);
     this.canvas().requestRenderAll();

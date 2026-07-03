@@ -64,16 +64,21 @@ Object.assign(CanvasEditor, {
       this.stampLayerIdentity(o, groupLabel || 'Group');
       o.set({ generatorGroupId, generatorLabel: groupLabel || 'Group', generatorParams: generatorParams || null });
     });
+    // Suppress history/layers-refresh/Properties-panel side effects for the
+    // whole add-through-reselect sequence — discardActiveObject() below
+    // fires 'selection:cleared' mid-batch, which would otherwise wipe the
+    // Properties panel (see the suppressHistory doc comment above).
     this.suppressHistory = true;
     objects.forEach((o) => this.canvas.add(o));
-    this.suppressHistory = false;
     // Guards a stale/duplicate selection outline (see GroupEditor.regenerate).
     this.canvas.discardActiveObject();
     const selection = new fabric.ActiveSelection(objects, { canvas: this.canvas });
     selection.setCoords();
     this.canvas.setActiveObject(selection);
+    this.suppressHistory = false;
     this.canvas.requestRenderAll();
     this.pushHistory();
+    this.notifyLayersChange();
   },
 
   deleteSelected() {

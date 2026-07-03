@@ -167,7 +167,10 @@ file-size guideline — see that file's own top-of-file comment for why.
 Rows render top-of-stack first (reversed from Fabric's own bottom-first
 array order) with click-to-select, an eye (visibility) toggle, a lock
 toggle (`selectable`/`evented`, the same mechanism already used to pin the
-background image — see below), a delete button, and native HTML5
+background image — see below; for a locked generator group, the group's
+lock button also mirrors that state onto the `ActiveSelection` wrapper built
+around its members — see "Group (generator) bulk properties editor" below),
+a delete button, and native HTML5
 drag-and-drop reordering (`canvas.moveTo`, converting the panel's top-first
 row order back to Fabric's bottom-first array order). Objects sharing a
 `generatorGroupId` collapse into one row, expandable to select/edit
@@ -218,37 +221,55 @@ lost the next time a bulk field changes. Editing individual members
 directly is otherwise unaffected and still goes through the normal
 per-type `renderProperties()` branches.
 
-Field inputs bind on `input` for a live preview as the user types/drags.
-Naively, that would break immediately: a regenerate destroys and recreates
-every object in the group, and the resulting new `ActiveSelection`
-re-triggers `CanvasEditor.renderProperties()` → `GroupEditor.render()` on
-every tick, which would normally replace the panel's own input elements out
-from under the user mid-drag/mid-type. `render()` avoids this by tagging
-the panel element itself with `panelEl.dataset.geGroupId` and skipping the
-`innerHTML` rebuild whenever it's re-entered for the *same* group it's
-already showing — the live field's DOM node (and focus/native color-picker
-popup) survives every regenerate untouched; only the canvas visibly
-updates. `renderProperties()`'s non-`GroupEditor` branches clear that
-marker so switching to a different object/group still forces a fresh
-render.
+Field inputs bind on `input` for a live preview as the user types/drags. A
+regenerate destroys and recreates every object in the group and briefly
+discards the active selection along the way — both are the kind of
+mid-batch canvas mutation that fires Fabric events (`object:added`/
+`object:removed`/`selection:cleared`) on every intermediate step. Left
+unguarded, `selection:cleared` alone is enough to break this: it's wired to
+`CanvasEditor.renderProperties()`, which sees no active object and wipes
+the whole Properties panel to its placeholder — destroying the very
+`<input>` the user is mid-drag/mid-type in and force-closing any open
+native color-picker popup (this was a real, live-confirmed bug: color edits
+looked non-live, and dragging a color swatch appeared to "select" and stop
+responding instantly). `regenerate()` avoids this by wrapping its entire
+discard-through-reselect body in `CanvasEditor.suppressHistory = true`,
+which `canvas-editor.js`'s `onObjectsChanged`/`onSelectionChanged`
+listeners check before calling `pushHistory()`/`notifyLayersChange()`/
+`renderProperties()` — see that flag's doc comment in `canvas-editor.js`.
+The panel's own `<input>` DOM nodes are therefore never destroyed mid-edit;
+`render()`'s separate `panelEl.dataset.geGroupId` skip-rebuild guard (skips
+`innerHTML` rebuild when re-entered for the *same* group it's already
+showing) then keeps the panel from replacing itself even on the one
+`selection:updated` that fires after `suppressHistory` is turned back off.
+`renderProperties()`'s non-`GroupEditor` branches still clear that marker so
+switching to a different object/group forces a fresh render.
 
-`regenerate()`'s position-preserving step reads each object's own plain
-`left`/`top` (`boundingTopLeft()`) rather than
-`getBoundingRect(true, true)` (absolute canvas coordinates) — the fresh
-batch isn't attached to a canvas yet when this runs, and Fabric's absolute
-bounding-rect calculation on a canvas-less object returns `NaN`, which
-`Math.min(x, NaN)` propagates through the whole reduce, corrupting every
-repositioned object's placement (this was a real, screenshot-confirmed bug
-— a resize or even a plain color edit could snap the whole group off the
-top of the page). Every object generators.js produces is axis-aligned and
-unrotated, so plain `left`/`top` is exactly the bounding info needed here
-regardless — no functionality lost by not using the fuller calculation.
+`regenerate()` also fixed a related, previously-persistent off-page-snap bug
+in its position-preserving step: it now calls `canvas.discardActiveObject()`
+*before* reading the old group's members' `left`/`top`
+(`boundingTopLeft(members)`), not after. While those members are still part
+of the `ActiveSelection` that triggered the edit, Fabric reports their
+`left`/`top` relative to that selection's own coordinate frame, not the
+canvas — discarding first restores their absolute canvas coordinates, which
+the position-preserving shift depends on. (Reading the *fresh*, not-yet-
+canvas-attached batch's `left`/`top` via plain properties rather than
+`getBoundingRect(true, true)` was already correct from an earlier fix, since
+every object generators.js produces is axis-aligned/unrotated and Fabric's
+absolute-bounding-rect calculation on a canvas-less object returns `NaN`.)
 
 **Lock-all**: `LayersPanel.buildGroupRow()`'s header carries a lock button
 (`LayersPanel.setGroupLocked`) alongside the expand toggle and delete
 button, matching the per-object lock button every row already has — sets
 `selectable`/`evented` on every member in one batch (same
-suppress-history-around-a-batch pattern as `deleteGroup`).
+suppress-history-around-a-batch pattern as `deleteGroup`). That alone only
+blocks direct clicks on individual members, though — the `ActiveSelection`
+wrapper built around a group's members (`LayersPanel.selectGroup`,
+`GroupEditor.regenerate`) has its own independent `selectable`/`evented`
+state, so both call sites separately check whether every member is locked
+and mirror that onto the wrapper's own constructor options. Without this, a
+locked group's members were individually unclickable but the group-as-a-unit
+selection was still fully draggable — a real, reported gap.
 
 **Duplicate/stale selection outline**: every place that builds a fresh
 `fabric.ActiveSelection` over a generator group's members

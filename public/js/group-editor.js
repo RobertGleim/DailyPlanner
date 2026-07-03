@@ -8,12 +8,13 @@
 //
 // Fields bind on 'input' (fires continuously while dragging/typing) for a
 // live preview. A bulk regenerate destroys and recreates every object in
-// the group, and the resulting new ActiveSelection re-triggers
-// CanvasEditor.renderProperties() → render() below on every tick — that
-// would normally replace the panel's own input elements out from under the
-// user mid-interaction, so render() skips rebuilding the DOM whenever it's
+// the group and briefly discards the active selection along the way —
+// regenerate() wraps that whole sequence in CanvasEditor.suppressHistory so
+// none of it fires a Properties-panel re-render out from under the user
+// mid-interaction (see the suppressHistory doc comment in
+// canvas-editor.js). render() below also skips rebuilding its own DOM when
 // re-entered for the same group it's already showing (see its own
-// comment), leaving the live field the user is interacting with untouched.
+// comment), so the live field the user is interacting with keeps focus.
 const GroupEditor = {
   MONTH_OPTIONS: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     .map((name, i) => [String(i + 1), name]),
@@ -169,9 +170,25 @@ const GroupEditor = {
     const spec = this.FIELD_SETS[generatorLabel];
     const members = canvas.getObjects().filter((o) => o.generatorGroupId === generatorGroupId);
     if (!spec || !members.length) return;
+    const wasLocked = members.every((o) => o.selectable === false);
+
+    // Suppress history/layers-refresh/Properties-panel side effects for the
+    // whole discard-through-reselect sequence below — a mid-batch
+    // discardActiveObject() fires 'selection:cleared', which would otherwise
+    // wipe the Properties panel's <input> the user is actively editing (see
+    // the suppressHistory doc comment in canvas-editor.js).
+    CanvasEditor.suppressHistory = true;
+
+    // Discarding first (before reading members' bounds) matters: while
+    // `members` are still part of the ActiveSelection that triggered this
+    // edit, Fabric reports their left/top relative to that selection's own
+    // coordinate frame, not the canvas. Discarding restores each member's
+    // absolute left/top, which boundingTopLeft() below depends on.
+    canvas.discardActiveObject();
 
     const freshObjects = spec.build(newParams);
     if (!freshObjects.length) {
+      CanvasEditor.suppressHistory = false;
       showToast('End hour must be after start hour');
       return;
     }
@@ -185,24 +202,24 @@ const GroupEditor = {
     const dy = oldBounds.top - freshBounds.top;
     freshObjects.forEach((o) => o.set({ left: (o.left || 0) + dx, top: (o.top || 0) + dy }));
 
-    CanvasEditor.suppressHistory = true;
     members.forEach((o) => canvas.remove(o));
     freshObjects.forEach((o) => {
       CanvasEditor.stampLayerIdentity(o, generatorLabel);
-      o.set({ generatorGroupId, generatorLabel, generatorParams: newParams });
+      o.set({ generatorGroupId, generatorLabel, generatorParams: newParams, selectable: !wasLocked, evented: !wasLocked });
       canvas.add(o);
     });
-    CanvasEditor.suppressHistory = false;
 
-    // discardActiveObject() + setCoords() guard against a stale/duplicate
-    // selection outline lingering alongside the new one — see the matching
-    // comment on CanvasEditor.addGeneratedObjects.
-    canvas.discardActiveObject();
-    const selection = new fabric.ActiveSelection(freshObjects, { canvas });
+    // setCoords() guards against a stale/duplicate selection outline
+    // lingering alongside the new one — see the matching comment on
+    // CanvasEditor.addGeneratedObjects.
+    const selection = new fabric.ActiveSelection(freshObjects, { canvas, selectable: !wasLocked, evented: !wasLocked });
     selection.setCoords();
     canvas.setActiveObject(selection);
+
+    CanvasEditor.suppressHistory = false;
     canvas.requestRenderAll();
     CanvasEditor.pushHistory();
+    CanvasEditor.notifyLayersChange();
   },
 
   // A generator group's side-handle drag lands here (wired to
