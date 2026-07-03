@@ -180,6 +180,17 @@ into a save file or an exported page — no serialization whitelist/exclude
 logic needed anywhere, unlike custom Fabric properties (see
 `EXTRA_SERIALIZE_PROPS` below).
 
+**The three toggle buttons use the shared `.chip`/`.chip.active` styling**
+(same class as the Library tab's category filter chips and the background-
+type chips), so any `.chip` click handler elsewhere must scope its selector
+to its own container (e.g. `.library-filter .chip`, `.bg-type-chips .chip`)
+rather than a bare `document.querySelectorAll('.chip')` — a real, previously
+-shipped bug had `library-panel.js`'s unscoped `.chip` selector also match
+these toggle buttons, so its own "clear every chip's active state, select
+one" click handler fired right after these buttons' own listener and
+silently undid whatever they'd just set, making Snap to Grid/Snap to
+Objects appear permanently stuck highlighted.
+
 ## Layers panel (`js/layers-panel.js`)
 
 A Photoshop-style layers list in the right sidebar, between Properties and

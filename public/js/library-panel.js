@@ -6,9 +6,9 @@ const LibraryPanel = {
     this.onInsertAsset = onInsertAsset;
     this.grid = document.getElementById('libraryGrid');
 
-    document.querySelectorAll('.chip').forEach((chip) => {
+    document.querySelectorAll('.library-filter .chip').forEach((chip) => {
       chip.addEventListener('click', () => {
-        document.querySelectorAll('.chip').forEach((c) => c.classList.remove('active'));
+        document.querySelectorAll('.library-filter .chip').forEach((c) => c.classList.remove('active'));
         chip.classList.add('active');
         this.currentCategory = chip.dataset.cat;
         this.refresh();
