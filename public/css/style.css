@@ -336,6 +336,42 @@ select, input[type="text"], input[type="number"], input[type="month"] {
 }
 .page-thumb .page-actions button:hover { color: var(--danger); background: var(--danger-tint); }
 
+/* ---------- Layers panel ---------- */
+.layers-list { display: flex; flex-direction: column; gap: 4px; max-height: 32vh; overflow-y: auto; }
+.layer-group { display: flex; flex-direction: column; gap: 4px; }
+.layer-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px 8px;
+  cursor: pointer;
+  background: var(--panel);
+  transition: border-color .15s, background .15s;
+}
+.layer-row:hover { border-color: var(--muted); }
+.layer-row.active { border-color: var(--primary); background: var(--bg); }
+.layer-row.dragging { opacity: .4; }
+.layer-row.drag-over { border-color: var(--accent); border-style: dashed; }
+.layer-row-indent { margin-left: 22px; }
+.layer-group-row { font-weight: 600; }
+.layer-icon-btn {
+  display: flex; align-items: center; justify-content: center;
+  border: none; background: none; cursor: grab; color: var(--muted);
+  padding: 3px; border-radius: 6px; flex-shrink: 0;
+}
+.layer-icon-btn:hover { color: var(--text); background: var(--bg); }
+.layer-icon-btn.active { color: var(--primary); }
+.layer-del-btn:hover { color: var(--danger); background: var(--danger-tint); }
+.layer-grip { cursor: grab; }
+.layer-group-toggle { transition: transform .15s; }
+.layer-group-toggle.expanded { transform: rotate(90deg); }
+.layer-name {
+  flex: 1; font-size: 12px; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* ---------- Toast ---------- */
 .toast {
   position: fixed;

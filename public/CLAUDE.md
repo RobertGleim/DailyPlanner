@@ -20,12 +20,35 @@ public/
     generators.js                # Calendar/checklist/schedule builders
     pages-manager.js              # Multi-page state + thumbnail sidebar
     export-pdf.js                  # jsPDF multi-page export
-    canvas-editor.js                # Fabric.js canvas wrapper + properties panel
-    app.js                           # Boots everything, wires event handlers
-    bg-removal-module.js              # ES-module bridge to the AI bg-removal engine
+    canvas-editor.js                # CanvasEditor core: state, init/zoom/page-size (see below)
+    canvas-elements.js                # + element creation (text/line/rect/circle/image), delete/reorder
+    canvas-background.js               # + page background (color/image/gradient/tint)
+    canvas-image-tools.js               # + per-image resize/tint/AI background removal
+    properties-panel.js                  # + renderProperties() and its per-type editing fields
+    canvas-history.js                     # + undo/redo + page load/save serialization
+    layers-panel.js                        # Photoshop-style layers list (see below)
+    group-editor.js                         # Bulk properties editor for a selected generator group (see below)
+    app.js                                   # Boots everything, wires event handlers
+    bg-removal-module.js                      # ES-module bridge to the AI bg-removal engine
   vendor/                  # fabric.js, jsPDF, onnxruntime-web, bg-removal engine
                             #  — all bundled locally, see the CDN rule below
 ```
+
+`CanvasEditor` is one shared object split across six files instead of one
+big one — `canvas-editor.js` declares `const CanvasEditor = {...}` with
+just its state and the cross-cutting `stampLayerIdentity`/
+`notifyLayersChange` helpers; every other `canvas-*.js`/
+`properties-panel.js` file extends that *same* object via
+`Object.assign(CanvasEditor, {...})`, so every call site elsewhere
+(`CanvasEditor.addText()`, `CanvasEditor.pushHistory()`, etc.) works exactly
+as if it were still one file. Each extension file must load after
+`canvas-editor.js` (see `index.html`'s script order) — `canvas-image-tools.js`
+additionally needs `canvas-background.js`'s `tintFabricImage` helper loaded
+first. Split this way because the single file had grown past a readable
+size mixing six distinct concerns; if you're adding a new CanvasEditor
+method, put it in whichever of these files matches its concern (or start a
+new `canvas-*.js` file for a genuinely new one) rather than growing one of
+these back past ~150 lines.
 
 Scripts load as plain globals (no bundler, no `type="module"` except
 `bg-removal-module.js`), in the order listed at the bottom of `index.html`.
@@ -118,6 +141,145 @@ insert (no way to recolor a divider line or delete a border). Keep future
 generators (and the planner-wizard/preset-template work described in the
 root `CLAUDE.md`) following this same array-of-plain-objects convention, or
 both bugs come back.
+
+Since the array-of-plain-objects convention means nothing keeps a
+generator's pieces together beyond the one-shot `ActiveSelection`
+`addGeneratedObjects` sets up at insert time, every object in a batch is
+also stamped with a shared `generatorGroupId` + `generatorLabel` (the
+caller passes the label, e.g. `CanvasEditor.addGeneratedObjects(objects,
+'Calendar')` — see `initGenerators()` in `app.js`). The layers panel (below)
+uses that to show the whole batch as one collapsible layer and rebuilds a
+fresh `ActiveSelection` over every member each time that layer is
+selected/dragged, so a calendar's border, grid lines, and labels keep
+moving together permanently — not just immediately after insert.
+
+## Layers panel (`js/layers-panel.js`)
+
+A Photoshop-style layers list in the right sidebar, between Properties and
+Pages. Every object added to the canvas (via `CanvasEditor.addText`/
+`addLine`/`addRect`/`addCircle`/`addImageFromUrl`/`addGeneratedObjects`) is
+stamped with a stable `id` and a default `name` by
+`CanvasEditor.stampLayerIdentity()`. `LayersPanel` reads
+`canvas.getObjects()` directly off `CanvasEditor.canvas` (rather than
+`CanvasEditor` growing more methods) to stay within this project's 500-line
+file-size guideline — see that file's own top-of-file comment for why.
+
+Rows render top-of-stack first (reversed from Fabric's own bottom-first
+array order) with click-to-select, an eye (visibility) toggle, a lock
+toggle (`selectable`/`evented`, the same mechanism already used to pin the
+background image — see below), a delete button, and native HTML5
+drag-and-drop reordering (`canvas.moveTo`, converting the panel's top-first
+row order back to Fabric's bottom-first array order). Objects sharing a
+`generatorGroupId` collapse into one row, expandable to select/edit
+individual pieces without losing the "move as one unit" behavior.
+
+`id`/`name`/`generatorGroupId`/`generatorLabel`/`generatorParams` are custom
+(non-default) Fabric properties, so they only survive
+`canvas.toJSON()`/`loadFromJSON()` round trips because they're listed in
+`CanvasEditor.EXTRA_SERIALIZE_PROPS` (alongside the pre-existing
+`selectable`/`evented`) — if you add another custom prop that the layers
+panel (or anything else) needs to persist through save/undo/reload, add it
+there too, or it'll silently vanish. `visible` needs no such whitelisting —
+it's a standard Fabric property that `toJSON`/`loadFromJSON` and the
+renderer (live canvas and the offscreen `fabric.StaticCanvas` in
+`export-pdf.js`) already handle natively, which is also why hiding a layer
+requires zero changes to PDF export: export already rasterizes whatever
+`loadFromJSON` renders, in array order, skipping invisible objects.
+
+## Group (generator) bulk properties editor (`js/group-editor.js`)
+
+Selecting a generator's whole layer group (`LayersPanel.selectGroup`, an
+`ActiveSelection` over every object sharing one `generatorGroupId`) swaps
+`CanvasEditor.renderProperties()` over to `GroupEditor.render()` instead of
+the generic Opacity+Delete ActiveSelection fallback —
+`GroupEditor.isFullGroupSelection()` gates this to an *exact* full-group
+selection so a manual marquee that happens to catch only some of a group's
+shapes never triggers it (that would otherwise let a regenerate silently
+delete the unselected rest). The gate lives in `canvas-editor.js` itself
+(a few lines, checking `obj.type === 'activeSelection'`); all the field
+rendering and regeneration logic lives in `group-editor.js` to keep
+`canvas-editor.js` under this project's 500-line file-size guideline.
+
+`GroupEditor` renders the *same* fields as that generator's own
+`#tab-generators` insert panel (view/month/year/style + font + colors for
+Calendar; rows/cols/title + font + colors for Checklist; hours/title + font
++ colors for Schedule — `FIELD_SETS` in `group-editor.js`), pre-filled from
+`generatorParams` (the exact params object `Generators.build*()` was
+originally called with, stamped on every object in the batch by
+`CanvasEditor.addGeneratedObjects(objects, groupLabel, generatorParams)`).
+Editing any field **regenerates the whole group in place**: it replays the
+updated params through the same `Generators.build*()` function, removes the
+old member objects, repositions the fresh batch to the old group's on-page
+location, and re-stamps the new objects with the same `generatorGroupId` so
+the group's identity persists. This is a deliberate tradeoff — like a
+design tool's "smart object," any one-off manual edit previously made to an
+individual member (expand the group, click a sub-row, tweak its color) is
+lost the next time a bulk field changes. Editing individual members
+directly is otherwise unaffected and still goes through the normal
+per-type `renderProperties()` branches.
+
+Field inputs bind on `input` for a live preview as the user types/drags.
+Naively, that would break immediately: a regenerate destroys and recreates
+every object in the group, and the resulting new `ActiveSelection`
+re-triggers `CanvasEditor.renderProperties()` → `GroupEditor.render()` on
+every tick, which would normally replace the panel's own input elements out
+from under the user mid-drag/mid-type. `render()` avoids this by tagging
+the panel element itself with `panelEl.dataset.geGroupId` and skipping the
+`innerHTML` rebuild whenever it's re-entered for the *same* group it's
+already showing — the live field's DOM node (and focus/native color-picker
+popup) survives every regenerate untouched; only the canvas visibly
+updates. `renderProperties()`'s non-`GroupEditor` branches clear that
+marker so switching to a different object/group still forces a fresh
+render.
+
+`regenerate()`'s position-preserving step reads each object's own plain
+`left`/`top` (`boundingTopLeft()`) rather than
+`getBoundingRect(true, true)` (absolute canvas coordinates) — the fresh
+batch isn't attached to a canvas yet when this runs, and Fabric's absolute
+bounding-rect calculation on a canvas-less object returns `NaN`, which
+`Math.min(x, NaN)` propagates through the whole reduce, corrupting every
+repositioned object's placement (this was a real, screenshot-confirmed bug
+— a resize or even a plain color edit could snap the whole group off the
+top of the page). Every object generators.js produces is axis-aligned and
+unrotated, so plain `left`/`top` is exactly the bounding info needed here
+regardless — no functionality lost by not using the fuller calculation.
+
+**Lock-all**: `LayersPanel.buildGroupRow()`'s header carries a lock button
+(`LayersPanel.setGroupLocked`) alongside the expand toggle and delete
+button, matching the per-object lock button every row already has — sets
+`selectable`/`evented` on every member in one batch (same
+suppress-history-around-a-batch pattern as `deleteGroup`).
+
+**Duplicate/stale selection outline**: every place that builds a fresh
+`fabric.ActiveSelection` over a generator group's members
+(`CanvasEditor.addGeneratedObjects`, `GroupEditor.regenerate`,
+`LayersPanel.selectGroup`) calls `canvas.discardActiveObject()`
+immediately before construction and `selection.setCoords()` immediately
+after — a defensive fix for a known Fabric.js footgun where a freshly
+built `ActiveSelection`, activated in the same tick, can render a
+mismatched/duplicate selection outline alongside the real one. Keep this
+pattern at any future `new fabric.ActiveSelection(...)` call site.
+
+**Resize (drag handles + Width/Height fields)**: a generator group's
+`ActiveSelection` resize handles (`ml`/`mr`/`mt`/`mb`, previously hidden to
+avoid Fabric's default non-uniform-scale text distortion) are enabled
+again. `Generators.buildCalendar`/`buildChecklist`/`buildSchedule` each
+accept optional `width`/`rowHeight` params (defaulting to their original
+hardcoded layout constants) that resize only grid/line geometry — every
+text object's `fontSize` is already an independent hardcoded constant per
+role, never derived from `width`/cell dimensions, so parameterizing just
+the layout constants leaves text sizing untouched with no extra "don't
+touch text" logic needed. `GroupEditor.FIELD_SETS` exposes these as
+Width(px)/Height(px) fields (same pattern as an Image element's own
+Width/Height fields), and `GroupEditor.handleResize()` (wired to
+`object:modified` in `canvas-editor.js`) converts a finished drag's
+`getScaledWidth()`/`getScaledHeight()` into the same params via each
+generator's own height formula inverted (`inverseRowHeight()` —
+best-effort, not pixel-exact for the habit-tracker header offset) and
+regenerates through the same in-place path `GroupEditor.render()`'s fields
+use. Calendar's `year` view has a fixed mini-grid layout that ignores both
+params — `handleResize`/the Height field explicitly no-op with a toast/hint
+rather than silently doing nothing.
 
 Every `buildCalendar`/`buildChecklist`/`buildSchedule` call also takes
 `fontFamily` + a set of colors (`headerColor`/`textColor`/`accentColor`,

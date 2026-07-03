@@ -11,13 +11,16 @@ const Generators = {
   // `month` is 1-12 (matches the sidebar's <select>, not JS's 0-indexed
   // Date months) and `year` a 4-digit number — both plain numbers, not a
   // parsed string, so there's no date-format ambiguity to get wrong.
+  // `width`/`rowHeight` are optional structural overrides (used by
+  // group-editor.js's resize handles/Width+Height fields) — they only
+  // affect grid/line geometry, never fontSize, which every text object
+  // below sets as its own fixed constant independent of layout size.
   buildCalendar({
-    view, month, year, style,
+    view, month, year, style, width = 620, rowHeight,
     fontFamily = 'Helvetica', headerColor = '#1f2430', textColor = '#1f2430',
     weekendColor = '#e0574c', highlightColor = '#FFC93C', accentColor = '#333333',
   }) {
     const objects = [];
-    const width = 620;
     const today = new Date();
     const resolvedYear = year || today.getFullYear();
     const resolvedMonth = month || today.getMonth() + 1;
@@ -26,20 +29,23 @@ const Generators = {
     if (view === 'week') {
       const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
       const colWidth = width / 7;
-      const height = 240;
+      const height = rowHeight || 240;
       objects.push(new fabric.Rect({
         left: 0, top: 0, width, height, fill: 'transparent',
         stroke: accentColor, strokeWidth: style === 'boxed' ? 2 : 1,
+        name: 'Border',
       }));
       days.forEach((d, i) => {
         const isWeekend = i === 5 || i === 6; // Sat, Sun in this Mon-start week strip
         objects.push(new fabric.Line([i * colWidth, 0, i * colWidth, height], {
           stroke: accentColor, strokeWidth: 1, strokeDashArray: style === 'dotted' ? [2, 3] : null,
+          name: 'Grid Line',
         }));
         objects.push(new fabric.Text(d, {
           left: i * colWidth + 8, top: 6, fontSize: 14, fontWeight: 'bold', fontFamily,
           fill: isWeekend ? weekendColor : headerColor,
           lockScalingX: true, lockScalingY: true,
+          name: `Weekday Label: ${d}`,
         }));
       });
       return placeGeneratedObjects(objects);
@@ -61,9 +67,11 @@ const Generators = {
         const miniDaysInMonth = new Date(resolvedYear, m + 1, 0).getDate();
         const isCurrentMonth = today.getFullYear() === resolvedYear && today.getMonth() === m;
 
-        objects.push(new fabric.Text(miniMonthDate.toLocaleString('default', { month: 'long' }), {
+        const miniMonthName = miniMonthDate.toLocaleString('default', { month: 'long' });
+        objects.push(new fabric.Text(miniMonthName, {
           left: ox, top: oy, fontSize: 13, fontWeight: 'bold', fontFamily, fill: headerColor,
           lockScalingX: true, lockScalingY: true,
+          name: `Month Title: ${miniMonthName}`,
         }));
 
         ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach((d, i) => {
@@ -72,6 +80,7 @@ const Generators = {
             left: ox + i * miniCellW + 2, top: oy + 18, fontSize: 8, fontFamily,
             fill: isWeekend ? weekendColor : headerColor,
             lockScalingX: true, lockScalingY: true,
+            name: 'Weekday Label',
           }));
         });
 
@@ -88,12 +97,14 @@ const Generators = {
                   left: ox + c * miniCellW, top: gridTop + r * miniCellH,
                   width: miniCellW - 1, height: miniCellH - 1, rx: 2, ry: 2,
                   fill: highlightColor,
+                  name: 'Today Highlight',
                 }));
               }
               objects.push(new fabric.Text(String(dayNum), {
                 left: ox + c * miniCellW + 2, top: gridTop + r * miniCellH, fontSize: 8, fontFamily,
                 fill: isWeekend ? weekendColor : textColor,
                 lockScalingX: true, lockScalingY: true,
+                name: `Day Number: ${dayNum}`,
               }));
               dayNum++;
             }
@@ -109,13 +120,14 @@ const Generators = {
     const daysInMonth = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).getDate();
     const cols = 7, rows = 6;
     const cellW = width / cols;
-    const cellH = 70;
+    const cellH = rowHeight || 70;
     const height = rows * cellH + 34;
     const isCurrentMonth = today.getFullYear() === monthDate.getFullYear() && today.getMonth() === monthDate.getMonth();
 
     objects.push(new fabric.Text(title, {
       left: 0, top: 0, fontSize: 20, fontWeight: 'bold', fontFamily, fill: headerColor,
       lockScalingX: true, lockScalingY: true,
+      name: `Title: ${title}`,
     }));
 
     const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -125,18 +137,19 @@ const Generators = {
         left: i * cellW + 4, top: 34, fontSize: 11, fontFamily,
         fill: isWeekend ? weekendColor : headerColor,
         lockScalingX: true, lockScalingY: true,
+        name: `Weekday Label: ${d}`,
       }));
     });
 
     // grid lines
     for (let r = 0; r <= rows; r++) {
-      objects.push(new fabric.Line([0, 54 + r * cellH, width, 54 + r * cellH], { stroke: accentColor, strokeWidth: 1, strokeDashArray: style === 'dotted' ? [2, 3] : null }));
+      objects.push(new fabric.Line([0, 54 + r * cellH, width, 54 + r * cellH], { stroke: accentColor, strokeWidth: 1, strokeDashArray: style === 'dotted' ? [2, 3] : null, name: 'Grid Line' }));
     }
     for (let c = 0; c <= cols; c++) {
-      objects.push(new fabric.Line([c * cellW, 54, c * cellW, 54 + rows * cellH], { stroke: accentColor, strokeWidth: 1, strokeDashArray: style === 'dotted' ? [2, 3] : null }));
+      objects.push(new fabric.Line([c * cellW, 54, c * cellW, 54 + rows * cellH], { stroke: accentColor, strokeWidth: 1, strokeDashArray: style === 'dotted' ? [2, 3] : null, name: 'Grid Line' }));
     }
     if (style === 'boxed') {
-      objects.push(new fabric.Rect({ left: 0, top: 54, width, height: rows * cellH, fill: 'transparent', stroke: accentColor, strokeWidth: 2 }));
+      objects.push(new fabric.Rect({ left: 0, top: 54, width, height: rows * cellH, fill: 'transparent', stroke: accentColor, strokeWidth: 2, name: 'Border' }));
     }
 
     let dayNum = 1;
@@ -150,12 +163,14 @@ const Generators = {
             objects.push(new fabric.Rect({
               left: c * cellW + 4, top: 54 + r * cellH + 4, width: 22, height: 20, rx: 4, ry: 4,
               fill: highlightColor,
+              name: 'Today Highlight',
             }));
           }
           objects.push(new fabric.Text(String(dayNum), {
             left: c * cellW + 6, top: 54 + r * cellH + 4, fontSize: 13, fontFamily,
             fill: isWeekend ? weekendColor : textColor,
             lockScalingX: true, lockScalingY: true,
+            name: `Day Number: ${dayNum}`,
           }));
           dayNum++;
         }
@@ -166,26 +181,28 @@ const Generators = {
   },
 
   // ---------- Checklist / habit tracker ----------
+  // `width`/`rowHeight` are optional structural overrides — see the note
+  // above buildCalendar.
   buildChecklist({
-    rows, cols, title,
+    rows, cols, title, width = (cols > 1 ? 340 + cols * 26 : 320), rowHeight = 28,
     fontFamily = 'Helvetica', headerColor = '#1f2430', textColor = '#1f2430',
     weekendColor = '#e0574c', accentColor = '#333333',
   }) {
     const objects = [];
-    const rowH = 28;
-    const width = cols > 1 ? 340 + cols * 26 : 320;
+    const rowH = rowHeight;
     const startY = 34;
 
     objects.push(new fabric.Text(title || 'Checklist', {
       left: 0, top: 0, fontSize: 18, fontWeight: 'bold', fontFamily, fill: headerColor,
       lockScalingX: true, lockScalingY: true,
+      name: `Title: ${title || 'Checklist'}`,
     }));
 
     if (cols <= 1) {
       for (let i = 0; i < rows; i++) {
         const y = startY + i * rowH;
-        objects.push(new fabric.Rect({ left: 0, top: y, width: 18, height: 18, fill: 'transparent', stroke: accentColor, strokeWidth: 1.5, rx: 3, ry: 3 }));
-        objects.push(new fabric.Line([26, y + 16, width, y + 16], { stroke: accentColor, strokeWidth: 1 }));
+        objects.push(new fabric.Rect({ left: 0, top: y, width: 18, height: 18, fill: 'transparent', stroke: accentColor, strokeWidth: 1.5, rx: 3, ry: 3, name: 'Checkbox' }));
+        objects.push(new fabric.Line([26, y + 16, width, y + 16], { stroke: accentColor, strokeWidth: 1, name: 'Write Line' }));
       }
     } else {
       // habit tracker grid: rows = habits, cols = days
@@ -200,21 +217,24 @@ const Generators = {
             left: labelW + c * cellW + (cellW - 4) / 2 - 4, top: startY - 16, fontSize: 11, fontWeight: 'bold', fontFamily,
             fill: isWeekend ? weekendColor : headerColor,
             lockScalingX: true, lockScalingY: true,
+            name: 'Weekday Label',
           }));
         });
       }
 
       for (let i = 0; i < rows; i++) {
         const y = startY + i * rowH;
-        objects.push(new fabric.Line([0, y + rowH - 4, width, y + rowH - 4], { stroke: accentColor, strokeWidth: 1 }));
+        objects.push(new fabric.Line([0, y + rowH - 4, width, y + rowH - 4], { stroke: accentColor, strokeWidth: 1, name: 'Row Divider' }));
         objects.push(new fabric.Text(`Habit ${i + 1}`, {
           left: 0, top: y, fontSize: 12, fontFamily, fill: textColor,
           lockScalingX: true, lockScalingY: true,
+          name: `Row Label: Habit ${i + 1}`,
         }));
         for (let c = 0; c < cols; c++) {
           objects.push(new fabric.Rect({
             left: labelW + c * cellW, top: y, width: cellW - 4, height: 18,
             fill: 'transparent', stroke: accentColor, strokeWidth: 1, rx: 3, ry: 3,
+            name: 'Cell',
           }));
         }
       }
@@ -225,17 +245,18 @@ const Generators = {
 
   // ---------- Hourly daily schedule ----------
   // Returns [] if the hour range is empty/inverted — callers (app.js) must
-  // check for that instead of assuming a non-empty result.
+  // check for that instead of assuming a non-empty result. `width`/
+  // `rowHeight` are optional structural overrides — see the note above
+  // buildCalendar.
   buildSchedule({
-    startHour, endHour, title,
+    startHour, endHour, title, width = 480, rowHeight = 32,
     fontFamily = 'Helvetica', headerColor = '#1f2430', textColor = '#1f2430',
     highlightColor = '#FFC93C', accentColor = '#333333',
   }) {
     if (endHour <= startHour) return [];
 
     const objects = [];
-    const rowH = 32;
-    const width = 480;
+    const rowH = rowHeight;
     const labelW = 70;
     const currentHour = new Date().getHours();
     let gridTop = 0;
@@ -244,6 +265,7 @@ const Generators = {
       objects.push(new fabric.Text(title, {
         left: 0, top: 0, fontSize: 16, fontWeight: 'bold', fontFamily, fill: headerColor,
         lockScalingX: true, lockScalingY: true,
+        name: `Title: ${title}`,
       }));
       gridTop = 26;
     }
@@ -253,16 +275,17 @@ const Generators = {
       const y = gridTop + row * rowH;
       const label = h === 0 ? '12 AM' : h < 12 ? `${h} AM` : h === 12 ? '12 PM' : `${h - 12} PM`;
       if (h === currentHour) {
-        objects.push(new fabric.Rect({ left: 0, top: y, width, height: rowH, fill: highlightColor, opacity: 0.35 }));
+        objects.push(new fabric.Rect({ left: 0, top: y, width, height: rowH, fill: highlightColor, opacity: 0.35, name: 'Current Hour Highlight' }));
       }
       objects.push(new fabric.Text(label, {
         left: 0, top: y + 6, fontSize: 11, fontFamily, fill: textColor,
         lockScalingX: true, lockScalingY: true,
+        name: `Hour Label: ${label}`,
       }));
-      objects.push(new fabric.Line([labelW, y + rowH, width, y + rowH], { stroke: accentColor, strokeWidth: 1 }));
+      objects.push(new fabric.Line([labelW, y + rowH, width, y + rowH], { stroke: accentColor, strokeWidth: 1, name: 'Row Divider' }));
       row++;
     }
-    objects.push(new fabric.Rect({ left: labelW, top: gridTop, width: width - labelW, height: row * rowH, fill: 'transparent', stroke: accentColor, strokeWidth: 1.5 }));
+    objects.push(new fabric.Rect({ left: labelW, top: gridTop, width: width - labelW, height: row * rowH, fill: 'transparent', stroke: accentColor, strokeWidth: 1.5, name: 'Border' }));
 
     return placeGeneratedObjects(objects);
   },

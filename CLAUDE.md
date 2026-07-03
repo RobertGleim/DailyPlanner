@@ -124,6 +124,10 @@ planner-studio/
 
 - Drag-and-drop page editor (Fabric.js): text, images, lines, rectangles,
   circles; resize/rotate/reposition/layer.
+- Photoshop-style layers panel: every element is an independently
+  selectable/movable layer (visibility toggle, lock, drag-to-reorder,
+  delete); calendar/checklist/schedule generator output collapses into one
+  expandable group layer — see `public/CLAUDE.md`'s "Layers panel" section.
 - Image editing: precise resize, opacity, color tint, one-click AI
   background removal (runs entirely in-browser), delete.
 - Page backgrounds (solid color or full-bleed image) and page border

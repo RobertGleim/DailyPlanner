@@ -33,6 +33,7 @@
   function switchToPage(index) {
     const page = PagesManager.pages[index];
     CanvasEditor.loadPage(page);
+    LayersPanel.refresh();
   }
 
   function initTabs() {
@@ -168,7 +169,7 @@
       const month = Number(document.getElementById('calMonthSelect').value);
       const year = clampInput(document.getElementById('calYearInput'), today.getFullYear());
       const style = document.getElementById('calStyleSelect').value;
-      const objects = Generators.buildCalendar({
+      const params = {
         view, month, year, style,
         fontFamily: calFont,
         headerColor: document.getElementById('calHeaderColor').value,
@@ -176,42 +177,45 @@
         weekendColor: document.getElementById('calWeekendColor').value,
         highlightColor: document.getElementById('calHighlightColor').value,
         accentColor: document.getElementById('calAccentColor').value,
-      });
-      CanvasEditor.addGeneratedObjects(objects);
+      };
+      const objects = Generators.buildCalendar(params);
+      CanvasEditor.addGeneratedObjects(objects, 'Calendar', params);
     });
 
     document.getElementById('insertChecklistBtn').addEventListener('click', () => {
       const rows = clampInput(document.getElementById('checklistRows'), 8);
       const cols = clampInput(document.getElementById('checklistCols'), 1);
       const title = document.getElementById('checklistTitle').value;
-      const objects = Generators.buildChecklist({
+      const params = {
         rows, cols, title,
         fontFamily: checklistFont,
         headerColor: document.getElementById('checklistHeaderColor').value,
         textColor: document.getElementById('checklistTextColor').value,
         weekendColor: document.getElementById('checklistWeekendColor').value,
         accentColor: document.getElementById('checklistAccentColor').value,
-      });
-      CanvasEditor.addGeneratedObjects(objects);
+      };
+      const objects = Generators.buildChecklist(params);
+      CanvasEditor.addGeneratedObjects(objects, 'Checklist', params);
     });
 
     document.getElementById('insertScheduleBtn').addEventListener('click', () => {
       const startHour = clampInput(document.getElementById('schedStart'), 6);
       const endHour = clampInput(document.getElementById('schedEnd'), 21);
       const title = document.getElementById('schedTitle').value;
-      const objects = Generators.buildSchedule({
+      const params = {
         startHour, endHour, title,
         fontFamily: schedFont,
         headerColor: document.getElementById('schedHeaderColor').value,
         textColor: document.getElementById('schedTextColor').value,
         highlightColor: document.getElementById('schedHighlightColor').value,
         accentColor: document.getElementById('schedAccentColor').value,
-      });
+      };
+      const objects = Generators.buildSchedule(params);
       if (!objects.length) {
         showToast('End hour must be after start hour');
         return;
       }
-      CanvasEditor.addGeneratedObjects(objects);
+      CanvasEditor.addGeneratedObjects(objects, 'Schedule', params);
     });
   }
 
@@ -362,7 +366,9 @@
     initTabs();
     CanvasEditor.init();
     CanvasEditor.onChange = () => captureActivePageIntoModel();
+    CanvasEditor.onLayersChange = () => LayersPanel.refresh();
     PagesManager.init({ onSwitchPage: switchToPage });
+    LayersPanel.init();
     initElementTools();
     initBackgroundControls();
     initGenerators();

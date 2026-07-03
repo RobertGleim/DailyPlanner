@@ -1,4 +1,9 @@
-// Wraps a Fabric.js canvas: element creation, selection properties, undo/redo, zoom, thumbnails.
+// Core Fabric.js canvas wrapper: state, init/zoom/page-size, and the
+// cross-cutting stampLayerIdentity/notifyLayersChange helpers. Everything
+// else CanvasEditor does (element creation, background, image tools,
+// properties panel, history/persistence) is added onto this same object by
+// the other canvas-*.js / properties-panel.js files, each loaded right
+// after this one — see public/CLAUDE.md's file map.
 const CanvasEditor = {
   canvas: null,
   pageSizeKey: 'letter',
@@ -6,6 +11,12 @@ const CanvasEditor = {
   historyIndex: -1,
   suppressHistory: false,
   bgRemovalInFlight: false,
+
+  // Custom Fabric props that must survive toJSON/loadFromJSON (history,
+  // page save/load all use this). selectable/evented back the layer lock
+  // toggle; id/name back the layers panel; generatorGroupId/generatorLabel/
+  // generatorParams back the generator group layer + its bulk editor.
+  EXTRA_SERIALIZE_PROPS: ['selectable', 'evented', 'id', 'name', 'generatorGroupId', 'generatorLabel', 'generatorParams'],
 
   init() {
     this.canvas = new fabric.Canvas('pageCanvas', {
@@ -15,16 +26,20 @@ const CanvasEditor = {
     this.setPageSize(this.pageSizeKey);
     this.setZoom(0.7);
 
-    this.canvas.on('object:modified', () => this.pushHistory());
-    this.canvas.on('object:added', () => this.pushHistory());
-    this.canvas.on('object:removed', () => this.pushHistory());
-    this.canvas.on('selection:created', () => this.renderProperties());
-    this.canvas.on('selection:updated', () => this.renderProperties());
-    this.canvas.on('selection:cleared', () => this.renderProperties());
+    const onObjectsChanged = () => { this.pushHistory(); this.notifyLayersChange(); };
+    const onSelectionChanged = () => { this.renderProperties(); this.notifyLayersChange(); };
+    ['object:modified', 'object:added', 'object:removed'].forEach((evt) => this.canvas.on(evt, onObjectsChanged));
+    ['selection:created', 'selection:updated', 'selection:cleared'].forEach((evt) => this.canvas.on(evt, onSelectionChanged));
+    // A generator group's side-handle drag ends here — snap it into a clean regenerated layout.
+    this.canvas.on('object:modified', (e) => { if (typeof GroupEditor !== 'undefined') GroupEditor.handleResize(e.target); });
 
     document.getElementById('zoomSlider').addEventListener('input', (e) => {
       this.setZoom(Number(e.target.value) / 100);
     });
+  },
+
+  notifyLayersChange() {
+    if (this.onLayersChange) this.onLayersChange();
   },
 
   setPageSize(key) {
@@ -51,401 +66,11 @@ const CanvasEditor = {
     }
   },
 
-  // -------- element creation --------
-  addText(text = 'Edit this text') {
-    const obj = new fabric.Textbox(text, {
-      left: 80, top: 80, width: 260, fontSize: 22, fontFamily: 'Helvetica', fill: '#1f2430',
-    });
-    this.canvas.add(obj).setActiveObject(obj);
-  },
-
-  addLine() {
-    const obj = new fabric.Line([60, 200, 400, 200], { stroke: '#333', strokeWidth: 2 });
-    this.canvas.add(obj).setActiveObject(obj);
-  },
-
-  addRect() {
-    const obj = new fabric.Rect({ left: 80, top: 80, width: 180, height: 120, fill: 'transparent', stroke: '#333', strokeWidth: 2 });
-    this.canvas.add(obj).setActiveObject(obj);
-  },
-
-  addCircle() {
-    const obj = new fabric.Circle({ left: 80, top: 80, radius: 60, fill: 'transparent', stroke: '#333', strokeWidth: 2 });
-    this.canvas.add(obj).setActiveObject(obj);
-  },
-
-  addImageFromUrl(url, opts = {}) {
-    fabric.Image.fromURL(url, (img) => {
-      const maxDim = 300;
-      if (img.width > maxDim || img.height > maxDim) {
-        const scale = maxDim / Math.max(img.width, img.height);
-        img.scale(scale);
-      }
-      img.set({ left: 100, top: 100, ...opts });
-      this.canvas.add(img).setActiveObject(img);
-    }, { crossOrigin: 'anonymous' });
-  },
-
-  // Adds generator output (plain objects, not a fabric.Group — see
-  // generators.js) and selects them all together via an ActiveSelection so
-  // the whole block can still be moved as one unit right after insert.
-  // Side handles are hidden on that initial selection so even a resize
-  // right after insert stays proportional (corner handles only) instead of
-  // distorting text — once the user clicks away, each piece becomes a
-  // normal independently-editable object.
-  addGeneratedObjects(objects) {
-    if (!objects || !objects.length) return;
-    this.suppressHistory = true;
-    objects.forEach((o) => this.canvas.add(o));
-    this.suppressHistory = false;
-    const selection = new fabric.ActiveSelection(objects, { canvas: this.canvas });
-    selection.setControlsVisibility({ ml: false, mr: false, mt: false, mb: false });
-    this.canvas.setActiveObject(selection);
-    this.canvas.requestRenderAll();
-    this.pushHistory();
-  },
-
-  setBackgroundColor(color) {
-    this.canvas.setBackgroundColor(color, () => this.canvas.renderAll());
-    this.currentBackgroundImage = null;
-    this.currentBackgroundTiled = false;
-    this.pushHistory();
-  },
-
-  // { tile: true } sets the image as a repeating fabric.Pattern (via
-  // backgroundColor) instead of a single full-bleed backgroundImage.
-  setBackgroundImageFromUrl(url, { tile = false } = {}) {
-    this.currentBackgroundImage = url;
-    this.currentBackgroundTiled = tile;
-
-    if (tile) {
-      const imgEl = new Image();
-      imgEl.crossOrigin = 'anonymous';
-      imgEl.onload = () => {
-        const pattern = new fabric.Pattern({ source: imgEl, repeat: 'repeat' });
-        this.canvas.setBackgroundImage(null, () => {});
-        this.canvas.setBackgroundColor(pattern, () => this.canvas.renderAll());
-        this.pushHistory();
-      };
-      imgEl.src = url;
-      return;
-    }
-
-    fabric.Image.fromURL(url, (img) => {
-      img.set({
-        originX: 'left', originY: 'top',
-        scaleX: this.canvas.width / img.width,
-        scaleY: this.canvas.height / img.height,
-        selectable: false,
-        evented: false,
-      });
-      this.canvas.setBackgroundImage(img, () => this.canvas.renderAll());
-      this.pushHistory();
-    }, { crossOrigin: 'anonymous' });
-  },
-
-  setBackgroundImageOpacity(opacity) {
-    if (!this.canvas.backgroundImage) return;
-    this.canvas.backgroundImage.opacity = opacity;
-    this.canvas.requestRenderAll();
-  },
-
-  setBackgroundImageTint(color, intensity) {
-    if (!this.canvas.backgroundImage) return;
-    tintFabricImage(this.canvas.backgroundImage, color, intensity);
-    this.canvas.requestRenderAll();
-  },
-
-  removeBackgroundImage() {
-    this.canvas.setBackgroundImage(null, () => {});
-    this.canvas.setBackgroundColor('#ffffff', () => this.canvas.renderAll());
-    this.currentBackgroundImage = null;
-    this.currentBackgroundTiled = false;
-    this.pushHistory();
-  },
-
-  setBackgroundGradient(color1, color2, angle) {
-    const w = this.canvas.width;
-    const h = this.canvas.height;
-    const coordsByAngle = {
-      vertical: { x1: 0, y1: 0, x2: 0, y2: h },
-      horizontal: { x1: 0, y1: 0, x2: w, y2: 0 },
-      diagonal: { x1: 0, y1: 0, x2: w, y2: h },
-    };
-    const gradient = new fabric.Gradient({
-      type: 'linear',
-      coords: coordsByAngle[angle] || coordsByAngle.vertical,
-      colorStops: [{ offset: 0, color: color1 }, { offset: 1, color: color2 }],
-    });
-    this.canvas.setBackgroundImage(null, () => {});
-    this.canvas.setBackgroundColor(gradient, () => this.canvas.renderAll());
-    this.currentBackgroundImage = null;
-    this.currentBackgroundTiled = false;
-    this.pushHistory();
-  },
-
-  deleteSelected() {
-    const objs = this.canvas.getActiveObjects();
-    objs.forEach((o) => this.canvas.remove(o));
-    this.canvas.discardActiveObject();
-    this.canvas.requestRenderAll();
-  },
-
-  bringForward() {
-    const obj = this.canvas.getActiveObject();
-    if (obj) { this.canvas.bringForward(obj); this.pushHistory(); }
-  },
-
-  sendBackward() {
-    const obj = this.canvas.getActiveObject();
-    if (obj) { this.canvas.sendBackwards(obj); this.pushHistory(); }
-  },
-
-  // -------- image-specific editing --------
-  setImageSizePx(obj, width, height) {
-    if (!obj || obj.type !== 'image') return;
-    const newScaleX = width / obj.width;
-    const newScaleY = height / obj.height;
-    obj.set({ scaleX: newScaleX, scaleY: newScaleY });
-    this.canvas.requestRenderAll();
-  },
-
-  applyImageTint(obj, color, intensity) {
-    if (!obj || obj.type !== 'image') return;
-    tintFabricImage(obj, color, intensity);
-    this.canvas.requestRenderAll();
-  },
-
-  async removeBackgroundOnSelected(onStatus) {
-    const obj = this.canvas.getActiveObject();
-    if (!obj || obj.type !== 'image') return;
-    if (this.bgRemovalInFlight) return;
-    if (!window.BgRemoval) {
-      onStatus && onStatus('error', 'Background removal engine not loaded yet — try again in a moment.');
-      return;
-    }
-    this.bgRemovalInFlight = true;
-    onStatus && onStatus('start');
-    try {
-      // Export the object's current pixels (post any tint/filters) as a data URL to feed the model.
-      const dataUrl = obj.toDataURL({ format: 'png' });
-      const resultUrl = await window.BgRemoval.removeFromDataUrl(dataUrl, (key, current, total) => {
-        onStatus && onStatus('progress', { key, current, total });
-      });
-      const { left, top, scaleX, scaleY, angle, originX, originY, opacity } = obj;
-      fabric.Image.fromURL(resultUrl, (newImg) => {
-        newImg.set({ left, top, scaleX, scaleY, angle, originX, originY, opacity });
-        this.canvas.remove(obj);
-        this.canvas.add(newImg).setActiveObject(newImg);
-        this.canvas.requestRenderAll();
-        this.pushHistory();
-        this.bgRemovalInFlight = false;
-        onStatus && onStatus('done');
-      }, { crossOrigin: 'anonymous' });
-    } catch (err) {
-      console.error('Background removal failed', err);
-      this.bgRemovalInFlight = false;
-      onStatus && onStatus('error', err.message || String(err));
-    }
-  },
-
-  // -------- properties panel --------
-  renderProperties() {
-    const panel = document.getElementById('propertiesPanel');
-    const obj = this.canvas.getActiveObject();
-    if (!obj) {
-      panel.innerHTML = '<p class="hint">Select an element on the canvas to edit its properties.</p>';
-      return;
-    }
-
-    let rows = '';
-    if (obj.type === 'textbox' || obj.type === 'text' || obj.type === 'i-text') {
-      rows += this.propRow('Text', `<input type="text" id="propText" value="${(obj.text || '').replace(/"/g, '&quot;')}" />`);
-      rows += this.propRow('Font', `<div class="font-picker">
-        <input type="text" id="propFont" autocomplete="off" placeholder="Search fonts…" value="${(obj.fontFamily || '').replace(/"/g, '&quot;')}" />
-        <div id="propFontResults" class="font-picker-results" hidden></div>
-      </div>`);
-      rows += this.propRow('Size', `<input type="number" id="propFontSize" value="${obj.fontSize || 20}" min="6" max="200" />`);
-      rows += this.propRow('Color', `<input type="color" id="propFill" value="${toHex(obj.fill) || '#000000'}" />`);
-    } else if (obj.type === 'rect' || obj.type === 'circle') {
-      rows += this.propRow('Fill', `<input type="color" id="propFill" value="${toHex(obj.fill) || '#ffffff'}" />`);
-      rows += this.propRow('Stroke', `<input type="color" id="propStroke" value="${toHex(obj.stroke) || '#000000'}" />`);
-      rows += this.propRow('Stroke width', `<input type="number" id="propStrokeWidth" value="${obj.strokeWidth || 1}" min="0" max="30" />`);
-    } else if (obj.type === 'line') {
-      rows += this.propRow('Color', `<input type="color" id="propStroke" value="${toHex(obj.stroke) || '#000000'}" />`);
-      rows += this.propRow('Thickness', `<input type="number" id="propStrokeWidth" value="${obj.strokeWidth || 1}" min="1" max="30" />`);
-    } else if (obj.type === 'image') {
-      const existingTint = (obj.filters || []).find((f) => f.type === 'BlendColor');
-      const w = Math.round(obj.getScaledWidth());
-      const h = Math.round(obj.getScaledHeight());
-      rows += this.propRow('Width (px)', `<input type="number" id="propWidth" value="${w}" min="10" max="3000" />`);
-      rows += this.propRow('Height (px)', `<input type="number" id="propHeight" value="${h}" min="10" max="3000" />`);
-      rows += this.propRow('Tint color', `<input type="color" id="propTintColor" value="${existingTint ? existingTint.color : '#ff0000'}" />`);
-      rows += this.propRow('Tint intensity', `<input type="number" id="propTintIntensity" value="${existingTint ? Math.round(existingTint.alpha * 100) : 0}" min="0" max="100" />`);
-    }
-    rows += this.propRow('Opacity', `<input type="number" id="propOpacity" value="${Math.round((obj.opacity ?? 1) * 100)}" min="0" max="100" />`);
-
-    if (obj.type === 'image') {
-      rows += `<button id="removeBgBtn" class="tool-btn btn-accent full-width" style="margin-top:10px;">${icon('scissors')} Remove Background</button>`;
-      rows += `<p id="bgStatusMsg" class="hint" style="margin-top:6px;"></p>`;
-    }
-    rows += `<button id="deletePropBtn" class="tool-btn btn-danger full-width" style="margin-top:6px;">${icon('trash')} Delete Element</button>`;
-
-    panel.innerHTML = rows;
-
-    const bind = (id, handler) => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('input', handler);
-    };
-    bind('propText', (e) => { obj.set('text', e.target.value); this.canvas.requestRenderAll(); });
-    this.bindFontPicker(obj);
-    bind('propFontSize', (e) => { obj.set('fontSize', Number(e.target.value)); this.canvas.requestRenderAll(); });
-    bind('propFill', (e) => { obj.set('fill', e.target.value); this.canvas.requestRenderAll(); });
-    bind('propStroke', (e) => { obj.set('stroke', e.target.value); this.canvas.requestRenderAll(); });
-    bind('propStrokeWidth', (e) => { obj.set('strokeWidth', Number(e.target.value)); this.canvas.requestRenderAll(); });
-    bind('propOpacity', (e) => { obj.set('opacity', Number(e.target.value) / 100); this.canvas.requestRenderAll(); });
-
-    bind('propWidth', (e) => {
-      const h = Number(document.getElementById('propHeight').value);
-      this.setImageSizePx(obj, Number(e.target.value), h);
-    });
-    bind('propHeight', (e) => {
-      const w = Number(document.getElementById('propWidth').value);
-      this.setImageSizePx(obj, w, Number(e.target.value));
-    });
-
-    const applyTint = () => {
-      const color = document.getElementById('propTintColor').value;
-      const intensity = Number(document.getElementById('propTintIntensity').value) / 100;
-      this.applyImageTint(obj, color, intensity);
-    };
-    bind('propTintColor', applyTint);
-    bind('propTintIntensity', applyTint);
-
-    const removeBgBtn = document.getElementById('removeBgBtn');
-    if (removeBgBtn) {
-      removeBgBtn.addEventListener('click', () => {
-        const statusMsg = document.getElementById('bgStatusMsg');
-        removeBgBtn.disabled = true;
-        this.removeBackgroundOnSelected((status, payload) => {
-          if (status === 'start') {
-            removeBgBtn.innerHTML = `${icon('clock')} Removing background…`;
-            if (statusMsg) statusMsg.textContent = 'First use downloads the AI model (one-time, needs internet). This can take up to a minute.';
-          } else if (status === 'progress' && payload) {
-            if (statusMsg && payload.total) {
-              statusMsg.textContent = `${payload.key}: ${Math.round((payload.current / payload.total) * 100)}%`;
-            }
-          } else if (status === 'done') {
-            showToast('Background removed');
-            this.renderProperties();
-          } else if (status === 'error') {
-            removeBgBtn.disabled = false;
-            removeBgBtn.innerHTML = `${icon('scissors')} Remove Background`;
-            if (statusMsg) statusMsg.textContent = payload || 'Something went wrong.';
-            showToast('Background removal failed');
-          }
-        });
-      });
-    }
-
-    const deleteBtn = document.getElementById('deletePropBtn');
-    if (deleteBtn) {
-      deleteBtn.addEventListener('click', () => this.deleteSelected());
-    }
-  },
-
-  propRow(label, inputHtml) {
-    return `<div class="prop-row"><label>${label}</label>${inputHtml}</div>`;
-  },
-
-  // Searchable combobox over the preloaded Google Fonts catalog — see
-  // FontLoader.attachPicker (shared with every generator box's font picker).
-  bindFontPicker(obj) {
-    if (typeof FontLoader === 'undefined') return;
-    FontLoader.attachPicker({
-      inputEl: document.getElementById('propFont'),
-      resultsEl: document.getElementById('propFontResults'),
-      initialValue: obj.fontFamily || '',
-      onSelect: (family) => {
-        obj.set('fontFamily', family);
-        FontLoader.ensure(family).then(() => this.canvas.requestRenderAll());
-      },
-    });
-  },
-
-  // -------- history --------
-  pushHistory() {
-    if (this.suppressHistory) return;
-    this.history = this.history.slice(0, this.historyIndex + 1);
-    this.history.push(JSON.stringify(this.canvas.toJSON(['selectable', 'evented'])));
-    this.historyIndex = this.history.length - 1;
-    if (this.onChange) this.onChange();
-  },
-
-  undo() {
-    if (this.historyIndex <= 0) return;
-    this.historyIndex--;
-    this.loadFromHistory();
-  },
-
-  redo() {
-    if (this.historyIndex >= this.history.length - 1) return;
-    this.historyIndex++;
-    this.loadFromHistory();
-  },
-
-  loadFromHistory() {
-    this.suppressHistory = true;
-    const state = this.history[this.historyIndex];
-    this.canvas.loadFromJSON(state, () => {
-      this.canvas.renderAll();
-      this.suppressHistory = false;
-    });
-  },
-
-  // -------- serialize / load page --------
-  loadPage(pageData) {
-    this.suppressHistory = true;
-    this.canvas.clear();
-    this.canvas.setBackgroundColor(pageData?.background || '#ffffff', () => {});
-    if (pageData && pageData.json) {
-      this.canvas.loadFromJSON(pageData.json, () => {
-        this.canvas.renderAll();
-        this.suppressHistory = false;
-        this.history = [JSON.stringify(this.canvas.toJSON(['selectable', 'evented']))];
-        this.historyIndex = 0;
-      });
-    } else {
-      this.canvas.renderAll();
-      this.suppressHistory = false;
-      this.history = [JSON.stringify(this.canvas.toJSON(['selectable', 'evented']))];
-      this.historyIndex = 0;
-    }
-  },
-
-  serializePage() {
-    return {
-      json: this.canvas.toJSON(['selectable', 'evented']),
-      thumbnail: this.canvas.toDataURL({ format: 'png', multiplier: 0.25 }),
-      background: this.currentBackgroundImage ? null : (this.canvas.backgroundColor || '#ffffff'),
-    };
+  // Stamps a stable id + default display name onto a newly-created object
+  // for the layers panel. Called at every insertion point (single-element
+  // add, generator batches, background removal's replacement image) so
+  // every object on the canvas always has both.
+  stampLayerIdentity(obj, name) {
+    obj.set({ id: obj.id || cryptoRandomId(), name: obj.name || name });
   },
 };
-
-// Shared by per-image tinting (properties panel) and background-image
-// tinting — applies/clears a BlendColor filter on any fabric.Image.
-function tintFabricImage(img, color, intensity) {
-  img.filters = (img.filters || []).filter((f) => f.type !== 'BlendColor');
-  if (intensity > 0) {
-    img.filters.push(new fabric.Image.filters.BlendColor({
-      color, mode: 'tint', alpha: intensity,
-    }));
-  }
-  img.applyFilters();
-}
-
-function toHex(color) {
-  if (!color || typeof color !== 'string') return null;
-  if (color.startsWith('#')) return color;
-  return null;
-}
