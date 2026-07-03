@@ -167,6 +167,8 @@ planner-studio/
   border decorations) plus user uploads, shared across all planners.
 - Full Google Fonts catalog (~1,800 families, self-hosted, searchable font
   picker in the text tool's properties panel) — see `public/CLAUDE.md`.
+- Alignment toolkit: ruled-paper grid overlay, snap-to-grid, snap-to-object
+  smart guides, and align/distribute for selections — see `public/CLAUDE.md`.
 - Multi-page planners: add/duplicate/reorder/delete pages; US Letter or A4.
 - Save/Open projects; Export to a single print-ready multi-page PDF (300 DPI).
 - Summer-branded UI (coral/turquoise/sunshine-yellow on warm cream) with a

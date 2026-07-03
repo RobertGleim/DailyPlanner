@@ -32,6 +32,16 @@ const ICON_PATHS = {
   lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/>',
   grip: '<circle cx="9" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="9" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="9" cy="18" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="6" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="15" cy="18" r="1.2" fill="currentColor" stroke="none"/>',
   chevron: '<path d="M9 6l6 6-6 6"/>',
+  grid: '<rect x="3.5" y="3.5" width="17" height="17" rx="1.5"/><path d="M9.5 3.5v17M14.5 3.5v17M3.5 9.5h17M3.5 14.5h17"/>',
+  magnet: '<path d="M6 4v8a6 6 0 0 0 12 0V4"/><path d="M6 4H2.5M18 4h3.5M6 9H2.5M18 9h3.5"/>',
+  'align-left': '<path d="M4 3v18"/><path d="M8 7h11M8 12h7M8 17h11"/>',
+  'align-center-h': '<path d="M12 3v18"/><path d="M5 7h14M8 12h8M5 17h14"/>',
+  'align-right': '<path d="M20 3v18"/><path d="M5 7h11M9 12h7M5 17h11"/>',
+  'align-top': '<path d="M3 4h18"/><path d="M7 8v11M12 8v7M17 8v11"/>',
+  'align-center-v': '<path d="M3 12h18"/><path d="M7 5v14M12 8v8M17 5v14"/>',
+  'align-bottom': '<path d="M3 20h18"/><path d="M7 5v11M12 9v7M17 5v11"/>',
+  'distribute-h': '<path d="M4 3v18M20 3v18"/><rect x="8" y="8" width="3" height="8" rx="0.5"/><rect x="13" y="8" width="3" height="8" rx="0.5"/>',
+  'distribute-v': '<path d="M3 4h18M3 20h18"/><rect x="8" y="8" width="8" height="3" rx="0.5"/><rect x="8" y="13" width="8" height="3" rx="0.5"/>',
 };
 
 function icon(name, opts) {

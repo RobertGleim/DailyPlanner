@@ -291,6 +291,24 @@ select, input[type="text"], input[type="number"], input[type="month"] {
 }
 #pageCanvas { background: white; box-shadow: var(--shadow-lg); border-radius: 2px; }
 
+/* Grid overlay (canvas-grid.js) and snap-to-objects guide lines
+   (canvas-align.js) are plain DOM elements layered on top of Fabric's own
+   canvas-container wrapper (see public/CLAUDE.md) — never part of the
+   fabric.Canvas object graph, so they need no z-index game beyond normal
+   DOM paint order and pointer-events:none so they never block canvas input. */
+#gridOverlay, #alignGuideCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---------- Alignment & grid sidebar section ---------- */
+.grid-toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.align-btn-row { flex-wrap: wrap; margin-bottom: 8px; }
+.align-btn-row .btn { padding: 6px 10px; }
+
 /* ---------- Properties panel ---------- */
 .properties-panel { font-size: 13px; }
 .properties-panel .hint { color: var(--muted); font-size: 12px; }

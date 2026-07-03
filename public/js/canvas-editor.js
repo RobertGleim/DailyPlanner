@@ -46,6 +46,12 @@ const CanvasEditor = {
     document.getElementById('zoomSlider').addEventListener('input', (e) => {
       this.setZoom(Number(e.target.value) / 100);
     });
+
+    // Grid overlay/snap-to-grid (canvas-grid.js) and align/distribute/
+    // snap-to-objects (canvas-align.js) — both load after this file, so
+    // both methods already exist by the time boot() calls init().
+    this.initGrid();
+    this.initAlign();
   },
 
   notifyLayersChange() {
