@@ -25,7 +25,7 @@ public/
     canvas-background.js               # + page background (color/image/gradient/tint)
     canvas-image-tools.js               # + per-image resize/tint/AI background removal
     canvas-grid.js                       # + grid overlay + snap-to-grid
-    canvas-align.js                       # + align/distribute + snap-to-objects guides
+    canvas-align.js                       # + snap-to-objects guides
     properties-panel.js                  # + renderProperties() and its per-type editing fields
     canvas-history.js                     # + undo/redo + page load/save serialization
     layers-panel.js                        # Photoshop-style layers list (see below)
@@ -155,17 +155,16 @@ fresh `ActiveSelection` over every member each time that layer is
 selected/dragged, so a calendar's border, grid lines, and labels keep
 moving together permanently — not just immediately after insert.
 
-## Grid, snap, and align tools (`js/canvas-grid.js`, `js/canvas-align.js`)
+## Grid and snap tools (`js/canvas-grid.js`, `js/canvas-align.js`)
 
-The "Alignment & Grid" sidebar section (top of the right sidebar, above
+The "Grid & Snap" sidebar section (top of the right sidebar, above
 Properties) provides: a **Show Grid** toggle (a faint blue ruled-paper grid,
 27px spacing — 9/32in college-rule row spacing at this app's 96 screen DPI,
 square cells since "college rule" only defines row height), a **Snap to
 Grid** toggle (rounds a dragged/resized object's position/size to the
-nearest grid multiple), a **Snap to Objects** toggle ("smart guides" —
+nearest grid multiple), and a **Snap to Objects** toggle ("smart guides" —
 snaps to other objects' edges/centers while dragging and draws a temporary
-pink guide line), and **Align**/**Distribute** buttons for the current
-selection.
+pink guide line).
 
 Both the grid overlay (`#gridOverlay`) and the snap-to-objects guide-line
 overlay (`#alignGuideCanvas`) are **plain DOM elements** (a CSS div and a 2D
@@ -180,15 +179,6 @@ export (which renders from saved `page.json` through a separate offscreen
 into a save file or an exported page — no serialization whitelist/exclude
 logic needed anywhere, unlike custom Fabric properties (see
 `EXTRA_SERIALIZE_PROPS` below).
-
-`alignSelection()`/`distributeSelection()` reposition a multi-selection's
-members by discarding the `ActiveSelection` first, doing the math on plain
-canvas-absolute coordinates, then rebuilding a fresh `ActiveSelection`
-afterward — the same suppress-history-around-a-batch pattern
-`addGeneratedObjects()`/`GroupEditor.regenerate()` already use, and for the
-same reason: Fabric reports a grouped member's `left`/`top` relative to the
-selection's own frame, not the canvas, while it's still part of that
-selection.
 
 ## Layers panel (`js/layers-panel.js`)
 

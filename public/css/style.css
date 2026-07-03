@@ -304,10 +304,8 @@ select, input[type="text"], input[type="number"], input[type="month"] {
   pointer-events: none;
 }
 
-/* ---------- Alignment & grid sidebar section ---------- */
+/* ---------- Grid & Snap sidebar section ---------- */
 .grid-toggle-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-.align-btn-row { flex-wrap: wrap; margin-bottom: 8px; }
-.align-btn-row .btn { padding: 6px 10px; }
 
 /* ---------- Properties panel ---------- */
 .properties-panel { font-size: 13px; }

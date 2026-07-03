@@ -140,19 +140,18 @@
     const snapGridBtn = document.getElementById('toggleSnapGridBtn');
     const snapObjectsBtn = document.getElementById('toggleSnapObjectsBtn');
 
-    gridBtn.addEventListener('click', () => gridBtn.classList.toggle('active', CanvasEditor.toggleGrid()));
-    snapGridBtn.addEventListener('click', () => snapGridBtn.classList.toggle('active', CanvasEditor.toggleSnapToGrid()));
-    snapObjectsBtn.addEventListener('click', () => snapObjectsBtn.classList.toggle('active', CanvasEditor.toggleSnapToObjects()));
-
-    document.getElementById('alignLeftBtn').addEventListener('click', () => CanvasEditor.alignSelection('left'));
-    document.getElementById('alignCenterHBtn').addEventListener('click', () => CanvasEditor.alignSelection('centerH'));
-    document.getElementById('alignRightBtn').addEventListener('click', () => CanvasEditor.alignSelection('right'));
-    document.getElementById('alignTopBtn').addEventListener('click', () => CanvasEditor.alignSelection('top'));
-    document.getElementById('alignCenterVBtn').addEventListener('click', () => CanvasEditor.alignSelection('centerV'));
-    document.getElementById('alignBottomBtn').addEventListener('click', () => CanvasEditor.alignSelection('bottom'));
-
-    document.getElementById('distributeHBtn').addEventListener('click', () => CanvasEditor.distributeSelection('horizontal'));
-    document.getElementById('distributeVBtn').addEventListener('click', () => CanvasEditor.distributeSelection('vertical'));
+    gridBtn.addEventListener('click', () => {
+      const isOn = CanvasEditor.toggleGrid();
+      gridBtn.classList.toggle('active', isOn);
+    });
+    snapGridBtn.addEventListener('click', () => {
+      const isOn = CanvasEditor.toggleSnapToGrid();
+      snapGridBtn.classList.toggle('active', isOn);
+    });
+    snapObjectsBtn.addEventListener('click', () => {
+      const isOn = CanvasEditor.toggleSnapToObjects();
+      snapObjectsBtn.classList.toggle('active', isOn);
+    });
   }
 
   function initGenerators() {
