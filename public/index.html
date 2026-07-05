@@ -129,7 +129,8 @@
               <button class="chip" data-cat="icons">Icons</button>
               <button class="chip" data-cat="borders">Page Borders</button>
             </div>
-            <p class="callout">Page Borders decorate the top/side/corner of a page and place onto the canvas as a regular image — resize or reposition them like any element.</p>
+            <p id="libraryBorderTip" class="callout" hidden>Page Borders decorate the top/side/corner of a page and place onto the canvas as a regular image — resize or reposition them like any element.</p>
+            <div id="libraryBreadcrumb" class="library-breadcrumb" hidden></div>
             <div id="libraryGrid" class="library-grid"></div>
           </div>
         </div>
@@ -299,6 +300,7 @@
   <script src="/vendor/jspdf.umd.min.js"></script>
   <script type="module" src="/js/bg-removal-module.js"></script>
   <script src="/js/constants.js"></script>
+  <script src="/js/library-categories.js"></script>
   <script src="/js/icons.js"></script>
   <script src="/js/api.js"></script>
   <script src="/js/font-loader.js"></script>

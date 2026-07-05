@@ -64,8 +64,14 @@ const FontLoader = {
   // this catalog, with the 6 built-in FONT_CHOICES pinned at the top of the
   // unfiltered list as instant, zero-load defaults. Shared by the
   // properties-panel font field (canvas-editor.js) and every generator
-  // box's font picker (generators tab in app.js) so this ~50-line
+  // box's font picker (generators tab in app.js) so this ~70-line
   // search/render/click behavior only lives in one place.
+  //
+  // Results are paginated by scroll rather than hard-capped: the catalog has
+  // ~1,800 families, so only PAGE_SIZE rows are appended at a time (and only
+  // those get their webfont lazily loaded), with more appended as the user
+  // scrolls the results container — otherwise the whole catalog would be
+  // unreachable past the first alphabetical page.
   attachPicker({ inputEl, resultsEl, initialValue, onSelect }) {
     if (!inputEl || !resultsEl) return;
     inputEl.value = initialValue || '';
@@ -73,41 +79,61 @@ const FontLoader = {
     const catalogFamilies = this.catalog
       .map((f) => f.family)
       .filter((f) => !FONT_CHOICES.includes(f));
-    const MAX_RESULTS = 50;
+    const PAGE_SIZE = 50;
+
+    let currentMatches = [];
+    let renderedCount = 0;
+
+    const buildRow = (family) => {
+      const row = document.createElement('div');
+      row.className = 'font-picker-row';
+      row.textContent = family;
+      row.style.fontFamily = `'${family}'`;
+      row.addEventListener('mousedown', (e) => {
+        e.preventDefault(); // avoid input blur firing before the click registers
+        inputEl.value = family;
+        resultsEl.hidden = true;
+        onSelect(family);
+        this.ensure(family);
+      });
+      return row;
+    };
+
+    // Appends the next page of currentMatches without touching existing rows,
+    // so scroll position is preserved as more fonts load in.
+    const appendNextPage = () => {
+      const next = currentMatches.slice(renderedCount, renderedCount + PAGE_SIZE);
+      next.forEach((family) => {
+        resultsEl.appendChild(buildRow(family));
+        this.ensure(family); // lazily load only the webfonts actually rendered
+      });
+      renderedCount += next.length;
+    };
 
     const renderResults = (query) => {
       const q = query.trim().toLowerCase();
-      const matches = q
-        ? [...FONT_CHOICES, ...catalogFamilies].filter((f) => f.toLowerCase().includes(q)).slice(0, MAX_RESULTS)
-        : [...FONT_CHOICES, ...catalogFamilies.slice(0, MAX_RESULTS - FONT_CHOICES.length)];
-
+      currentMatches = q
+        ? [...FONT_CHOICES, ...catalogFamilies].filter((f) => f.toLowerCase().includes(q))
+        : [...FONT_CHOICES, ...catalogFamilies];
+      renderedCount = 0;
       resultsEl.textContent = '';
-      if (!matches.length) {
+
+      if (!currentMatches.length) {
         const empty = document.createElement('div');
         empty.className = 'font-picker-empty';
         empty.textContent = 'No fonts match';
         resultsEl.appendChild(empty);
       } else {
-        matches.forEach((family) => {
-          const row = document.createElement('div');
-          row.className = 'font-picker-row';
-          row.textContent = family;
-          row.style.fontFamily = `'${family}'`;
-          row.addEventListener('mousedown', (e) => {
-            e.preventDefault(); // avoid input blur firing before the click registers
-            inputEl.value = family;
-            resultsEl.hidden = true;
-            onSelect(family);
-            this.ensure(family);
-          });
-          resultsEl.appendChild(row);
-        });
+        appendNextPage();
       }
       resultsEl.hidden = false;
-
-      // Lazily load only the webfonts actually visible in this result set.
-      matches.forEach((family) => this.ensure(family));
     };
+
+    resultsEl.addEventListener('scroll', () => {
+      if (renderedCount >= currentMatches.length) return;
+      const nearBottom = resultsEl.scrollTop + resultsEl.clientHeight >= resultsEl.scrollHeight - 40;
+      if (nearBottom) appendNextPage();
+    });
 
     inputEl.addEventListener('focus', () => renderResults(''));
     inputEl.addEventListener('input', () => renderResults(inputEl.value));

@@ -16,7 +16,8 @@ public/
     icons.js                  # Self-hosted SVG icon set (see below, load early)
     api.js                     # fetch() wrappers for /api/* (see server/CLAUDE.md)
     font-loader.js              # Loads /api/fonts catalog, lazily registers webfonts via FontFace API
-    library-panel.js            # Library tab: upload/browse/delete assets
+    library-categories.js       # Border/background/icon drill-down taxonomies (see below)
+    library-panel.js            # Library tab: upload/browse/delete/drill-down assets
     generators.js                # Calendar/checklist/schedule builders
     pages-manager.js              # Multi-page state + thumbnail sidebar
     export-pdf.js                  # jsPDF multi-page export
@@ -419,6 +420,36 @@ pass the third argument — an accessibility checker will flag any row that
 doesn't (a real "label not associated with a form field" finding surfaced
 exactly this gap across 12 existing rows).
 
+## Library drill-down navigation (`library-categories.js`, `library-panel.js`)
+
+Backgrounds (100 items), Icons (121 items), and Page Borders (160 items) are
+too many to browse as one flat scroll, so selecting one of those three
+top-level chips (`.library-filter .chip`) drills through folder levels
+before reaching the final insertable grid — `LibraryPanel.drillPath`
+(`js/library-panel.js`) tracks the chosen `{ slug, label }` per level, and a
+breadcrumb bar (`#libraryBreadcrumb`) lets you jump back to any earlier
+level or use the back button. "Images" and "All" stay a flat grid — there's
+no taxonomy for arbitrary user uploads.
+
+The taxonomy itself lives in `js/library-categories.js`, keyed off the
+already-well-formed asset `url` filenames (**not** the `name` field — the
+seeded background `name`s have an em-dash placement bug for the "Lavender"
+color variant of every motif, e.g. `"Bevel — Circle Lavender"` instead of
+`"Bevel Circle — Lavender"`, which would silently misfile it if grouped by
+name):
+- **Page Borders** → theme (8, parsed from the URL's leading slug e.g.
+  `baby-corner-…` → `baby`) → style (5, e.g. `corner` → "Corner Accent") →
+  final grid.
+- **Backgrounds** → motif (20, parsed from the URL e.g.
+  `bg-bevel-circle-blush-pink.png` → `bevel-circle`) → final grid (the 5
+  color variants are distinguishable directly in the thumbnails, no color
+  sub-level).
+- **Icons** → category (10, hand-authored name → category map in
+  `ICON_CATEGORIES`, since icon names carry no embedded taxonomy at all) →
+  final grid. Adding a new icon without adding it to `ICON_CATEGORIES`
+  doesn't break anything — it just falls into an "Other" bucket
+  (`iconCategoryOf`'s fallback) until categorized.
+
 ## Shared font-picker (`FontLoader.attachPicker`, `js/font-loader.js`)
 
 The searchable font combobox (used by the properties panel's Font field and
@@ -430,6 +461,13 @@ supply the two DOM elements (matching the `.font-picker`/`.font-picker-results`
 markup pattern — copy an existing usage in `index.html` rather than
 hand-rolling new combobox HTML) and an `onSelect(family)` callback; don't
 duplicate the search/render logic inline elsewhere.
+
+Results (both the unfiltered browse list and search matches) render in
+pages of 50, appended as the results container is scrolled near its bottom —
+this is what makes the full ~1,800-family catalog reachable rather than only
+ever showing the first alphabetical page. Webfonts are only lazily loaded
+(`FontLoader.ensure`) for rows actually appended, so scrolling further is
+also what drives further webfont loading, not a fixed upfront batch.
 
 ## Security note
 
