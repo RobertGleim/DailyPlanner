@@ -1,6 +1,60 @@
 // Element creation/manipulation methods for CanvasEditor — extends the
 // shared object defined in canvas-editor.js (must load after it). See
 // public/CLAUDE.md's file map for why CanvasEditor is split across files.
+
+// A straight fabric.Line's bounding-box height is ~0 (just strokeWidth),
+// which puts Fabric's default corner controls (tl/tr/bl/br) almost exactly
+// on top of the ml/mr edge controls at both ends — a live-confirmed bug
+// where dragging to extend the line, or drag the vertical handle, would
+// unpredictably grab a corner instead and collapse/flip the near-zero
+// height, making the line appear to vanish. Fix: drop the corner controls
+// (a line has no meaningful diagonal-resize concept anyway) and replace
+// mt/mb with a dedicated thickness control that adjusts strokeWidth
+// directly, instead of the default scaleY bounding-box stretch. ml/mr/mtr
+// keep Fabric's own defaults by reference — same reuse pattern Fabric
+// itself uses internally for fabric.Textbox's custom control set — since
+// scalingX (extend/shorten from whichever end, anchoring the other) and
+// rotate already work correctly once the corner controls stop interfering.
+// This must be a prototype-level override (not per-instance) to also apply
+// to a line reloaded from a saved project, since `controls` isn't
+// serialized by toJSON/loadFromJSON.
+function makeLineThicknessHandler(direction) {
+  return function (eventData, transform, x, y) {
+    const target = transform.target;
+    if (target.lockScalingY) return false;
+    const delta = (y - transform.lastY) * direction;
+    const current = target.strokeWidth || 1;
+    const next = Math.min(30, Math.max(1, Math.round(current + delta)));
+    if (next === current) return false;
+    target.set('strokeWidth', next);
+    target.setCoords();
+    return true;
+  };
+}
+
+fabric.Line.prototype.controls = {
+  ml: fabric.Object.prototype.controls.ml,
+  mr: fabric.Object.prototype.controls.mr,
+  mtr: fabric.Object.prototype.controls.mtr,
+  // Dragging away from the line's body (up on mt, down on mb) always
+  // thickens it; dragging toward it thins it — symmetric regardless of
+  // which handle you grab.
+  mt: new fabric.Control({
+    x: 0,
+    y: -0.5,
+    cursorStyleHandler: () => 'ns-resize',
+    actionHandler: makeLineThicknessHandler(-1),
+    actionName: 'changeThickness',
+  }),
+  mb: new fabric.Control({
+    x: 0,
+    y: 0.5,
+    cursorStyleHandler: () => 'ns-resize',
+    actionHandler: makeLineThicknessHandler(1),
+    actionName: 'changeThickness',
+  }),
+};
+
 Object.assign(CanvasEditor, {
   // -------- element creation --------
   addText(text = 'Edit this text') {

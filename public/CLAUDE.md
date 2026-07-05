@@ -217,6 +217,26 @@ thickness as `1 / zoom` so it always renders at exactly 1px after the
 ancestor's scale is applied; it's called from `initGrid()` and from
 `setZoom()` on every zoom change.
 
+## Line element custom controls (`js/canvas-elements.js`, top of file)
+
+`fabric.Line.prototype.controls` is deliberately overridden — **do not**
+"restore" it to Fabric's default 8-handle set; that's what caused a real,
+reported bug. A straight line's bounding-box height is ~0 (just
+`strokeWidth`), which puts the default corner controls (`tl`/`tr`/`bl`/`br`)
+almost exactly on top of the `ml`/`mr` edge controls at both ends, so
+dragging to extend the line (or its vertical handle) would unpredictably
+grab a corner instead and collapse/flip the near-zero height — the line
+would appear to vanish. The fix drops the corner controls entirely (a line
+has no meaningful diagonal-resize concept) and replaces `mt`/`mb` with a
+custom control that adjusts `strokeWidth` directly (dragging away from the
+line's body thickens it, toward it thins it) instead of the default
+`scaleY` bounding-box stretch. `ml`/`mr`/`mtr` stay Fabric's own defaults by
+reference — the same reuse pattern Fabric uses internally for
+`fabric.Textbox`'s own custom control set. This is a prototype-level
+override (not per-instance), since `controls` isn't part of
+`toJSON`/`loadFromJSON` serialization and needs to apply to a line reloaded
+from a saved project too, not just one freshly drawn via the Line tool.
+
 ## Layers panel (`js/layers-panel.js`)
 
 A Photoshop-style layers list in the right sidebar, between Properties and
