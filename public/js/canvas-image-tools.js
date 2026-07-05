@@ -38,7 +38,12 @@ Object.assign(CanvasEditor, {
         newImg.set({ id: obj.id, name: obj.name, generatorGroupId: obj.generatorGroupId, generatorLabel: obj.generatorLabel });
         this.canvas.remove(obj);
         this.canvas.add(newImg).setActiveObject(newImg);
-        this.canvas.requestRenderAll();
+        // Synchronous repaint + next-frame follow-up — see the
+        // render-timing comment on duplicateSelected() in
+        // canvas-elements.js for why requestRenderAll() alone isn't enough
+        // for a button-triggered change like this.
+        this.canvas.renderAll();
+        requestAnimationFrame(() => this.canvas.renderAll());
         this.pushHistory();
         this.bgRemovalInFlight = false;
         onStatus && onStatus('done');

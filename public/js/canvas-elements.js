@@ -120,7 +120,12 @@ Object.assign(CanvasEditor, {
         name: obj.name ? `${obj.name} copy` : 'Copy',
       });
       this.canvas.add(cloned).setActiveObject(cloned);
-      this.canvas.requestRenderAll();
+      // Synchronous repaint + next-frame follow-up — requestRenderAll()
+      // alone left button-triggered changes unpainted until some later
+      // canvas interaction forced a render; same fix as addGeneratedObjects
+      // above, same unpinned-down Fabric-internal cause.
+      this.canvas.renderAll();
+      requestAnimationFrame(() => this.canvas.renderAll());
       this.pushHistory();
       this.notifyLayersChange();
     }, this.EXTRA_SERIALIZE_PROPS);
@@ -132,7 +137,9 @@ Object.assign(CanvasEditor, {
     const obj = this.canvas.getActiveObject();
     if (!obj) return;
     obj.set('flipX', !obj.flipX);
-    this.canvas.requestRenderAll();
+    // See the render-timing comment in duplicateSelected() above.
+    this.canvas.renderAll();
+    requestAnimationFrame(() => this.canvas.renderAll());
     this.pushHistory();
   },
 
@@ -140,7 +147,8 @@ Object.assign(CanvasEditor, {
     const obj = this.canvas.getActiveObject();
     if (!obj) return;
     obj.set('flipY', !obj.flipY);
-    this.canvas.requestRenderAll();
+    this.canvas.renderAll();
+    requestAnimationFrame(() => this.canvas.renderAll());
     this.pushHistory();
   },
 
@@ -155,7 +163,8 @@ Object.assign(CanvasEditor, {
     if (!obj) return;
     this.canvas.centerObject(obj);
     obj.setCoords();
-    this.canvas.requestRenderAll();
+    this.canvas.renderAll();
+    requestAnimationFrame(() => this.canvas.renderAll());
     this.pushHistory();
   },
 
