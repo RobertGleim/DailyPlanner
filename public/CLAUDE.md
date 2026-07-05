@@ -12,7 +12,7 @@ public/
   index.html              # App shell — toolbar, both sidebars, canvas, modal
   css/style.css            # All styling — design tokens live in :root
   js/
-    constants.js             # PAGE_SIZES, FONT_CHOICES (load first)
+    constants.js             # PAGE_SIZES (Letter/A4/A5/Half Letter/Happy Planner Classic), FONT_CHOICES (load first)
     icons.js                  # Self-hosted SVG icon set (see below, load early)
     api.js                     # fetch() wrappers for /api/* (see server/CLAUDE.md)
     font-loader.js              # Loads /api/fonts catalog, lazily registers webfonts via FontFace API
