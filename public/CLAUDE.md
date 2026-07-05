@@ -267,6 +267,20 @@ delete the unselected rest). The gate lives in `canvas-editor.js` itself
 rendering and regeneration logic lives in `group-editor.js` to keep
 `canvas-editor.js` under this project's 500-line file-size guideline.
 
+A separate, simpler case lives directly in `properties-panel.js`'s
+`renderProperties()` (not `GroupEditor`, which is only for a full generator
+group): a manual multi-select (marquee-drag or shift-click) that happens to
+include one or more text elements gets a bulk Font/Size editor instead of
+the plain Opacity+Delete ActiveSelection fallback — `multiTextMembers` there
+filters the selection's members down to text types and, if any exist,
+renders separately-namespaced `#propMultiFont`/`#propMultiFontSize` fields
+(distinct ids from the single-text-object `#propFont`/`#propFontSize`
+fields above them in the same function, so the two branches can never
+collide) whose change handlers `.set()` the new font/size onto every text
+member directly, rather than regenerating anything. If the selected text
+elements don't already share one font/size, the field shows blank with a
+"Mixed" placeholder rather than an arbitrary first-member value.
+
 `GroupEditor` renders the *same* fields as that generator's own
 `#tab-generators` insert panel (view/month/year/style + font + colors for
 Calendar; rows/cols/title + font + colors for Checklist; hours/title + font

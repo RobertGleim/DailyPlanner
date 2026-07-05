@@ -19,8 +19,16 @@ Object.assign(CanvasEditor, {
     }
     delete panel.dataset.geGroupId;
 
+    // A manual multi-select (marquee-drag or shift-click) that happens to
+    // include text elements — not a GroupEditor generator group above, just
+    // an arbitrary mix the user selected. Lets font/size be changed for
+    // every text element in the selection at once, instead of needing to
+    // click and edit each one individually.
+    const textTypes = ['textbox', 'text', 'i-text'];
+    const multiTextMembers = obj.type === 'activeSelection' ? obj.getObjects().filter((o) => textTypes.includes(o.type)) : [];
+
     let rows = '';
-    if (obj.type === 'textbox' || obj.type === 'text' || obj.type === 'i-text') {
+    if (textTypes.includes(obj.type)) {
       rows += this.propRow('Text', `<input type="text" id="propText" value="${(obj.text || '').replace(/"/g, '&quot;')}" />`, 'propText');
       rows += this.propRow('Font', `<div class="font-picker">
         <input type="text" id="propFont" autocomplete="off" placeholder="Search fonts…" value="${(obj.fontFamily || '').replace(/"/g, '&quot;')}" />
@@ -28,6 +36,17 @@ Object.assign(CanvasEditor, {
       </div>`, 'propFont');
       rows += this.propRow('Size', `<input type="number" id="propFontSize" value="${obj.fontSize || 20}" min="6" max="200" />`, 'propFontSize');
       rows += this.propRow('Color', `<input type="color" id="propFill" value="${toHex(obj.fill) || '#000000'}" />`, 'propFill');
+    } else if (multiTextMembers.length) {
+      const sizes = new Set(multiTextMembers.map((t) => t.fontSize || 20));
+      const families = new Set(multiTextMembers.map((t) => t.fontFamily || ''));
+      const uniformSize = sizes.size === 1 ? [...sizes][0] : '';
+      const uniformFamily = families.size === 1 ? [...families][0] : '';
+      rows += `<p class="hint">Editing font for ${multiTextMembers.length} text element${multiTextMembers.length === 1 ? '' : 's'} in this selection.</p>`;
+      rows += this.propRow('Font', `<div class="font-picker">
+        <input type="text" id="propMultiFont" autocomplete="off" placeholder="Search fonts…" value="${uniformFamily.replace(/"/g, '&quot;')}" />
+        <div id="propMultiFontResults" class="font-picker-results" hidden></div>
+      </div>`, 'propMultiFont');
+      rows += this.propRow('Size', `<input type="number" id="propMultiFontSize" min="6" max="200" value="${uniformSize}" placeholder="Mixed" />`, 'propMultiFontSize');
     } else if (obj.type === 'rect' || obj.type === 'circle') {
       rows += this.propRow('Fill', `<input type="color" id="propFill" value="${toHex(obj.fill) || '#ffffff'}" />`, 'propFill');
       rows += this.propRow('Stroke', `<input type="color" id="propStroke" value="${toHex(obj.stroke) || '#000000'}" />`, 'propStroke');
@@ -112,6 +131,27 @@ Object.assign(CanvasEditor, {
     const deleteBtn = document.getElementById('deletePropBtn');
     if (deleteBtn) {
       deleteBtn.addEventListener('click', () => this.deleteSelected());
+    }
+
+    // Bulk font/size for the multi-text-select branch above — separate
+    // ids/handlers from the single-text-object ones so the two paths can't
+    // collide (only one branch's fields ever exist in the DOM at a time).
+    if (multiTextMembers.length) {
+      FontLoader.attachPicker({
+        inputEl: document.getElementById('propMultiFont'),
+        resultsEl: document.getElementById('propMultiFontResults'),
+        initialValue: multiTextMembers[0].fontFamily || '',
+        onSelect: (family) => {
+          multiTextMembers.forEach((t) => t.set('fontFamily', family));
+          FontLoader.ensure(family).then(() => this.canvas.requestRenderAll());
+        },
+      });
+      bind('propMultiFontSize', (e) => {
+        const size = Number(e.target.value);
+        if (!size) return;
+        multiTextMembers.forEach((t) => t.set('fontSize', size));
+        this.canvas.requestRenderAll();
+      });
     }
   },
 
