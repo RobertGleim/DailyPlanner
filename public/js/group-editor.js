@@ -186,6 +186,17 @@ const GroupEditor = {
     // absolute left/top, which boundingTopLeft() below depends on.
     canvas.discardActiveObject();
 
+    // Preserve rotation/flip across the rebuild — discardActiveObject()
+    // above just baked the group's rigid rotate/flip into each member's own
+    // angle/flipX/flipY (they're always rotated as one unit, never
+    // individually), but spec.build() below always returns fresh objects at
+    // angle 0 / flipX false / flipY false. Without this, any regenerate
+    // (drag-resize or a bulk field edit) would silently snap a
+    // rotated/flipped group back to unrotated/unflipped.
+    const preservedAngle = members[0].angle || 0;
+    const preservedFlipX = !!members[0].flipX;
+    const preservedFlipY = !!members[0].flipY;
+
     const freshObjects = spec.build(newParams);
     if (!freshObjects.length) {
       CanvasEditor.suppressHistory = false;
@@ -213,6 +224,11 @@ const GroupEditor = {
     // lingering alongside the new one — see the matching comment on
     // CanvasEditor.addGeneratedObjects.
     const selection = new fabric.ActiveSelection(freshObjects, { canvas, selectable: !wasLocked, evented: !wasLocked });
+    // Re-apply the preserved rotation/flip to the whole freshly-rebuilt
+    // batch as one rigid transform — not to the individual fresh objects,
+    // which must stay at angle 0 relative to each other to keep the
+    // group's internal layout (e.g. a calendar's grid) coherent.
+    selection.set({ angle: preservedAngle, flipX: preservedFlipX, flipY: preservedFlipY });
     selection.setCoords();
     canvas.setActiveObject(selection);
 

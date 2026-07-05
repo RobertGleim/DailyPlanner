@@ -336,6 +336,21 @@ canvas-attached batch's `left`/`top` via plain properties rather than
 every object generators.js produces is axis-aligned/unrotated and Fabric's
 absolute-bounding-rect calculation on a canvas-less object returns `NaN`.)
 
+**Rotation/flip preservation**: the same `discardActiveObject()` call above
+is also where a rotated/flipped group's rigid transform becomes each old
+member's own `angle`/`flipX`/`flipY` (a full-group rotate/flip is always
+applied as one unit, never per-member). `regenerate()` reads that off
+`members[0]` right after discarding — before the old members are removed —
+and re-applies it to the **new wrapper `ActiveSelection`** once the fresh
+batch is built and wrapped, not to the individual fresh objects (those stay
+at `angle: 0` relative to each other, straight from `spec.build()`, which is
+what keeps the group's internal layout, e.g. a calendar's grid, coherent;
+rotating each fresh object individually around its own center would
+scramble it instead of rotating the group as a whole). Without this, any
+regenerate — a drag-resize via `handleResize()` or any bulk field edit via
+`render()`'s `onChange` — silently snapped a rotated/flipped group back to
+unrotated/unflipped, a real, reported bug.
+
 **Lock-all**: `LayersPanel.buildGroupRow()`'s header carries a lock button
 (`LayersPanel.setGroupLocked`) alongside the expand toggle and delete
 button, matching the per-object lock button every row already has — sets
