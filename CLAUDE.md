@@ -24,11 +24,15 @@ unbounded:
   credentials live.
 - [`scripts/CLAUDE.md`](scripts/CLAUDE.md) — standalone script conventions.
 
-## Agent/subagent rule
+## Skill & Agent rule
 
-**Never spawn an Agent (subagent) or invoke a Skill in this repo without
-asking the user first.** Before using the Agent tool or Skill tool, state
-what you want to run and why, and wait for explicit approval. No exceptions.
+**Skills** may be invoked automatically whenever relevant in this repo — no
+need to ask first; briefly state which skill is being used and why, then
+proceed.
+
+**Never spawn an Agent (subagent) in this repo without asking the user
+first.** Before using the Agent tool, state what you want to run and why,
+and wait for explicit approval. No exceptions.
 
 ## Dev tooling: graphify knowledge graph
 
