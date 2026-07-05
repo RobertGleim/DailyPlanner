@@ -15,11 +15,18 @@
   --danger: #E23744;
   --danger-tint: #FDEAEC;
   --danger-border: #F6C7CB;
+  --radius-sm: 8px;
   --radius: 10px;
   --radius-lg: 16px;
   --shadow-sm: 0 1px 2px rgba(51, 38, 25, .06);
   --shadow-md: 0 6px 20px rgba(51, 38, 25, .10);
   --shadow-lg: 0 16px 48px rgba(51, 38, 25, .18);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --ease: cubic-bezier(.2, .8, .2, 1);
 }
 
 * { box-sizing: border-box; }
@@ -109,16 +116,16 @@ select, input[type="text"], input[type="number"], input[type="month"] {
   font-weight: 500;
   cursor: pointer;
   color: var(--text);
-  transition: background .15s, box-shadow .15s, transform .1s;
+  transition: background .18s var(--ease), box-shadow .18s var(--ease), transform .12s var(--ease), border-color .18s var(--ease);
 }
-.btn:hover { background: var(--bg); }
-.btn:active { transform: translateY(1px); }
-.btn-primary { background: var(--primary); color: white; border-color: var(--primary); box-shadow: var(--shadow-sm); }
-.btn-primary:hover { background: var(--primary-dark); box-shadow: var(--shadow-md); }
-.btn-accent { background: var(--accent); color: white; border-color: var(--accent); box-shadow: var(--shadow-sm); }
-.btn-accent:hover { background: var(--accent-dark); box-shadow: var(--shadow-md); }
+.btn:hover { background: var(--bg); box-shadow: var(--shadow-sm); transform: translateY(-1px); }
+.btn:active { transform: translateY(0); box-shadow: none; }
+.btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border-color: var(--primary-dark); box-shadow: var(--shadow-sm); }
+.btn-primary:hover { box-shadow: var(--shadow-md); filter: brightness(1.05); }
+.btn-accent { background: linear-gradient(135deg, var(--accent), var(--accent-dark)); color: white; border-color: var(--accent-dark); box-shadow: var(--shadow-sm); }
+.btn-accent:hover { box-shadow: var(--shadow-md); filter: brightness(1.05); }
 .btn-danger { background: var(--danger-tint); color: var(--danger); border-color: var(--danger-border); }
-.btn-danger:hover { background: #FADBDE; }
+.btn-danger:hover { background: #FADBDE; box-shadow: var(--shadow-sm); }
 .full-width { width: 100%; margin-top: 8px; justify-content: center; }
 
 /* ---------- Workspace layout ---------- */
@@ -142,14 +149,20 @@ select, input[type="text"], input[type="number"], input[type="month"] {
 }
 
 .sidebar h4 {
-  margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .06em;
   color: var(--muted);
 }
-.sidebar-section h4:not(:first-child) { margin-top: 16px; }
+.sidebar h4 .icon { width: 14px; height: 14px; color: var(--primary); }
+.sidebar-section h4:not(:first-child) { margin-top: 18px; }
 
 /* Tabs */
 .tab-bar {
@@ -163,8 +176,12 @@ select, input[type="text"], input[type="number"], input[type="month"] {
   box-shadow: var(--shadow-sm);
 }
 .tab-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   flex: 1;
-  padding: 7px 4px;
+  padding: 8px 4px;
   border: none;
   border-radius: 999px;
   background: none;
@@ -172,11 +189,14 @@ select, input[type="text"], input[type="number"], input[type="month"] {
   font-size: 12px;
   font-weight: 600;
   color: var(--muted);
-  transition: background .15s, color .15s;
+  transition: background .18s var(--ease), color .18s var(--ease), box-shadow .18s var(--ease);
 }
-.tab-btn.active { color: white; background: var(--primary); }
-.tab-panel { display: none; }
+.tab-btn .icon { width: 15px; height: 15px; }
+.tab-btn:hover:not(.active) { color: var(--text); background: var(--primary-tint); }
+.tab-btn.active { color: white; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: var(--shadow-sm); }
+.tab-panel { display: none; animation: tab-fade-in .15s var(--ease); }
 .tab-panel.active { display: block; }
+@keyframes tab-fade-in { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
 
 .tool-btn {
   display: flex;
@@ -192,14 +212,42 @@ select, input[type="text"], input[type="number"], input[type="month"] {
   cursor: pointer;
   font-size: 13px;
   color: var(--text);
-  transition: background .15s, border-color .15s;
+  transition: background .16s var(--ease), border-color .16s var(--ease), box-shadow .16s var(--ease), transform .12s var(--ease);
 }
 .tool-btn .icon { color: var(--primary); }
-.tool-btn:hover { background: var(--primary-tint); border-color: var(--primary); }
+.tool-btn:hover { background: var(--primary-tint); border-color: var(--primary); box-shadow: var(--shadow-sm); }
 .tool-btn.btn-accent, .tool-btn.btn-danger { justify-content: center; }
 .tool-btn.btn-accent .icon { color: white; }
 .tool-btn.btn-danger .icon { color: var(--danger); }
 .file-btn { position: relative; }
+
+/* Icon-grid tool palette (e.g. "Add to page") — a 2-col grid of centered
+   icon-over-label cards instead of a stacked list, for a design-tool feel.
+   Only applies inside .tool-grid; other .tool-btn uses (library upload,
+   generator insert buttons, etc.) keep the row layout above untouched. */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.tool-grid .tool-btn {
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  padding: 16px 8px;
+  margin-bottom: 0;
+  font-weight: 600;
+}
+.tool-grid .tool-btn .icon { width: 22px; height: 22px; }
+.tool-grid .tool-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.tool-grid .tool-btn.tool-grid-wide {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 10px 12px;
+  font-weight: 500;
+}
 
 .library-upload { display: flex; gap: 6px; margin-bottom: 10px; }
 .library-upload select { flex-shrink: 0; }
@@ -212,10 +260,10 @@ select, input[type="text"], input[type="number"], input[type="month"] {
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
-  transition: background .15s, border-color .15s;
+  transition: background .15s var(--ease), border-color .15s var(--ease), color .15s var(--ease);
 }
-.chip:hover { border-color: var(--primary); }
-.chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+.chip:hover { border-color: var(--primary); background: var(--primary-tint); }
+.chip.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border-color: var(--primary-dark); }
 
 .callout {
   background: var(--highlight-tint);
@@ -287,9 +335,9 @@ select, input[type="text"], input[type="number"], input[type="month"] {
   align-items: flex-start;
   justify-content: center;
   padding: 32px;
-  background: #F5ECE0;
+  background: radial-gradient(circle at 50% 0%, #FBF1E4 0%, #F5ECE0 55%, #EFE3D2 100%);
 }
-#pageCanvas { background: white; box-shadow: var(--shadow-lg); border-radius: 2px; }
+#pageCanvas { background: white; box-shadow: 0 20px 50px rgba(51, 38, 25, .22), 0 2px 6px rgba(51, 38, 25, .08); border-radius: 3px; }
 
 /* Grid overlay (canvas-grid.js) and snap-to-objects guide lines
    (canvas-align.js) are plain DOM elements layered on top of Fabric's own
@@ -341,7 +389,7 @@ select, input[type="text"], input[type="number"], input[type="month"] {
   background: var(--panel);
   transition: border-color .15s;
 }
-.page-thumb.active { border-color: var(--primary); }
+.page-thumb.active { border-color: var(--primary); background: var(--primary-tint); }
 .page-thumb img { width: 44px; height: 57px; object-fit: cover; border-radius: 3px; border: 1px solid var(--border); background: white; }
 .page-thumb .page-meta { flex: 1; font-size: 12px; }
 .page-thumb .page-actions { display: flex; gap: 4px; }
@@ -367,7 +415,7 @@ select, input[type="text"], input[type="number"], input[type="month"] {
   transition: border-color .15s, background .15s;
 }
 .layer-row:hover { border-color: var(--muted); }
-.layer-row.active { border-color: var(--primary); background: var(--bg); }
+.layer-row.active { border-color: var(--primary); background: var(--primary-tint); box-shadow: inset 3px 0 0 var(--primary); }
 .layer-row.dragging { opacity: .4; }
 .layer-row.drag-over { border-color: var(--accent); border-style: dashed; }
 .layer-row-indent { margin-left: 22px; }
@@ -411,6 +459,8 @@ select, input[type="text"], input[type="number"], input[type="month"] {
 .modal-overlay[hidden] { display: none !important; }
 .modal-overlay {
   position: fixed; inset: 0; background: rgba(51, 38, 25, .45);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
   display: flex; align-items: center; justify-content: center;
   z-index: 900;
 }
@@ -443,3 +493,29 @@ select, input[type="text"], input[type="number"], input[type="month"] {
   padding: 5px; border-radius: 6px;
 }
 .project-row button:hover { color: var(--danger); background: var(--danger-tint); }
+
+/* ---------- Custom scrollbars ---------- */
+.sidebar, .layers-list, .pages-list, .font-picker-results, .modal-body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.sidebar::-webkit-scrollbar,
+.layers-list::-webkit-scrollbar,
+.pages-list::-webkit-scrollbar,
+.font-picker-results::-webkit-scrollbar,
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+.sidebar::-webkit-scrollbar-thumb,
+.layers-list::-webkit-scrollbar-thumb,
+.pages-list::-webkit-scrollbar-thumb,
+.font-picker-results::-webkit-scrollbar-thumb,
+.modal-body::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+.sidebar::-webkit-scrollbar-thumb:hover,
+.layers-list::-webkit-scrollbar-thumb:hover,
+.pages-list::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}

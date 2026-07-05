@@ -71,14 +71,28 @@ warm cream/sand neutrals (replaced the original cool-gray/indigo palette):
 --bg: #FFF8F0; --panel: #FFFFFF; --border: #F0E1D0; --text: #332B22; --muted: #8C7F6E;
 ```
 
+`--space-1` through `--space-5` (4/8/12/16/24px) is the spacing scale, and
+`--ease: cubic-bezier(.2, .8, .2, 1)` is the shared transition easing — use
+these instead of new ad-hoc values so hover/active micro-interactions stay
+consistent across components (2026-07 nav/polish pass).
+
 Typography is the system font stack (no custom font files) — see "No
 external CDNs" below for why. Layout pattern: each sidebar tab wraps its
 logical groups in `.sidebar-section` cards (`--panel` bg, `--radius-lg`,
 `--shadow-sm`) rather than a flat list. `.btn` / `.btn-primary` / `.btn-accent`
-/ `.btn-danger` is the button system; `.tool-btn` is the sidebar icon+label
-button variant. `:focus-visible` gets a coral outline globally — keep this
-when adding new interactive elements, it's the app's only keyboard-focus
-indicator.
+/ `.btn-danger` is the button system (primary/accent use a coral/turquoise
+gradient); `.tool-btn` is the sidebar icon+label button variant, used two
+ways: a plain stacked row (library upload, generator insert buttons) or,
+wrapped in a `.tool-grid` container (e.g. the Elements tab's "Add to page"
+section), a 2-column icon-over-label tool-palette card with a hover lift —
+add `.tool-grid-wide` to a `.tool-grid .tool-btn` that should span both
+columns as a row instead (see the Upload Image button). `.sidebar h4`
+section headers take a `data-icon` (hydrated like any other icon, see below)
+plus a bottom border rule — pick an icon that's already used by that
+section's own controls where one exists (e.g. Properties → `sliders`,
+Layers → `layers`) rather than inventing a redundant one. `:focus-visible`
+gets a coral outline globally — keep this when adding new interactive
+elements, it's the app's only keyboard-focus indicator.
 
 ## Icon system (`js/icons.js`)
 

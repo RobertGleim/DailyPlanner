@@ -34,6 +34,11 @@ const ICON_PATHS = {
   chevron: '<path d="M9 6l6 6-6 6"/>',
   grid: '<rect x="3.5" y="3.5" width="17" height="17" rx="1.5"/><path d="M9.5 3.5v17M14.5 3.5v17M3.5 9.5h17M3.5 14.5h17"/>',
   magnet: '<path d="M6 4v8a6 6 0 0 0 12 0V4"/><path d="M6 4H2.5M18 4h3.5M6 9H2.5M18 9h3.5"/>',
+  shapes: '<circle cx="9" cy="9" r="5.5"/><rect x="11" y="11" width="10" height="10" rx="1.5"/>',
+  library: '<path d="M12 6c-1.5-1.3-3.5-2-6-2H3v14h3c2.5 0 4.5.7 6 2 1.5-1.3 3.5-2 6-2h3V4h-3c-2.5 0-4.5.7-6 2Z"/><path d="M12 6v14"/>',
+  wand: '<path d="M4 20 15 9"/><path d="M17.5 3.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7Z" fill="currentColor" stroke="none"/><circle cx="8" cy="5" r="1" fill="currentColor" stroke="none"/><circle cx="20" cy="10.5" r="1" fill="currentColor" stroke="none"/>',
+  layers: '<path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="M3 12l9 5 9-5"/><path d="M3 16l9 5 9-5"/>',
+  sliders: '<path d="M4 7h9M17 7h3"/><circle cx="13" cy="7" r="2.3"/><path d="M4 17h5M13 17h7"/><circle cx="9.5" cy="17" r="2.3"/>',
 };
 
 function icon(name, opts) {
