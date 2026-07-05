@@ -39,6 +39,9 @@ const ICON_PATHS = {
   wand: '<path d="M4 20 15 9"/><path d="M17.5 3.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7Z" fill="currentColor" stroke="none"/><circle cx="8" cy="5" r="1" fill="currentColor" stroke="none"/><circle cx="20" cy="10.5" r="1" fill="currentColor" stroke="none"/>',
   layers: '<path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="M3 12l9 5 9-5"/><path d="M3 16l9 5 9-5"/>',
   sliders: '<path d="M4 7h9M17 7h3"/><circle cx="13" cy="7" r="2.3"/><path d="M4 17h5M13 17h7"/><circle cx="9.5" cy="17" r="2.3"/>',
+  'flip-horizontal': '<path d="M12 3v18" stroke-dasharray="2 3"/><path d="M8 8 5 12l3 4"/><path d="M16 8l3 4-3 4"/>',
+  'flip-vertical': '<path d="M3 12h18" stroke-dasharray="2 3"/><path d="M8 8 12 5l4 3"/><path d="M8 16l4 3 4-3"/>',
+  center: '<circle cx="12" cy="12" r="8"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>',
 };
 
 function icon(name, opts) {

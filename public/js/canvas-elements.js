@@ -105,6 +105,60 @@ Object.assign(CanvasEditor, {
     this.canvas.requestRenderAll();
   },
 
+  // Clones the single active object (skips multi-select — same scope as
+  // bringForward/sendBackward below) and offsets it so the copy is visibly
+  // distinct from the original. Fabric v5's clone() is callback-based, same
+  // style as fabric.Image.fromURL in canvas-image-tools.js.
+  duplicateSelected() {
+    const obj = this.canvas.getActiveObject();
+    if (!obj || obj.type === 'activeSelection') return;
+    obj.clone((cloned) => {
+      cloned.set({
+        left: (obj.left || 0) + 20,
+        top: (obj.top || 0) + 20,
+        id: cryptoRandomId(),
+        name: obj.name ? `${obj.name} copy` : 'Copy',
+      });
+      this.canvas.add(cloned).setActiveObject(cloned);
+      this.canvas.requestRenderAll();
+      this.pushHistory();
+      this.notifyLayersChange();
+    }, this.EXTRA_SERIALIZE_PROPS);
+  },
+
+  // Fabric's flipX/flipY are generic object properties — these work the
+  // same for images, text, and shapes alike, no per-type handling needed.
+  flipHorizontal() {
+    const obj = this.canvas.getActiveObject();
+    if (!obj) return;
+    obj.set('flipX', !obj.flipX);
+    this.canvas.requestRenderAll();
+    this.pushHistory();
+  },
+
+  flipVertical() {
+    const obj = this.canvas.getActiveObject();
+    if (!obj) return;
+    obj.set('flipY', !obj.flipY);
+    this.canvas.requestRenderAll();
+    this.pushHistory();
+  },
+
+  // Recovers an element dragged/resized out of view — canvas.centerObject
+  // is a Fabric built-in, and the canvas's own width/height are the page's
+  // pixel dimensions (setPageSize sets them directly; zoom is a CSS
+  // transform on the wrapper, not a canvas resize), so this needs no manual
+  // math against baseWidth/baseHeight. Works the same for a single object
+  // or a multi-select ActiveSelection, unlike duplicateSelected above.
+  centerSelected() {
+    const obj = this.canvas.getActiveObject();
+    if (!obj) return;
+    this.canvas.centerObject(obj);
+    obj.setCoords();
+    this.canvas.requestRenderAll();
+    this.pushHistory();
+  },
+
   bringForward() {
     const obj = this.canvas.getActiveObject();
     if (obj) { this.canvas.bringForward(obj); this.pushHistory(); }

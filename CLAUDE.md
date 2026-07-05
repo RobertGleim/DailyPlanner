@@ -156,13 +156,20 @@ planner-studio/
 ## Features
 
 - Drag-and-drop page editor (Fabric.js): text, images, lines, rectangles,
-  circles; resize/rotate/reposition/layer.
+  circles; resize/rotate/reposition/layer/duplicate/flip (horizontal and
+  vertical)/center-on-page — duplicate, flip, and center are generic
+  per-element toolbar actions
+  (`CanvasEditor.duplicateSelected`/`flipHorizontal`/`flipVertical`/
+  `centerSelected` in `public/js/canvas-elements.js`), so they work the same
+  on text, shapes, and images alike. Center on Page recovers an element
+  dragged/resized out of view by snapping it back to the page's center
+  (Fabric's built-in `canvas.centerObject`).
 - Photoshop-style layers panel: every element is an independently
   selectable/movable layer (visibility toggle, lock, drag-to-reorder,
   delete); calendar/checklist/schedule generator output collapses into one
   expandable group layer — see `public/CLAUDE.md`'s "Layers panel" section.
 - Image editing: precise resize, opacity, color tint, one-click AI
-  background removal (runs entirely in-browser), delete.
+  background removal (runs entirely in-browser), duplicate, flip, delete.
 - Page backgrounds (solid color or full-bleed image) and page border
   decorations (160 preloaded, 8 themes x 5 layout styles).
 - Calendar generator (month grid / week strip, 3 styles), checklist /

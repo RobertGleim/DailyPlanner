@@ -64,6 +64,10 @@
     document.getElementById('deleteSelectedBtn').addEventListener('click', () => CanvasEditor.deleteSelected());
     document.getElementById('bringForwardBtn').addEventListener('click', () => CanvasEditor.bringForward());
     document.getElementById('sendBackwardBtn').addEventListener('click', () => CanvasEditor.sendBackward());
+    document.getElementById('duplicateSelectedBtn').addEventListener('click', () => CanvasEditor.duplicateSelected());
+    document.getElementById('flipHorizontalBtn').addEventListener('click', () => CanvasEditor.flipHorizontal());
+    document.getElementById('flipVerticalBtn').addEventListener('click', () => CanvasEditor.flipVertical());
+    document.getElementById('centerSelectedBtn').addEventListener('click', () => CanvasEditor.centerSelected());
     document.getElementById('undoBtn').addEventListener('click', () => CanvasEditor.undo());
     document.getElementById('redoBtn').addEventListener('click', () => CanvasEditor.redo());
   }
