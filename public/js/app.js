@@ -390,7 +390,10 @@
     CanvasEditor.init();
     CanvasEditor.onChange = () => captureActivePageIntoModel();
     CanvasEditor.onLayersChange = () => LayersPanel.refresh();
-    PagesManager.init({ onSwitchPage: switchToPage });
+    PagesManager.init({
+      onSwitchPage: switchToPage,
+      onBeforeDuplicatePage: () => captureActivePageIntoModel(),
+    });
     LayersPanel.init();
     initElementTools();
     initBackgroundControls();

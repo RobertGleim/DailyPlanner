@@ -3,8 +3,9 @@ const PagesManager = {
   pages: [],       // [{ id, json (fabric JSON), thumbnail (dataURL), background }]
   activeIndex: 0,
 
-  init({ onSwitchPage }) {
+  init({ onSwitchPage, onBeforeDuplicatePage }) {
     this.onSwitchPage = onSwitchPage;
+    this.onBeforeDuplicatePage = onBeforeDuplicatePage;
     this.listEl = document.getElementById('pagesList');
   },
 
@@ -26,6 +27,9 @@ const PagesManager = {
   },
 
   duplicatePage(index) {
+    if (typeof this.onBeforeDuplicatePage === 'function') {
+      this.onBeforeDuplicatePage(index);
+    }
     const src = this.pages[index];
     const copy = JSON.parse(JSON.stringify(src));
     copy.id = cryptoRandomId();

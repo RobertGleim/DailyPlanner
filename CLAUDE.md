@@ -181,6 +181,9 @@ planner-studio/
 - Ruled-paper grid overlay, snap-to-grid, and snap-to-object smart guides
   for lining up elements — see `public/CLAUDE.md`.
 - Multi-page planners: add/duplicate/reorder/delete pages; US Letter or A4.
+  - Duplicating a page now does an in-memory quick-save of the current canvas
+    state first, so recent element edits are preserved when you duplicate then
+    navigate back to the original page.
 - Save/Open projects; Export to a single print-ready multi-page PDF (300 DPI).
 - Summer-branded UI (coral/turquoise/sunshine-yellow on warm cream) with a
   self-hosted SVG icon system — see `public/CLAUDE.md`.
