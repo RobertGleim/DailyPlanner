@@ -68,6 +68,17 @@ const CanvasEditor = {
     this.applyZoomToCanvasSize();
   },
 
+  setCoverSize(coverType) {
+    this.pageSizeKey = coverType;
+    this.isCover = true;
+    const { width, height } = pageDimsPx(coverType);
+    this.canvas.setWidth(width);
+    this.canvas.setHeight(height);
+    this.baseWidth = width;
+    this.baseHeight = height;
+    this.applyZoomToCanvasSize();
+  },
+
   setZoom(zoom) {
     this.zoom = zoom;
     this.applyZoomToCanvasSize();

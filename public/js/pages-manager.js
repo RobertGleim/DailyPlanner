@@ -16,11 +16,22 @@ const PagesManager = {
   },
 
   blankPage() {
-    return { id: cryptoRandomId(), json: null, thumbnail: null, background: '#ffffff' };
+    return { id: cryptoRandomId(), json: null, thumbnail: null, background: '#ffffff', type: 'page', coverType: null };
+  },
+
+  blankCoverPage(coverType = 'letter') {
+    return { id: cryptoRandomId(), json: null, thumbnail: null, background: '#ffffff', type: 'cover', coverType };
   },
 
   addPage() {
     this.pages.push(this.blankPage());
+    this.activeIndex = this.pages.length - 1;
+    this.render();
+    this.onSwitchPage(this.activeIndex);
+  },
+
+  addCover(coverType = 'letter') {
+    this.pages.push(this.blankCoverPage(coverType));
     this.activeIndex = this.pages.length - 1;
     this.render();
     this.onSwitchPage(this.activeIndex);
@@ -70,12 +81,13 @@ const PagesManager = {
     this.pages.forEach((page, i) => {
       const row = document.createElement('div');
       row.className = 'page-thumb' + (i === this.activeIndex ? ' active' : '');
+      const pageLabel = page.type === 'cover' ? 'Book Cover' : `Page ${i + 1}`;
       row.innerHTML = `
-        <img src="${page.thumbnail || ''}" alt="Page ${i + 1}" />
-        <div class="page-meta">Page ${i + 1}</div>
+        <img src="${page.thumbnail || ''}" alt="${pageLabel}" />
+        <div class="page-meta">${pageLabel}</div>
         <div class="page-actions">
-          <button class="dup-btn" title="Duplicate" aria-label="Duplicate page ${i + 1}">${icon('duplicate', { size: 14 })}</button>
-          <button class="del-btn" title="Delete" aria-label="Delete page ${i + 1}">${icon('trash', { size: 14 })}</button>
+          <button class="dup-btn" title="Duplicate" aria-label="Duplicate ${pageLabel}">${icon('duplicate', { size: 14 })}</button>
+          <button class="del-btn" title="Delete" aria-label="Delete ${pageLabel}">${icon('trash', { size: 14 })}</button>
         </div>`;
       row.addEventListener('click', (e) => {
         if (e.target.closest('.page-actions')) return;

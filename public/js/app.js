@@ -32,6 +32,13 @@
 
   function switchToPage(index) {
     const page = PagesManager.pages[index];
+    // If it's a cover page, set the canvas to cover dimensions
+    if (page.type === 'cover' && page.coverType) {
+      CanvasEditor.setCoverSize(page.coverType);
+    } else {
+      // For regular pages, use the page size selector value
+      CanvasEditor.setPageSize(document.getElementById('pageSizeSelect').value);
+    }
     CanvasEditor.loadPage(page);
     LayersPanel.refresh();
   }
@@ -246,6 +253,12 @@
     document.getElementById('addPageBtn').addEventListener('click', () => {
       captureActivePageIntoModel();
       PagesManager.addPage();
+    });
+
+    document.getElementById('addCoverBtn').addEventListener('click', () => {
+      captureActivePageIntoModel();
+      const currentPageSize = document.getElementById('pageSizeSelect').value;
+      PagesManager.addCover(currentPageSize);
     });
 
     document.getElementById('pageSizeSelect').addEventListener('change', (e) => {
