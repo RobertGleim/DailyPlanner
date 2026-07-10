@@ -58,9 +58,11 @@ const CanvasEditor = {
     if (this.onLayersChange) this.onLayersChange();
   },
 
-  setPageSize(key) {
+  setPageSize(key, isLandscape = false) {
     this.pageSizeKey = key;
-    const { width, height } = pageDimsPx(key);
+    this.isLandscape = isLandscape;
+    this.isCover = false;
+    const { width, height } = pageDimsPx(key, SCREEN_DPI, isLandscape);
     this.canvas.setWidth(width);
     this.canvas.setHeight(height);
     this.baseWidth = width;
@@ -68,10 +70,11 @@ const CanvasEditor = {
     this.applyZoomToCanvasSize();
   },
 
-  setCoverSize(coverType) {
+  setCoverSize(coverType, isLandscape = false) {
     this.pageSizeKey = coverType;
+    this.isLandscape = isLandscape;
     this.isCover = true;
-    const { width, height } = pageDimsPx(coverType);
+    const { width, height } = coverDimsPx(coverType, SCREEN_DPI, isLandscape);
     this.canvas.setWidth(width);
     this.canvas.setHeight(height);
     this.baseWidth = width;

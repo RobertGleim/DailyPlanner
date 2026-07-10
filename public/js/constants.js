@@ -19,22 +19,36 @@ const COVER_SIZES = {
 const SCREEN_DPI = 96;
 const PRINT_DPI = 300;
 
-function pageDimsPx(pageSizeKey, dpi = SCREEN_DPI) {
-  // Check if it's a cover size first
-  if (COVER_SIZES[pageSizeKey]) {
-    const size = COVER_SIZES[pageSizeKey];
-    return {
-      width: Math.round(size.widthIn * dpi),
-      height: Math.round(size.heightIn * dpi),
-    };
-  }
-  
-  // Otherwise treat as regular page size
+function applyLandscape({ width, height }, isLandscape = false) {
+  return isLandscape ? { width: height, height: width } : { width, height };
+}
+
+function pageDimsPx(pageSizeKey, dpi = SCREEN_DPI, isLandscape = false) {
   const size = PAGE_SIZES[pageSizeKey] || PAGE_SIZES.letter;
-  return {
+  const dims = {
     width: Math.round(size.widthIn * dpi),
     height: Math.round(size.heightIn * dpi),
   };
+  return applyLandscape(dims, isLandscape);
+}
+
+function coverDimsPx(coverType, dpi = SCREEN_DPI, isLandscape = false) {
+  const size = COVER_SIZES[coverType] || COVER_SIZES.letter;
+  const dims = {
+    width: Math.round(size.widthIn * dpi),
+    height: Math.round(size.heightIn * dpi),
+  };
+  return applyLandscape(dims, isLandscape);
+}
+
+function pageDimsIn(pageSizeKey, isLandscape = false) {
+  const size = PAGE_SIZES[pageSizeKey] || PAGE_SIZES.letter;
+  return applyLandscape({ width: size.widthIn, height: size.heightIn }, isLandscape);
+}
+
+function coverDimsIn(coverType, isLandscape = false) {
+  const size = COVER_SIZES[coverType] || COVER_SIZES.letter;
+  return applyLandscape({ width: size.widthIn, height: size.heightIn }, isLandscape);
 }
 
 const FONT_CHOICES = [

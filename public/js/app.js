@@ -32,12 +32,11 @@
 
   function switchToPage(index) {
     const page = PagesManager.pages[index];
-    // If it's a cover page, set the canvas to cover dimensions
-    if (page.type === 'cover' && page.coverType) {
-      CanvasEditor.setCoverSize(page.coverType);
+    const isLandscape = Boolean(page?.isLandscape);
+    if (page.type === 'cover') {
+      CanvasEditor.setCoverSize(page.coverType || document.getElementById('pageSizeSelect').value, isLandscape);
     } else {
-      // For regular pages, use the page size selector value
-      CanvasEditor.setPageSize(document.getElementById('pageSizeSelect').value);
+      CanvasEditor.setPageSize(document.getElementById('pageSizeSelect').value, isLandscape);
     }
     CanvasEditor.loadPage(page);
     LayersPanel.refresh();
@@ -262,7 +261,13 @@
     });
 
     document.getElementById('pageSizeSelect').addEventListener('change', (e) => {
-      CanvasEditor.setPageSize(e.target.value);
+      const activePage = PagesManager.pages[PagesManager.activeIndex];
+      if (activePage?.type === 'cover') {
+        activePage.coverType = e.target.value;
+        CanvasEditor.setCoverSize(activePage.coverType, Boolean(activePage.isLandscape));
+      } else {
+        CanvasEditor.setPageSize(e.target.value, Boolean(activePage?.isLandscape));
+      }
     });
   }
 
@@ -406,6 +411,7 @@
     PagesManager.init({
       onSwitchPage: switchToPage,
       onBeforeDuplicatePage: () => captureActivePageIntoModel(),
+      onBeforeReorder: () => captureActivePageIntoModel(),
     });
     LayersPanel.init();
     initElementTools();

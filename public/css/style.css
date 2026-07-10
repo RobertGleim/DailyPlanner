@@ -416,12 +416,14 @@ select, input[type="text"], input[type="number"], input[type="month"] {
   border: 2px solid var(--border);
   border-radius: var(--radius);
   padding: 6px;
-  cursor: pointer;
+  cursor: grab;
   background: var(--panel);
-  transition: border-color .15s;
+  transition: border-color .15s, background .15s, opacity .15s;
 }
 .page-thumb.active { border-color: var(--primary); background: var(--primary-tint); }
 .page-thumb img { width: 44px; height: 57px; object-fit: cover; border-radius: 3px; border: 1px solid var(--border); background: white; }
+.page-thumb.drag-over { border-color: var(--accent); border-style: dashed; }
+.page-thumb.dragging { opacity: .45; }
 .page-thumb .page-meta { flex: 1; font-size: 12px; }
 .page-thumb .page-actions { display: flex; gap: 4px; }
 .page-thumb .page-actions button {

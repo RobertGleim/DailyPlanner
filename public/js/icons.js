@@ -42,6 +42,7 @@ const ICON_PATHS = {
   'flip-horizontal': '<path d="M12 3v18" stroke-dasharray="2 3"/><path d="M8 8 5 12l3 4"/><path d="M16 8l3 4-3 4"/>',
   'flip-vertical': '<path d="M3 12h18" stroke-dasharray="2 3"/><path d="M8 8 12 5l4 3"/><path d="M8 16l4 3 4-3"/>',
   center: '<circle cx="12" cy="12" r="8"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>',
+  'rotate-page': '<path d="M12 4v4"/><path d="M12 20v-4"/><path d="M4 12h4"/><path d="M20 12h-4"/><path d="M7 7l10 10"/><path d="M17 7 7 17"/>',
 };
 
 function icon(name, opts) {

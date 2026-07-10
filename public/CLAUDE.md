@@ -12,14 +12,14 @@ public/
   index.html              # App shell — toolbar, both sidebars, canvas, modal
   css/style.css            # All styling — design tokens live in :root
   js/
-    constants.js             # PAGE_SIZES + COVER_SIZES (front/spine/back), FONT_CHOICES (load first)
+    constants.js             # PAGE_SIZES + COVER_SIZES + page/cover dimension helpers, FONT_CHOICES (load first)
     icons.js                  # Self-hosted SVG icon set (see below, load early)
     api.js                     # fetch() wrappers for /api/* (see server/CLAUDE.md)
     font-loader.js              # Loads /api/fonts catalog, lazily registers webfonts via FontFace API
     library-categories.js       # Border/background/icon drill-down taxonomies (see below)
     library-panel.js            # Library tab: upload/browse/delete/drill-down assets
     generators.js                # Calendar/checklist/schedule builders
-    pages-manager.js              # Multi-page state + thumbnail sidebar
+    pages-manager.js              # Multi-page state + thumbnail sidebar (duplicate/delete/rotate/reorder)
     export-pdf.js                  # jsPDF multi-page export
     canvas-editor.js                # CanvasEditor core: state, init/zoom/page-size (see below)
     canvas-elements.js                # + element creation (text/line/rect/circle/image), delete/reorder
